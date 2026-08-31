@@ -426,7 +426,7 @@
 <div id="music-player" role="region" aria-label="Music player">
   <button id="music-toggle" aria-label="Pause music">&#9646;&#9646;</button>
   <div class="music-info">
-    <span class="music-title">Our Song</span>
+    <span class="music-title">hehe</span>
     <span class="music-label">♡ playing for you</span>
   </div>
   <div class="music-bars" aria-hidden="true">
@@ -458,11 +458,11 @@
         if (playPromise !== undefined) {
           playPromise.then(() => {
             /* Fade volume in smoothly over ~1.5 s */
-            fadeVolume(0, 0.75, 1500);
+            fadeVolume(0, 0.40, 1500);
           }).catch(() => {
             /* Autoplay blocked — wait for first click anywhere, then start */
             document.addEventListener('click', function tryPlay() {
-              audio.play().then(() => fadeVolume(0, 0.75, 1500));
+              audio.play().then(() => fadeVolume(0, 0.40, 1500));
               document.removeEventListener('click', tryPlay);
             }, { once: true });
           });
