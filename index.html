@@ -31,14 +31,12 @@
       --glass-bg:     rgba(253, 246, 238, 0.7);
       --glass-border: rgba(187, 146, 86, 0.32);
       --paper:        #fffaf2;
-      --paper-line:   rgba(124, 53, 64, 0.14);
     }
 
     /* ============================================================
        RESET & BASE
     ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -50,13 +48,14 @@
       position: relative;
     }
 
+    /* Subtle paper grain overlay */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       z-index: 500;
       pointer-events: none;
-      opacity: 0.5;
+      opacity: 0.45;
       mix-blend-mode: multiply;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.2 0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
     }
@@ -74,7 +73,6 @@
       color: var(--burgundy);
       line-height: 1.2;
     }
-
     .section-number {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -84,14 +82,12 @@
       display: block;
       margin-bottom: 0.6rem;
     }
-
     .section-subtitle {
       font-size: 1rem;
       color: var(--text-mid);
       font-weight: 300;
       max-width: 540px;
     }
-
     .fade-in {
       opacity: 0;
       transform: translateY(28px);
@@ -103,7 +99,7 @@
     }
 
     /* ============================================================
-       CANVAS PARTICLES
+       PARTICLES CANVAS
     ============================================================ */
     #particles-canvas {
       position: fixed;
@@ -111,11 +107,11 @@
       width: 100%; height: 100%;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.55;
+      opacity: 0.5;
     }
 
     /* ============================================================
-       HERO SECTION
+       HERO
     ============================================================ */
     #hero {
       position: relative;
@@ -126,27 +122,24 @@
       justify-content: center;
       text-align: center;
       padding: 2rem 1.5rem;
-      background: radial-gradient(ellipse 80% 60% at 50% 40%,
-        rgba(212, 160, 160, 0.35) 0%,
-        rgba(253, 246, 238, 0) 70%),
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212,160,160,0.35) 0%, transparent 70%),
         linear-gradient(160deg, #fdf6ee 0%, #f5e6d8 50%, #ede0d4 100%);
       z-index: 1;
       overflow: hidden;
     }
-
     .hero-ornament {
       position: absolute;
       font-family: 'Cormorant Garamond', serif;
       font-size: 14rem;
       font-weight: 300;
-      color: rgba(212, 160, 160, 0.08);
+      color: rgba(212,160,160,0.08);
       pointer-events: none;
       user-select: none;
       line-height: 1;
     }
     .hero-ornament.top-left  { top: -2rem; left: -2rem; }
     .hero-ornament.bot-right { bottom: -4rem; right: -2rem; }
-
     .hero-tag {
       font-family: 'Dancing Script', cursive;
       font-size: 1.2rem;
@@ -156,7 +149,6 @@
       opacity: 0;
       animation: fadeSlideUp 1s ease 0.3s forwards;
     }
-
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(3.5rem, 9vw, 7.5rem);
@@ -167,12 +159,7 @@
       opacity: 0;
       animation: fadeSlideUp 1s ease 0.5s forwards;
     }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--deep-rose);
-    }
-
+    .hero-title em { font-style: italic; color: var(--deep-rose); }
     .hero-subtitle {
       font-size: clamp(1rem, 2.5vw, 1.2rem);
       color: var(--text-mid);
@@ -183,7 +170,6 @@
       opacity: 0;
       animation: fadeSlideUp 1s ease 0.7s forwards;
     }
-
     .hero-anniversary {
       margin-top: 2.5rem;
       display: inline-flex;
@@ -200,7 +186,6 @@
       opacity: 0;
       animation: fadeSlideUp 1s ease 0.9s forwards;
     }
-
     .hero-scroll-hint {
       position: absolute;
       bottom: 2.5rem;
@@ -225,7 +210,6 @@
       background: linear-gradient(to bottom, var(--gold), transparent);
       animation: scrollPulse 2s ease-in-out infinite;
     }
-
     @keyframes fadeSlideUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -236,29 +220,26 @@
     }
 
     /* ============================================================
-       MEMORY 3D CAROUSEL SECTION
+       MEMORIES SECTION
     ============================================================ */
     #memories {
       position: relative;
-      padding: 6rem 0 4rem;
+      padding: 6rem 0 5rem;
       background: linear-gradient(180deg, var(--cream) 0%, var(--ivory) 100%);
       z-index: 1;
     }
-
     .memories-header {
       text-align: center;
       padding: 0 1.5rem 3.5rem;
     }
-    .memories-header .section-subtitle {
-      margin: 0.8rem auto 0;
-    }
+    .memories-header .section-subtitle { margin: 0.8rem auto 0; }
 
     /* Marquee ticker */
     .memories-ticker {
       overflow: hidden;
       background: linear-gradient(100deg, var(--wine) 0%, var(--burgundy) 55%, var(--deep-burg) 100%);
       padding: 0.85rem 0;
-      margin-bottom: 3.5rem;
+      margin-bottom: 4rem;
       transform: rotate(-1deg) scale(1.02);
       box-shadow: 0 10px 30px var(--shadow-deep);
     }
@@ -294,154 +275,179 @@
       .memories-ticker-track { animation: none; }
     }
 
-    /* -------- 3D stage -------- */
-    .carousel-3d-stage {
-      position: relative;
-      height: 480px;
-      margin: 0 auto;
-      max-width: 1100px;
-      perspective: 1400px;
-      perspective-origin: 50% 45%;
-      cursor: grab;
-      touch-action: pan-y;
-    }
-    .carousel-3d-stage.grabbing { cursor: grabbing; }
+    /* ============================================================
+       CURVED STRIP CAROUSEL
+       ─ Panels sit on a CSS 3-D arc, each rotated around Y,
+         forming a concave panoramic strip (matches reference).
+       ─ The viewport clips the strip; perspective gives depth.
+    ============================================================ */
 
-    .carousel-3d-stage::before,
-    .carousel-3d-stage::after {
+    /* Outer clip — hides the off-arc panels */
+    .carousel-strip-viewport {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding: 0 0 2.5rem;
+    }
+
+    /* Left & right fog to blend edge panels into background */
+    .carousel-strip-viewport::before,
+    .carousel-strip-viewport::after {
       content: '';
       position: absolute;
       top: 0; bottom: 0;
-      width: 18%;
-      z-index: 5;
+      width: 12%;
+      z-index: 8;
       pointer-events: none;
     }
-    .carousel-3d-stage::before {
+    .carousel-strip-viewport::before {
       left: 0;
-      background: linear-gradient(to right, var(--ivory) 0%, rgba(246,235,217,0) 100%);
+      background: linear-gradient(to right, var(--ivory) 20%, transparent 100%);
     }
-    .carousel-3d-stage::after {
+    .carousel-strip-viewport::after {
       right: 0;
-      background: linear-gradient(to left, var(--ivory) 0%, rgba(246,235,217,0) 100%);
+      background: linear-gradient(to left, var(--ivory) 20%, transparent 100%);
     }
 
-    .carousel-fog-floor {
-      position: absolute;
-      left: 0; right: 0; bottom: -2px;
-      height: 40%;
-      z-index: 4;
-      pointer-events: none;
-      background: linear-gradient(to top, var(--ivory) 0%, rgba(246,235,217,0) 100%);
+    /* The 3-D perspective stage */
+    .carousel-strip-stage {
+      position: relative;
+      height: 420px;
+      width: 100%;
+      /* Strong perspective for pronounced arc curve */
+      perspective: 900px;
+      perspective-origin: 50% 50%;
+      cursor: grab;
+      touch-action: pan-y;
+      user-select: none;
     }
+    .carousel-strip-stage.grabbing { cursor: grabbing; }
 
-    .carousel-3d-ring {
+    /* Pivot — rotating this spins the arc */
+    .carousel-strip-pivot {
       position: absolute;
-      top: 50%; left: 50%;
-      width: 0; height: 0;
+      top: 0;
+      left: 50%;
+      width: 0;
+      height: 100%;
       transform-style: preserve-3d;
       will-change: transform;
     }
 
-    .carousel-3d-card {
+    /* Each panel */
+    .strip-panel {
       position: absolute;
-      top: 50%; left: 50%;
-      width: 240px;
-      height: 320px;
-      margin: -160px 0 0 -120px;
-      border-radius: 3px;
-      background: var(--paper);
-      padding: 9px 9px 0;
-      box-shadow: 0 10px 30px var(--shadow-deep);
-      backface-visibility: hidden;
+      top: 0;
+      /* centred on the pivot axis */
+      left: calc(var(--pw) / -2);
+      width: var(--pw);
+      height: 100%;
       transform-style: preserve-3d;
-      transition: box-shadow 0.3s ease;
+      backface-visibility: hidden;
+      overflow: hidden;
+      /* Thin white gap between panels, like reference */
+      outline: 2px solid rgba(255,255,255,0.25);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
     }
 
-    .carousel-3d-card-img-wrap {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      border-radius: 1px;
-    }
-    .carousel-3d-card-img-wrap img {
+    .strip-panel img {
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
+      pointer-events: none;
     }
 
-    .carousel-3d-badge {
-      position: absolute;
-      top: 8px; left: 8px;
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      background: var(--burgundy);
-      border: 2px solid var(--gold-light);
-      color: var(--gold-light);
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 600;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-      box-shadow: 0 6px 14px var(--shadow-deep);
-    }
-
-    .carousel-3d-overlay {
+    /* Dimming for off-centre panels */
+    .strip-panel::after {
+      content: '';
       position: absolute;
       inset: 0;
+      background: rgba(30, 8, 8, 0.42);
+      transition: background 0.5s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .strip-panel.is-center::after {
+      background: rgba(30, 8, 8, 0.0);
+    }
+
+    /* Info overlay — always visible on centre, hover on others */
+    .strip-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 1.2rem 1rem;
-      background: linear-gradient(to top, rgba(60,20,20,0.85) 0%, rgba(60,20,20,0.15) 55%, transparent 100%);
+      padding: 1.5rem 1.2rem;
+      background: linear-gradient(
+        to top,
+        rgba(45,12,12,0.9)  0%,
+        rgba(45,12,12,0.15) 50%,
+        transparent         100%
+      );
       opacity: 0;
-      transition: opacity 0.35s ease;
+      transform: translateY(6px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
     }
-    .carousel-3d-card.is-front .carousel-3d-overlay { opacity: 1; }
+    .strip-panel.is-center .strip-overlay,
+    .strip-panel:hover      .strip-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-    .carousel-3d-overlay-date {
+    .strip-overlay-date {
       font-family: 'Dancing Script', cursive;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--gold-light);
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.2rem;
+      letter-spacing: 0.03em;
     }
-    .carousel-3d-overlay-title {
+    .strip-overlay-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.08rem;
+      font-size: 1.05rem;
       font-weight: 600;
       color: #fff;
-      line-height: 1.3;
-      margin-bottom: 0.35rem;
+      line-height: 1.25;
+      margin-bottom: 0.3rem;
     }
-    .carousel-3d-overlay-desc {
-      font-size: 0.74rem;
+    .strip-overlay-desc {
+      font-size: 0.72rem;
       color: rgba(255,255,255,0.82);
       font-weight: 300;
       line-height: 1.55;
     }
 
-    .carousel-3d-label {
-      padding: 0.65rem 0 0.9rem;
-      text-align: center;
-      font-family: 'Dancing Script', cursive;
-      font-size: 0.78rem;
-      color: var(--text-light);
-    }
-
-    .carousel-hint {
-      text-align: center;
-      margin-top: 1.6rem;
+    /* Numbered badge */
+    .strip-badge {
+      position: absolute;
+      top: 10px; left: 10px;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--burgundy);
+      border: 1.5px solid var(--gold-light);
+      color: var(--gold-light);
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 0.95rem;
-      color: var(--text-light);
-      letter-spacing: 0.02em;
+      font-weight: 600;
+      font-size: 0.82rem;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 3;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
     }
 
-    /* Timeline progress bar */
+    /* Drag hint */
+    .carousel-hint {
+      text-align: center;
+      margin-top: 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      letter-spacing: 0.03em;
+    }
+
+    /* Progress dots */
     .timeline-dots {
       display: flex;
       align-items: center;
@@ -449,11 +455,11 @@
       gap: 6px;
       max-width: 480px;
       padding: 0 1.5rem;
-      margin: 1.6rem auto 0;
+      margin: 1.4rem auto 0;
     }
     .timeline-dot {
       flex: 1;
-      height: 5px;
+      height: 4px;
       border-radius: 3px;
       background: var(--dusty-pink);
       border: none;
@@ -462,14 +468,15 @@
     }
     .timeline-dot.active {
       background: var(--burgundy);
-      transform: scaleY(1.4);
+      transform: scaleY(1.6);
     }
 
+    /* Nav buttons */
     .carousel-nav {
       display: flex;
       justify-content: center;
       gap: 1rem;
-      margin-top: 2.2rem;
+      margin-top: 2rem;
     }
     .carousel-btn {
       height: 46px;
@@ -503,13 +510,11 @@
       background: linear-gradient(180deg, var(--ivory) 0%, var(--warm-white) 100%);
       z-index: 1;
     }
-
     .letter-wrapper {
       max-width: 700px;
       margin: 0 auto;
       text-align: center;
     }
-
     .letter-card {
       position: relative;
       background: #fffdf9;
@@ -518,11 +523,10 @@
       box-shadow:
         0 2px 8px rgba(0,0,0,0.04),
         0 12px 40px var(--shadow-warm),
-        0 0 0 1px rgba(201, 169, 110, 0.15);
+        0 0 0 1px rgba(201,169,110,0.15);
       margin-top: 2.5rem;
       text-align: left;
     }
-
     .letter-card::before {
       content: '';
       position: absolute;
@@ -536,21 +540,17 @@
       border-radius: 4px 4px 0 0;
       opacity: 0.6;
     }
-
     .letter-card::after {
       content: '';
       position: absolute;
       inset: 50px 3rem 3rem;
       background: repeating-linear-gradient(
         to bottom,
-        transparent,
-        transparent 31px,
-        rgba(212, 160, 160, 0.12) 31px,
-        rgba(212, 160, 160, 0.12) 32px
+        transparent, transparent 31px,
+        rgba(212,160,160,0.12) 31px, rgba(212,160,160,0.12) 32px
       );
       pointer-events: none;
     }
-
     .letter-salutation {
       font-family: 'Dancing Script', cursive;
       font-size: 1.6rem;
@@ -559,7 +559,6 @@
       position: relative;
       z-index: 1;
     }
-
     .letter-body {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.12rem;
@@ -569,9 +568,7 @@
       position: relative;
       z-index: 1;
     }
-
     .letter-body p + p { margin-top: 1.2em; }
-
     .letter-signature {
       font-family: 'Dancing Script', cursive;
       font-size: 1.4rem;
@@ -580,11 +577,9 @@
       position: relative;
       z-index: 1;
     }
-
     .letter-wax-seal {
       position: absolute;
-      bottom: -22px;
-      right: 2.5rem;
+      bottom: -22px; right: 2.5rem;
       width: 48px; height: 48px;
       border-radius: 50%;
       background: radial-gradient(circle at 35% 35%, var(--deep-rose), var(--burgundy));
@@ -593,7 +588,6 @@
       font-size: 1.3rem;
       box-shadow: 0 4px 12px var(--shadow-deep);
     }
-
     .letter-closing-note {
       text-align: center;
       margin-top: 3.5rem;
@@ -612,7 +606,7 @@
     }
 
     /* ============================================================
-       LITTLE THINGS SECTION
+       LITTLE THINGS
     ============================================================ */
     #little-things {
       position: relative;
@@ -620,12 +614,10 @@
       background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
       z-index: 1;
     }
-
     .little-things-header {
       text-align: center;
       margin-bottom: 3.5rem;
     }
-
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -633,16 +625,14 @@
       max-width: 1000px;
       margin: 0 auto;
     }
-
     .thing-card {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
       padding: 2rem 1.6rem;
       backdrop-filter: blur(8px);
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  box-shadow 0.35s ease,
-                  background 0.3s ease;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1),
+                  box-shadow 0.35s ease, background 0.3s ease;
       cursor: default;
       position: relative;
       overflow: hidden;
@@ -659,15 +649,10 @@
     .thing-card:hover {
       transform: translateY(-7px) scale(1.02);
       box-shadow: 0 16px 40px var(--shadow-deep);
-      background: rgba(255, 252, 248, 0.9);
+      background: rgba(255,252,248,0.9);
     }
     .thing-card:hover::before { opacity: 1; }
-
-    .thing-card-icon {
-      font-size: 2rem;
-      margin-bottom: 0.9rem;
-      display: block;
-    }
+    .thing-card-icon { font-size: 2rem; margin-bottom: 0.9rem; display: block; }
     .thing-card-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem;
@@ -683,7 +668,7 @@
     }
 
     /* ============================================================
-       CLOSING SECTION
+       CLOSING
     ============================================================ */
     #closing {
       position: relative;
@@ -693,7 +678,6 @@
       z-index: 1;
       overflow: hidden;
     }
-
     .closing-glow {
       position: absolute;
       top: 50%; left: 50%;
@@ -703,7 +687,6 @@
       background: radial-gradient(circle, rgba(212,160,160,0.12) 0%, transparent 70%);
       pointer-events: none;
     }
-
     .closing-label {
       font-family: 'Dancing Script', cursive;
       font-size: 1.1rem;
@@ -713,7 +696,6 @@
       margin-bottom: 1.5rem;
       position: relative;
     }
-
     .closing-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(2.4rem, 6vw, 4.5rem);
@@ -723,19 +705,17 @@
       position: relative;
       margin-bottom: 1.8rem;
     }
-
     .closing-subtitle {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(1.1rem, 2.5vw, 1.4rem);
       font-style: italic;
-      color: rgba(253, 246, 238, 0.75);
+      color: rgba(253,246,238,0.75);
       max-width: 480px;
       margin: 0 auto 1.4rem;
       font-weight: 300;
       line-height: 1.8;
       position: relative;
     }
-
     .closing-anniversary {
       font-family: 'Dancing Script', cursive;
       font-size: 1.6rem;
@@ -743,15 +723,14 @@
       position: relative;
       margin-bottom: 3rem;
     }
-
     .replay-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
       padding: 0.85rem 2.2rem;
       border-radius: 50px;
-      border: 1px solid rgba(201, 169, 110, 0.45);
-      background: rgba(201, 169, 110, 0.12);
+      border: 1px solid rgba(201,169,110,0.45);
+      background: rgba(201,169,110,0.12);
       color: var(--gold-light);
       font-family: 'Inter', sans-serif;
       font-size: 0.9rem;
@@ -762,14 +741,12 @@
       position: relative;
     }
     .replay-btn:hover {
-      background: rgba(201, 169, 110, 0.25);
-      box-shadow: 0 0 24px rgba(201, 169, 110, 0.25);
+      background: rgba(201,169,110,0.25);
+      box-shadow: 0 0 24px rgba(201,169,110,0.25);
       transform: scale(1.04);
     }
-
     .closing-divider {
-      width: 60px;
-      height: 1px;
+      width: 60px; height: 1px;
       background: linear-gradient(to right, transparent, var(--gold), transparent);
       margin: 2rem auto;
       position: relative;
@@ -786,18 +763,13 @@
        RESPONSIVE
     ============================================================ */
     @media (max-width: 768px) {
-      .carousel-3d-stage { height: 380px; }
-      .carousel-3d-card  { width: 190px; height: 254px; margin: -127px 0 0 -95px; }
+      .carousel-strip-stage { height: 300px; }
       .letter-card { padding: 2.5rem 1.5rem 2rem; }
       .letter-card::after { inset: 45px 1.5rem 2rem; }
-      .carousel-3d-stage::before,
-      .carousel-3d-stage::after { width: 10%; }
       .cards-grid { grid-template-columns: 1fr 1fr; }
     }
-
     @media (max-width: 480px) {
-      .carousel-3d-stage { height: 320px; }
-      .carousel-3d-card  { width: 155px; height: 207px; margin: -103px 0 0 -77px; }
+      .carousel-strip-stage { height: 230px; }
       .hero-title { letter-spacing: -0.02em; }
       .cards-grid { grid-template-columns: 1fr; max-width: 340px; }
     }
@@ -813,17 +785,14 @@
 <section id="hero">
   <span class="hero-ornament top-left">❝</span>
   <span class="hero-ornament bot-right">❞</span>
-
   <p class="hero-tag">✦ a love story, in pictures ✦</p>
   <h1 class="hero-title">Our <em>Story</em></h1>
   <p class="hero-subtitle">A collection of the little moments that became my favorite memories.</p>
-
   <div class="hero-anniversary">
     <span>❤️</span>
     <span>Happy Anniversary, My Love</span>
     <span>❤️</span>
   </div>
-
   <div class="hero-scroll-hint">
     <span>Scroll</span>
     <div class="scroll-line"></div>
@@ -831,7 +800,7 @@
 </section>
 
 <!-- ============================================================
-     MEMORY 3D CAROUSEL
+     MEMORIES — CURVED STRIP CAROUSEL
 ============================================================ -->
 <section id="memories">
   <div class="memories-header fade-in">
@@ -847,18 +816,19 @@
     </div>
   </div>
 
-  <div class="carousel-3d-stage" id="stage3d">
-    <div class="carousel-3d-ring" id="ring3d"></div>
-    <div class="carousel-fog-floor"></div>
+  <div class="carousel-strip-viewport">
+    <div class="carousel-strip-stage" id="stripStage">
+      <div class="carousel-strip-pivot" id="stripPivot"></div>
+    </div>
   </div>
 
-  <p class="carousel-hint">Drag to look around</p>
+  <p class="carousel-hint">Drag to look around &nbsp;·&nbsp; click a memory to focus</p>
 
   <div class="timeline-dots" id="timelineDots"></div>
 
   <div class="carousel-nav">
-    <button class="carousel-btn" id="prevBtn" aria-label="Previous memory"><span>&#8592;</span><span>Prev</span></button>
-    <button class="carousel-btn" id="nextBtn" aria-label="Next memory"><span>Next</span><span>&#8594;</span></button>
+    <button class="carousel-btn" id="prevBtn" aria-label="Previous memory">&#8592;&nbsp; Prev</button>
+    <button class="carousel-btn" id="nextBtn" aria-label="Next memory">Next &nbsp;&#8594;</button>
   </div>
 </section>
 
@@ -872,37 +842,23 @@
 
     <div class="letter-card">
       <p class="letter-salutation">My dearest,</p>
-
       <div class="letter-body">
-        <p>
-          I don't think I can put everything I feel into words, but every memory
-          we've created together means more to me than you probably realize…
-        </p>
+        <p>I don't think I can put everything I feel into words, but every memory
+        we've created together means more to me than you probably realize…</p>
 
-        <!-- ✏️  EDIT YOUR LETTER BELOW — replace these paragraphs with your own words -->
-
-        <p>
-          There are moments I keep coming back to — small, ordinary ones that somehow
-          became the most important parts of my life. The way you laugh. The way
-          you make even the most ordinary afternoon feel like something worth
-          remembering.
-        </p>
-
-        <p>
-          I'm grateful every single day that our paths crossed. You make me a better
-          person just by being you, and I hope you know that I notice every little
-          thing you do.
-        </p>
-
-        <p>
-          I don't know what the future holds, but I know that I want every chapter
-          of it to have you in it. Every adventure, every quiet evening, every
-          random moment that turns into a memory — I want all of it with you.
-        </p>
-
-        <!-- ✏️  END OF EDITABLE LETTER CONTENT -->
+        <!-- ✏️  REPLACE THESE PARAGRAPHS WITH YOUR OWN WORDS -->
+        <p>There are moments I keep coming back to — small, ordinary ones that somehow
+        became the most important parts of my life. The way you laugh. The way
+        you make even the most ordinary afternoon feel like something worth
+        remembering.</p>
+        <p>I'm grateful every single day that our paths crossed. You make me a better
+        person just by being you, and I hope you know that I notice every little
+        thing you do.</p>
+        <p>I don't know what the future holds, but I know that I want every chapter
+        of it to have you in it. Every adventure, every quiet evening, every
+        random moment that turns into a memory — I want all of it with you.</p>
+        <!-- ✏️  END OF EDITABLE CONTENT -->
       </div>
-
       <p class="letter-signature">Forever yours ♡</p>
       <div class="letter-wax-seal">♡</div>
     </div>
@@ -922,7 +878,6 @@
     <span class="section-number">Chapter Three</span>
     <h2 class="section-title">Little Things I Love About Us</h2>
   </div>
-
   <div class="cards-grid fade-in">
     <div class="thing-card">
       <span class="thing-card-icon">❤️</span>
@@ -962,18 +917,13 @@
 ============================================================ -->
 <section id="closing">
   <div class="closing-glow"></div>
-
   <span class="closing-label fade-in">✦ always ✦</span>
   <h2 class="closing-title fade-in">And this is only<br>the beginning…</h2>
   <p class="closing-subtitle fade-in">I can't wait to create a thousand more memories with you.</p>
-
   <div class="closing-divider"></div>
-
   <p class="closing-anniversary fade-in">Happy Anniversary, My Love ❤️</p>
-
   <button class="replay-btn fade-in" id="replayBtn">
-    <span>↻</span>
-    <span>Replay Our Memories</span>
+    <span>↻</span><span>Replay Our Memories</span>
   </button>
 </section>
 
@@ -982,21 +932,20 @@
 ============================================================ -->
 <script>
 /* ================================================================
-   MEMORY DATA
-   ✏️  Edit image paths, dates, titles, and descriptions here.
-   Add or remove objects freely — the carousel adapts automatically.
+   MEMORY DATA  ✏️  Edit here — add as many entries as you like.
    ================================================================ */
 const MEMORIES = [
-  { image: "photos/memory-01.jpg", date: "The Very Beginning",  title: "The Day We Met",                description: "I didn't know it then, but that was the day everything changed." },
-  { image: "photos/memory-02.jpg", date: "Our First Picture",   title: "Captured",                     description: "The first time someone took a photo of us together. I've looked at it a thousand times since." },
-  { image: "photos/memory-03.jpg", date: "Our First Date",      title: "Just Us",                      description: "Nervous and happy at the same time. I don't think I stopped smiling once." },
-  { image: "photos/memory-04.jpg", date: "A Funny Day",         title: "Our Funniest Moment",          description: "I still laugh every time I think about this. Only we would find that funny." },
-  { image: "photos/memory-05.jpg", date: "Our Favorite Place",  title: "Here, With You",               description: "It's not really about the place. It's about who I'm with." },
-  { image: "photos/memory-06.jpg", date: "A Random Tuesday",    title: "Nothing Special (Except It Was)", description: "Just an ordinary day that somehow became one of my favorites." },
-  { image: "photos/memory-07.jpg", date: "The Big Trip",        title: "Adventure Awaits",             description: "Every mile with you is worth it. I'd go anywhere, as long as you're beside me." },
-  { image: "photos/memory-08.jpg", date: "Most Recently",       title: "Our Latest Memory",            description: "This one is still fresh. And I already know I'll treasure it forever." }
+  { image: "photos/memory-01.jpg", date: "The Very Beginning",   title: "The Day We Met",                   description: "I didn't know it then, but that was the day everything changed." },
+  { image: "photos/memory-02.jpg", date: "Our First Picture",    title: "Captured",                         description: "The first time someone took a photo of us together. I've looked at it a thousand times since." },
+  { image: "photos/memory-03.jpg", date: "Our First Date",       title: "Just Us",                          description: "Nervous and happy at the same time. I don't think I stopped smiling once." },
+  { image: "photos/memory-04.jpg", date: "A Funny Day",          title: "Our Funniest Moment",              description: "I still laugh every time I think about this. Only we would find that funny." },
+  { image: "photos/memory-05.jpg", date: "Our Favorite Place",   title: "Here, With You",                   description: "It's not really about the place. It's about who I'm with." },
+  { image: "photos/memory-06.jpg", date: "A Random Tuesday",     title: "Nothing Special (Except It Was)",  description: "Just an ordinary day that somehow became one of my favorites." },
+  { image: "photos/memory-07.jpg", date: "The Big Trip",         title: "Adventure Awaits",                 description: "Every mile with you is worth it. I'd go anywhere as long as you're beside me." },
+  { image: "photos/memory-08.jpg", date: "Most Recently",        title: "Our Latest Memory",                description: "This one is still fresh. And I already know I'll treasure it forever." }
 ];
 
+/* Gradient fallbacks when a photo hasn't been added yet */
 const GRADIENTS = [
   ['#f2d5d5','#e8b4b8'], ['#d5e4f2','#b4cce8'], ['#d5f2e4','#b4e8cc'], ['#f2ecd5','#e8d8b4'],
   ['#ead5f2','#d4b4e8'], ['#f2d5ea','#e8b4d8'], ['#d5f2f2','#b4e4e8'], ['#f2e4d5','#e8ccb4']
@@ -1020,9 +969,9 @@ const GRADIENTS = [
       particles.push({
         x: Math.random() * W, y: Math.random() * H,
         size: Math.random() * 10 + 5,
-        opacity: Math.random() * 0.3 + 0.05,
-        speedY: Math.random() * 0.35 + 0.1,
-        speedX: (Math.random() - 0.5) * 0.2,
+        opacity: Math.random() * 0.28 + 0.04,
+        speedY: Math.random() * 0.35 + 0.08,
+        speedX: (Math.random() - 0.5) * 0.18,
         symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
         drift: Math.random() * Math.PI * 2
       });
@@ -1033,7 +982,7 @@ const GRADIENTS = [
     ctx.clearRect(0, 0, W, H);
     particles.forEach(p => {
       p.drift += 0.008;
-      p.x += p.speedX + Math.sin(p.drift) * 0.15;
+      p.x += p.speedX + Math.sin(p.drift) * 0.14;
       p.y -= p.speedY;
       if (p.y < -20) { p.y = H + 10; p.x = Math.random() * W; }
       ctx.globalAlpha = p.opacity;
@@ -1050,10 +999,10 @@ const GRADIENTS = [
 })();
 
 /* ================================================================
-   FADE-IN ON SCROLL
+   SCROLL FADE-IN
    ================================================================ */
 (function initFadeIn() {
-  const obs = new IntersectionObserver((entries) => {
+  const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.15 });
   document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
@@ -1063,249 +1012,291 @@ const GRADIENTS = [
    STAGGERED CARDS
    ================================================================ */
 (function staggerCards() {
-  const obs = new IntersectionObserver((entries) => {
+  const grid = document.querySelector('.cards-grid');
+  if (!grid) return;
+  grid.querySelectorAll('.thing-card').forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(24px)'; });
+  new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      const cards = entry.target.querySelectorAll('.thing-card');
-      cards.forEach((c, i) => {
-        c.style.opacity   = '0';
-        c.style.transform = 'translateY(24px)';
+      entry.target.querySelectorAll('.thing-card').forEach((c, i) => {
         c.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         setTimeout(() => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }, i * 100);
       });
-      obs.unobserve(entry.target);
     });
-  }, { threshold: 0.1 });
-
-  const grid = document.querySelector('.cards-grid');
-  if (grid) {
-    grid.querySelectorAll('.thing-card').forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(24px)'; });
-    obs.observe(grid);
-  }
+  }, { threshold: 0.1 }).observe(grid);
 })();
 
 /* ================================================================
-   ENDLESS 3D CAROUSEL
+   CURVED STRIP CAROUSEL
+   ─ N panels placed on a CSS 3-D arc (rotate-Y per panel).
+   ─ "currentIndex" controls which panel faces front.
+   ─ Physics: drag gives inertia; auto-spins slowly when idle.
+   ─ Panel width is responsive; arc tightness driven by perspective.
    ================================================================ */
-(function initCarousel3D() {
-  const stage    = document.getElementById('stage3d');
-  const ring     = document.getElementById('ring3d');
+(function initStripCarousel() {
+  const stage    = document.getElementById('stripStage');
+  const pivot    = document.getElementById('stripPivot');
   const dotsWrap = document.getElementById('timelineDots');
   const prevBtn  = document.getElementById('prevBtn');
   const nextBtn  = document.getElementById('nextBtn');
 
-  const N         = MEMORIES.length;
-  const angleStep = 360 / N;
+  const N = MEMORIES.length;
 
-  let radius   = 460;
-  let rotation = 0;
-  let velocity = 0;
+  /* ── Arc geometry ──────────────────────────────────────────
+     Each panel is rotated by `angleBetween` degrees around Y,
+     and pushed out by `radius` px along Z.
+     We keep panels touching (no gap between them in 3-D space)
+     by matching: panel_width = 2 * radius * sin(halfAngle)
+     i.e.  radius = panelW / (2 * sin(π/N))
+  ─────────────────────────────────────────────────────────── */
+  let panelW  = 0;
+  let radius  = 0;
+  const angleBetween = 360 / N;   // degrees per step
 
-  let isDragging         = false;
-  let lastX              = 0;
-  let lastMoveTime       = 0;
-  let dragVelocitySample = 0;
+  function calcGeometry() {
+    const vw = stage.clientWidth;
+    /* On mobile show ~3 panels, on desktop ~5–6 */
+    panelW = vw < 480 ? Math.round(vw * 0.44)
+           : vw < 768 ? Math.round(vw * 0.30)
+           :             Math.round(vw * 0.22);
+    /* radius so adjacent panels are flush */
+    radius = Math.round(panelW / (2 * Math.sin(Math.PI / N)));
+    /* Write CSS custom property on every panel */
+    panelEls.forEach(p => p.style.setProperty('--pw', panelW + 'px'));
+  }
 
-  let autoplay  = true;
-  let idleTimer = null;
-  let isVisible = true;
-  let currentIndex = 0;
+  /* ── Build panels ────────────────────────────────────────── */
+  const panelEls = [];
 
-  const AUTO_SPEED       = 0.045;
-  const DAMPING          = 0.945;
-  const DRAG_SENSITIVITY = 0.32;
-
-  const cardEls = [];
-
-  /* ---- Build cards ---- */
-  function buildCards() {
+  function buildPanels() {
     MEMORIES.forEach((mem, i) => {
-      const g    = GRADIENTS[i % GRADIENTS.length];
-      const card = document.createElement('div');
-      card.className  = 'carousel-3d-card';
-      card.dataset.index = i;
-      card.innerHTML = `
-        <div class="carousel-3d-card-img-wrap">
-          <img src="${mem.image}" alt="${mem.title}" loading="lazy"
-               onerror="this.parentNode.style.background='linear-gradient(135deg,${g[0]},${g[1]})'; this.style.display='none';" />
-          <div class="carousel-3d-badge">${String(i + 1).padStart(2, '0')}</div>
-          <div class="carousel-3d-overlay">
-            <div class="carousel-3d-overlay-date">📅 ${mem.date}</div>
-            <div class="carousel-3d-overlay-title">"${mem.title}"</div>
-            <div class="carousel-3d-overlay-desc">${mem.description}</div>
-          </div>
-        </div>
-        <div class="carousel-3d-label">Memory ${i + 1}</div>`;
-      card.addEventListener('click', () => {
-        if (Math.abs(dragVelocitySample) > 2) return;
-        goToIndex(i);
+      const g = GRADIENTS[i % GRADIENTS.length];
+      const panel = document.createElement('div');
+      panel.className = 'strip-panel';
+      panel.style.setProperty('--pw', '200px'); // placeholder, updated in calcGeometry
+
+      panel.innerHTML = `
+        <img src="${mem.image}" alt="${mem.title}" loading="lazy"
+             onerror="this.style.display='none'; this.parentNode.style.background='linear-gradient(160deg,${g[0]},${g[1]})';" />
+        <div class="strip-badge">${String(i + 1).padStart(2, '0')}</div>
+        <div class="strip-overlay">
+          <div class="strip-overlay-date">📅 ${mem.date}</div>
+          <div class="strip-overlay-title">"${mem.title}"</div>
+          <div class="strip-overlay-desc">${mem.description}</div>
+        </div>`;
+
+      /* Click to snap to this panel */
+      panel.addEventListener('click', () => {
+        if (Math.abs(lastDragDx) > 3) return;
+        snapTo(i);
       });
-      ring.appendChild(card);
-      cardEls.push(card);
+
+      pivot.appendChild(panel);
+      panelEls.push(panel);
     });
   }
 
-  /* ---- Dots ---- */
+  /* ── Dots ──────────────────────────────────────────────────  */
   function buildDots() {
     dotsWrap.innerHTML = '';
     for (let i = 0; i < N; i++) {
-      const dot = document.createElement('div');
-      dot.className = 'timeline-dot' + (i === 0 ? ' active' : '');
-      dot.setAttribute('aria-label', `Go to memory ${i + 1}`);
-      dot.setAttribute('role', 'button');
-      dot.setAttribute('tabindex', '0');
-      dot.addEventListener('click', () => goToIndex(i));
-      dot.addEventListener('keydown', e => { if (e.key === 'Enter') goToIndex(i); });
-      dotsWrap.appendChild(dot);
+      const d = document.createElement('div');
+      d.className = 'timeline-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('role', 'button');
+      d.setAttribute('tabindex', '0');
+      d.setAttribute('aria-label', `Go to memory ${i + 1}`);
+      d.addEventListener('click', () => snapTo(i));
+      d.addEventListener('keydown', e => { if (e.key === 'Enter') snapTo(i); });
+      dotsWrap.appendChild(d);
     }
   }
 
-  function updateDots() {
-    dotsWrap.querySelectorAll('.timeline-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+  function updateDots(idx) {
+    dotsWrap.querySelectorAll('.timeline-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
   }
 
-  /* ---- Radius ---- */
-  function calcRadius() {
-    const cardW = stage.clientWidth < 500 ? (stage.clientWidth < 400 ? 155 : 190) : 240;
-    radius = Math.round((cardW / 2) / Math.tan(Math.PI / N)) + 40;
-  }
+  /* ── Render ────────────────────────────────────────────────
+     `rotation` is in degrees.  We rotate the pivot and also
+     compute each panel's individual transform so they sit on
+     the arc with proper depth sorting.
+  ─────────────────────────────────────────────────────────── */
+  let rotation    = 0;   // current pivot rotation, degrees
+  let currentIdx  = 0;
 
-  function normalize(angle) {
-    let a = angle % 360;
-    if (a > 180)  a -= 360;
-    if (a < -180) a += 360;
-    return a;
-  }
-
-  /* ---- Render frame ---- */
   function render() {
-    ring.style.transform = `translateZ(${-radius}px) rotateY(${rotation}deg)`;
+    /* Pivot spins the whole arc */
+    pivot.style.transform = `rotateY(${rotation}deg)`;
 
-    let frontIdx = 0, frontDist = 999;
-    cardEls.forEach((card, i) => {
-      const itemAngle  = i * angleStep;
-      const totalAngle = normalize(itemAngle + rotation);
-      const abs        = Math.abs(totalAngle);
-      const depth      = (1 - Math.cos(abs * Math.PI / 180)) / 2;
+    let bestDist = Infinity, bestIdx = 0;
+    panelEls.forEach((panel, i) => {
+      /* Each panel sits on the arc at its own Y-rotation */
+      const ownAngle = i * angleBetween;
+      panel.style.transform =
+        `rotateY(${ownAngle}deg) translateZ(${radius}px)`;
 
-      card.style.transform  = `rotateY(${itemAngle}deg) translateZ(${radius}px) scale(${1 - depth * 0.28})`;
-      card.style.opacity    = (1 - depth * 0.82).toFixed(3);
-      card.style.filter     = `blur(${(depth * 5.5).toFixed(2)}px) brightness(${(1 - depth * 0.55).toFixed(2)})`;
-      card.style.zIndex     = Math.round((1 - depth) * 1000);
-      card.classList.toggle('is-front', abs < angleStep / 2);
+      /* How far is this panel from front (rotation=0 means panel 0 is front) */
+      let diff = ((ownAngle + rotation) % 360 + 360) % 360;
+      if (diff > 180) diff = 360 - diff;   // 0..180
 
-      if (abs < frontDist) { frontDist = abs; frontIdx = i; }
+      /* Depth-based dimming — handled via .is-center class */
+      panel.classList.toggle('is-center', diff < angleBetween * 0.6);
+
+      if (diff < bestDist) { bestDist = diff; bestIdx = i; }
     });
 
-    if (frontIdx !== currentIndex) { currentIndex = frontIdx; updateDots(); }
-  }
-
-  /* ---- Navigation ---- */
-  function goToIndex(i) {
-    resetIdle();
-    const target = -i * angleStep;
-    const delta  = normalize(target - normalize(rotation));
-    animateTo(rotation + delta);
-  }
-
-  function animateTo(targetRotation) {
-    velocity = 0;
-    const start = rotation;
-    const diff  = targetRotation - start;
-    const dur   = 650;
-    const t0    = performance.now();
-
-    function step(now) {
-      const t      = Math.min(1, (now - t0) / dur);
-      const eased  = 1 - Math.pow(1 - t, 3);
-      rotation     = start + diff * eased;
-      render();
-      if (t < 1) requestAnimationFrame(step);
+    if (bestIdx !== currentIdx) {
+      currentIdx = bestIdx;
+      updateDots(currentIdx);
     }
-    requestAnimationFrame(step);
   }
 
-  function resetIdle() {
-    autoplay = false;
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => { autoplay = true; }, 2600);
+  /* ── Snap / animate to index ────────────────────────────── */
+  let animId = null;
+
+  function snapTo(targetIdx) {
+    pauseAutoplay();
+    /* Shortest angular path */
+    const targetRot = -targetIdx * angleBetween;
+    let   delta     = ((targetRot - rotation) % 360 + 360) % 360;
+    if (delta > 180) delta -= 360;   // go the short way
+
+    const startRot = rotation;
+    const endRot   = rotation + delta;
+    const dur      = 580;
+    const t0       = performance.now();
+
+    cancelAnimationFrame(animId);
+    function step(now) {
+      const t     = Math.min(1, (now - t0) / dur);
+      const ease  = 1 - Math.pow(1 - t, 3);
+      rotation    = startRot + delta * ease;
+      velocity    = 0;
+      render();
+      if (t < 1) animId = requestAnimationFrame(step);
+      else resumeAutoplay();
+    }
+    animId = requestAnimationFrame(step);
   }
 
-  /* ---- Pointer / touch drag ---- */
-  function onPointerDown(e) {
-    isDragging = true; autoplay = false;
+  /* ── Autoplay ───────────────────────────────────────────── */
+  let autoOn    = true;
+  let idleTimer = null;
+  const AUTO_SPEED = 0.03;  // deg per frame (slow drift)
+
+  function pauseAutoplay() {
+    autoOn = false;
     clearTimeout(idleTimer);
-    velocity = 0; dragVelocitySample = 0;
-    lastX = e.clientX ?? e.touches[0].clientX;
-    lastMoveTime = performance.now();
+  }
+  function resumeAutoplay() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { autoOn = true; }, 2800);
+  }
+
+  /* ── Drag / pointer / touch ─────────────────────────────── */
+  let isDragging  = false;
+  let dragStartX  = 0;
+  let dragStartRot= 0;
+  let lastDragDx  = 0;
+  let velocity    = 0;
+  let lastDragT   = 0;
+
+  function pointerDown(e) {
+    isDragging   = true;
+    lastDragDx   = 0;
+    velocity     = 0;
+    dragStartX   = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    dragStartRot = rotation;
+    lastDragT    = performance.now();
+    pauseAutoplay();
     stage.classList.add('grabbing');
     if (stage.setPointerCapture && e.pointerId != null) stage.setPointerCapture(e.pointerId);
   }
 
-  function onPointerMove(e) {
+  function pointerMove(e) {
     if (!isDragging) return;
-    const x  = e.clientX ?? e.touches[0].clientX;
+    const x   = e.clientX ?? e.touches?.[0]?.clientX ?? dragStartX;
+    const dx  = x - dragStartX;
     const now = performance.now();
-    const dx  = x - lastX;
-    const dt  = Math.max(1, now - lastMoveTime);
-    rotation += dx * DRAG_SENSITIVITY;
-    velocity  = (dx * DRAG_SENSITIVITY) * (16 / dt);
-    dragVelocitySample = dx;
-    lastX = x; lastMoveTime = now;
+    const dt  = Math.max(1, now - lastDragT);
+    /* Map horizontal drag pixels → degrees.
+       Sensitivity: moving one panel-width drags one step. */
+    const sensitivity = angleBetween / panelW;
+    rotation = dragStartRot - dx * sensitivity;
+    velocity = -(dx - lastDragDx) * sensitivity * (16 / dt);
+    lastDragDx = dx;
+    lastDragT  = now;
     render();
   }
 
-  function onPointerUp() {
+  function pointerUp() {
     if (!isDragging) return;
     isDragging = false;
     stage.classList.remove('grabbing');
-    resetIdle();
+    resumeAutoplay();
+    /* Inertia: let velocity decay, then snap to nearest */
+    kickInertia();
   }
 
-  stage.addEventListener('pointerdown', onPointerDown);
-  window.addEventListener('pointermove', onPointerMove);
-  window.addEventListener('pointerup', onPointerUp);
-  stage.addEventListener('touchstart', onPointerDown, { passive: true });
-  window.addEventListener('touchmove',  onPointerMove,  { passive: true });
-  window.addEventListener('touchend',   onPointerUp);
+  /* Inertia decay → snap */
+  const DAMPING = 0.90;
+  function kickInertia() {
+    cancelAnimationFrame(animId);
+    function decay() {
+      if (Math.abs(velocity) < 0.06) {
+        /* Snap to nearest panel */
+        const nearest = Math.round(-rotation / angleBetween);
+        snapTo(((nearest % N) + N) % N);
+        return;
+      }
+      rotation += velocity;
+      velocity *= DAMPING;
+      render();
+      animId = requestAnimationFrame(decay);
+    }
+    animId = requestAnimationFrame(decay);
+  }
 
-  prevBtn.addEventListener('click', () => goToIndex(((currentIndex - 1) % N + N) % N));
-  nextBtn.addEventListener('click', () => goToIndex((currentIndex + 1) % N));
+  stage.addEventListener('pointerdown', pointerDown);
+  window.addEventListener('pointermove', pointerMove);
+  window.addEventListener('pointerup',   pointerUp);
+  stage.addEventListener('touchstart', pointerDown, { passive: true });
+  window.addEventListener('touchmove',  pointerMove,  { passive: true });
+  window.addEventListener('touchend',   pointerUp);
 
+  /* ── Keyboard ────────────────────────────────────────────── */
   document.addEventListener('keydown', e => {
-    if (!isElementInViewport(stage)) return;
-    if (e.key === 'ArrowLeft')  goToIndex(((currentIndex - 1) % N + N) % N);
-    if (e.key === 'ArrowRight') goToIndex((currentIndex + 1) % N);
+    const r = stage.getBoundingClientRect();
+    if (r.top > window.innerHeight || r.bottom < 0) return;
+    if (e.key === 'ArrowLeft')  snapTo(((currentIdx - 1) % N + N) % N);
+    if (e.key === 'ArrowRight') snapTo((currentIdx + 1) % N);
   });
 
-  function isElementInViewport(el) {
-    const r = el.getBoundingClientRect();
-    return r.top < window.innerHeight && r.bottom > 0;
-  }
+  prevBtn.addEventListener('click', () => snapTo(((currentIdx - 1) % N + N) % N));
+  nextBtn.addEventListener('click', () => snapTo((currentIdx + 1) % N));
 
-  /* ---- Pause when off-screen ---- */
-  new IntersectionObserver((entries) => {
+  /* ── Visibility pause ───────────────────────────────────── */
+  let isVisible = true;
+  new IntersectionObserver(entries => {
     entries.forEach(en => { isVisible = en.isIntersecting; });
   }, { threshold: 0.05 }).observe(stage);
 
-  /* ---- Main loop ---- */
+  /* ── Main loop ──────────────────────────────────────────── */
   function tick() {
-    if (isVisible && !isDragging) {
-      if (Math.abs(velocity) > 0.01) {
-        rotation += velocity;
-        velocity *= DAMPING;
-        render();
-      } else if (autoplay) {
-        rotation -= AUTO_SPEED;
-        render();
-      }
+    if (isVisible && !isDragging && autoOn) {
+      rotation -= AUTO_SPEED;
+      render();
     }
     requestAnimationFrame(tick);
   }
 
-  window.addEventListener('resize', () => { calcRadius(); render(); });
+  /* ── Resize ─────────────────────────────────────────────── */
+  window.addEventListener('resize', () => { calcGeometry(); render(); });
 
-  buildCards(); buildDots(); calcRadius(); render();
+  /* ── Init ───────────────────────────────────────────────── */
+  buildPanels();
+  buildDots();
+  calcGeometry();
+  render();
   requestAnimationFrame(tick);
 })();
 
