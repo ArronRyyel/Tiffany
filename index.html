@@ -136,7 +136,7 @@
       transform: rotate(-1deg) scale(1.02);
       box-shadow: 0 10px 30px var(--shadow-deep);
     }
-    .memories-ticker-track { display: flex; width: max-content; animation: tickerScroll 22s linear infinite; }
+    .memories-ticker-track { display: flex; width: max-content; animation: tickerScroll 40s linear infinite; }
     .memories-ticker-track span {
       display: inline-flex; align-items: center;
       font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600;
@@ -162,9 +162,9 @@
       height: 500px;
       overflow: hidden;
       /* FOV set by JS */
-      perspective-origin: 50% 46%;
+      perspective-origin: 50% 50%;
       cursor: grab;
-      touch-action: pan-y;
+      touch-action: pan-x;
       user-select: none;
     }
     .ring-scene.grabbing { cursor: grabbing; }
@@ -173,7 +173,7 @@
     .ring-scene::before,
     .ring-scene::after {
       content: '';
-      position: absolute; top: 0; bottom: 0; width: 18%;
+      position: absolute; top: 0; bottom: 0; width: 8%;
       z-index: 10; pointer-events: none;
     }
     .ring-scene::before { left:0;  background: linear-gradient(to right, var(--ivory) 10%, transparent); }
@@ -181,7 +181,7 @@
 
     /* Bottom floor fog for depth */
     .ring-fog-floor {
-      position: absolute; left:0; right:0; bottom:0; height:32%;
+      position: absolute; left:0; right:0; bottom:0; height:15%;
       z-index: 9; pointer-events: none;
       background: linear-gradient(to top, var(--ivory), transparent);
     }
@@ -271,6 +271,92 @@
     }
     .ring-btn:hover { background: var(--wine); transform: scale(1.05); }
 
+    /* ── Music player pill ─────────────────────────────────── */
+    #music-player {
+      position: fixed;
+      bottom: 1.6rem;
+      right: 1.6rem;
+      z-index: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.55rem 1.1rem 0.55rem 0.7rem;
+      background: rgba(253, 246, 238, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      box-shadow: 0 8px 28px var(--shadow-deep);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    #music-player.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    #music-toggle {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: var(--burgundy);
+      color: #fff;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 3px 10px var(--shadow-warm);
+    }
+    #music-toggle:hover { background: var(--wine); transform: scale(1.08); }
+    .music-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+    }
+    .music-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--burgundy);
+      white-space: nowrap;
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .music-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.7rem;
+      color: var(--text-light);
+    }
+    /* Animated sound wave bars — shown when playing */
+    .music-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
+      margin-left: 2px;
+    }
+    .music-bars span {
+      display: block;
+      width: 3px;
+      border-radius: 2px;
+      background: var(--gold);
+      animation: barBounce 0.8s ease-in-out infinite alternate;
+    }
+    .music-bars span:nth-child(1) { height: 5px;  animation-delay: 0s;    }
+    .music-bars span:nth-child(2) { height: 11px; animation-delay: 0.15s; }
+    .music-bars span:nth-child(3) { height: 7px;  animation-delay: 0.3s;  }
+    .music-bars span:nth-child(4) { height: 13px; animation-delay: 0.1s;  }
+    .music-bars span:nth-child(5) { height: 6px;  animation-delay: 0.25s; }
+    #music-player.paused .music-bars span { animation-play-state: paused; }
+    @keyframes barBounce {
+      from { transform: scaleY(0.4); }
+      to   { transform: scaleY(1);   }
+    }
+
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--cream); }
     ::-webkit-scrollbar-thumb { background: var(--dusty-pink); border-radius: 3px; }
@@ -302,7 +388,6 @@
 <!-- MEMORIES -->
 <section id="memories">
   <div class="memories-header fade-in">
-    <span class="section-number">Chapter One</span>
     <h2 class="section-title">These Are Our Moments</h2>
     <p class="section-subtitle">Not just pictures — pieces of our story, collected with love.</p>
   </div>
@@ -326,6 +411,103 @@
     <button class="ring-btn" id="nextBtn">Next &nbsp;&#8594;</button>
   </div>
 </section>
+
+<!-- ── MUSIC PLAYER ─────────────────────────────────────────── -->
+<!--
+  ✏️  MUSIC SETUP:
+  1. Drop your MP3 file into the photos/ folder (or any folder).
+  2. Set the src below to match, e.g. "photos/our-song.mp3"
+  3. Change "Our Song" to the real song title if you like.
+-->
+<audio id="bgMusic" loop preload="auto">
+  <source src="photos/our-song.mp3" type="audio/mpeg" />
+</audio>
+
+<div id="music-player" role="region" aria-label="Music player">
+  <button id="music-toggle" aria-label="Pause music">&#9646;&#9646;</button>
+  <div class="music-info">
+    <span class="music-title">Our Song</span>
+    <span class="music-label">♡ playing for you</span>
+  </div>
+  <div class="music-bars" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   MUSIC — auto-starts when carousel scrolls into view
+   ================================================================ */
+(function () {
+  const audio   = document.getElementById('bgMusic');
+  const player  = document.getElementById('music-player');
+  const btn     = document.getElementById('music-toggle');
+  let   started = false;
+
+  /* Show pill and start music when #memories enters viewport */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        /* Fade in the player pill */
+        player.classList.add('visible');
+        /* Attempt autoplay (browsers require prior interaction or
+           the page must have been interacted with — scrolling counts) */
+        audio.volume = 0;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            /* Fade volume in smoothly over ~1.5 s */
+            fadeVolume(0, 0.75, 1500);
+          }).catch(() => {
+            /* Autoplay blocked — wait for first click anywhere, then start */
+            document.addEventListener('click', function tryPlay() {
+              audio.play().then(() => fadeVolume(0, 0.75, 1500));
+              document.removeEventListener('click', tryPlay);
+            }, { once: true });
+          });
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  observer.observe(document.getElementById('memories'));
+
+  /* Smooth volume fade */
+  function fadeVolume(from, to, duration) {
+    audio.volume = from;
+    const steps    = 40;
+    const interval = duration / steps;
+    const delta    = (to - from) / steps;
+    let   current  = from;
+    const timer    = setInterval(() => {
+      current += delta;
+      if ((delta > 0 && current >= to) || (delta < 0 && current <= to)) {
+        audio.volume = Math.min(1, Math.max(0, to));
+        clearInterval(timer);
+      } else {
+        audio.volume = Math.min(1, Math.max(0, current));
+      }
+    }, interval);
+  }
+
+  /* Toggle play / pause */
+  btn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      player.classList.remove('paused');
+      btn.setAttribute('aria-label', 'Pause music');
+      btn.innerHTML = '&#9646;&#9646;';  /* pause icon */
+    } else {
+      audio.pause();
+      player.classList.add('paused');
+      btn.setAttribute('aria-label', 'Play music');
+      btn.innerHTML = '&#9654;';         /* play icon */
+    }
+  });
+})();
+</script>
 
 <script>
 /* ================================================================
@@ -356,13 +538,13 @@ const GRADIENTS = [
    CAROUSEL PARAMETERS  — tweak here
    ================================================================ */
 const CFG = {
-  itemW:    220,    // card width  (px)
-  itemH:    300,    // card height (px)
+  itemW:    340,    // card width  (px)
+  itemH:    450,    // card height (px)
   radius:   null,   // set to a number (px) to override auto, or null for auto
-  fov:      1050,    // perspective px — lower = more dramatic curve
+  fov:      10000,    // perspective px — lower = more dramatic curve
   speed:    0.10,  // deg/frame continuous auto-rotation (never stops)
   damping:  0.925,  // inertia friction after drag release
-  fogMax:   0.80,   // max opacity of depth-fog on back items
+  fogMax:   0.70,   // max opacity of depth-fog on back items
   dragPx2Deg: 0.30  // how many degrees per dragged pixel
 };
 
@@ -539,7 +721,7 @@ new IntersectionObserver(es => {
       const depth = (1 - Math.cos(abs * Math.PI / 180)) / 2;
 
       /* Scale: front item is largest */
-      const scale = 1 - depth * 0.20;
+      const scale = 1.1 - depth * 0.20;
 
       el.style.transform  = `rotateY(${ownAngle}deg) translateZ(${R}px) scale(${scale.toFixed(3)})`;
       el.style.zIndex     = Math.round((1 - depth) * 1000);
