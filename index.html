@@ -312,10 +312,10 @@
     /* The 3-D perspective stage */
     .carousel-strip-stage {
       position: relative;
-      height: 420px;
+      height: 340px;
       width: 100%;
-      /* Strong perspective for pronounced arc curve */
-      perspective: 900px;
+      /* Higher value = less zoom, more natural arc depth */
+      perspective: 2200px;
       perspective-origin: 50% 50%;
       cursor: grab;
       touch-action: pan-y;
@@ -512,15 +512,11 @@
        RESPONSIVE
     ============================================================ */
     @media (max-width: 768px) {
-      .carousel-strip-stage { height: 300px; }
-      .letter-card { padding: 2.5rem 1.5rem 2rem; }
-      .letter-card::after { inset: 45px 1.5rem 2rem; }
-      .cards-grid { grid-template-columns: 1fr 1fr; }
+      .carousel-strip-stage { height: 260px; }
     }
     @media (max-width: 480px) {
-      .carousel-strip-stage { height: 230px; }
+      .carousel-strip-stage { height: 200px; }
       .hero-title { letter-spacing: -0.02em; }
-      .cards-grid { grid-template-columns: 1fr; max-width: 340px; }
     }
   </style>
 </head>
@@ -695,10 +691,10 @@ const GRADIENTS = [
 
   function calcGeometry() {
     const vw = stage.clientWidth;
-    /* On mobile show ~3 panels, on desktop ~5–6 */
-    panelW = vw < 480 ? Math.round(vw * 0.44)
-           : vw < 768 ? Math.round(vw * 0.30)
-           :             Math.round(vw * 0.22);
+    /* Narrower panels so more are visible at once — like the reference */
+    panelW = vw < 480 ? Math.round(vw * 0.28)
+           : vw < 768 ? Math.round(vw * 0.18)
+           :             Math.round(vw * 0.14);
     /* radius so adjacent panels are flush */
     radius = Math.round(panelW / (2 * Math.sin(Math.PI / N)));
     /* Write CSS custom property on every panel */
