@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    /* ── Tokens ─────────────────────────────────────────────── */
     :root {
       --cream:        #fbf3e6;
       --ivory:        #f6ebd9;
@@ -63,14 +62,13 @@
     .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── Particles ─────────────────────────────────────────── */
+    /* Particles */
     #particles-canvas {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 0; opacity: 0.5;
     }
 
-    /* ── Hero ──────────────────────────────────────────────── */
+    /* ── HERO ── */
     #hero {
       position: relative; min-height: 100vh;
       display: flex; flex-direction: column;
@@ -122,7 +120,7 @@
     @keyframes fadeSlideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
     @keyframes scrollPulse { 0%,100% { opacity:.4; } 50% { opacity:1; } }
 
-    /* ── Memories section ──────────────────────────────────── */
+    /* ── MEMORIES SECTION ── */
     #memories {
       position: relative; padding: 6rem 0 5rem;
       background: linear-gradient(180deg, var(--cream) 0%, var(--ivory) 100%);
@@ -147,48 +145,48 @@
     .memories-ticker-track span::after { content:'♥'; margin-left:1.4rem; color:var(--rose); font-style:normal; font-size:.9rem; }
     @keyframes tickerScroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 
-    /* ── 3D Cylindrical Ring Carousel ─────────────────────────
+    /* ══════════════════════════════════════════════════════════
+       3D CYLINDRICAL RING CAROUSEL
        Architecture:
-       • .ring-scene  – overflow:hidden viewport; sets CSS perspective (FOV)
-       • .ring-world  – transform-style:preserve-3d pivot; rotateY drives spin
-       • .ring-item   – each card, positioned on arc via rotateY + translateZ
-       • Fog fades applied as rgba overlay scaled by depth
-       • IntersectionObserver pauses rAF loop when off-screen
-       • Physics: pointer drag → velocity → exponential decay → snap
-    ──────────────────────────────────────────────────────────── */
+         .ring-scene  — viewport, sets CSS perspective (FOV)
+         .ring-world  — preserve-3d pivot, rotateY drives spin
+         .ring-item   — each card on the arc: rotateY + translateZ
+         .ring-fog    — per-card rgba overlay for depth fading
+         IntersectionObserver pauses rAF when off-screen
+         Continuous autoplay: never stops, only pauses on drag
+    ══════════════════════════════════════════════════════════ */
 
-    /* Scene — the viewport that applies perspective (camera FOV) */
     .ring-scene {
       position: relative;
       width: 100%;
-      height: 480px;
+      height: 500px;
       overflow: hidden;
-      /* perspective = 1/tan(FOV/2) * half-width; ~75° FOV equivalent */
-      perspective: 1000px;
-      perspective-origin: 50% 48%;
+      /* FOV set by JS */
+      perspective-origin: 50% 46%;
       cursor: grab;
       touch-action: pan-y;
       user-select: none;
     }
     .ring-scene.grabbing { cursor: grabbing; }
 
-    /* Atmospheric side-fog blends items into bg */
+    /* Left/right atmospheric fog edges */
     .ring-scene::before,
     .ring-scene::after {
       content: '';
-      position: absolute; top: 0; bottom: 0; width: 16%; z-index: 10; pointer-events: none;
+      position: absolute; top: 0; bottom: 0; width: 18%;
+      z-index: 10; pointer-events: none;
     }
-    .ring-scene::before { left:  0; background: linear-gradient(to right, var(--ivory) 20%, transparent); }
-    .ring-scene::after  { right: 0; background: linear-gradient(to left,  var(--ivory) 20%, transparent); }
+    .ring-scene::before { left:0;  background: linear-gradient(to right, var(--ivory) 10%, transparent); }
+    .ring-scene::after  { right:0; background: linear-gradient(to left,  var(--ivory) 10%, transparent); }
 
-    /* Floor fog — blends bottom of items for depth */
+    /* Bottom floor fog for depth */
     .ring-fog-floor {
-      position: absolute; left:0; right:0; bottom:0; height:35%; z-index:9;
-      pointer-events: none;
-      background: linear-gradient(to top, var(--ivory) 0%, transparent 100%);
+      position: absolute; left:0; right:0; bottom:0; height:32%;
+      z-index: 9; pointer-events: none;
+      background: linear-gradient(to top, var(--ivory), transparent);
     }
 
-    /* World pivot — rotateY on this spins the ring */
+    /* 3D world pivot */
     .ring-world {
       position: absolute;
       top: 0; left: 50%;
@@ -197,25 +195,20 @@
       will-change: transform;
     }
 
-    /* Individual ring item */
+    /* Individual card */
     .ring-item {
       position: absolute;
       top: 50%;
-      /* centred horizontally on pivot, vertically centred */
-      width:  var(--item-w, 220px);
-      height: var(--item-h, 300px);
-      margin-top: calc(var(--item-h, 300px) / -2);
-      margin-left: calc(var(--item-w, 220px) / -2);
+      width:  var(--iw, 220px);
+      height: var(--ih, 300px);
+      margin-top:  calc(var(--ih, 300px) / -2);
+      margin-left: calc(var(--iw, 220px) / -2);
       border-radius: 4px;
       overflow: hidden;
       backface-visibility: hidden;
       transform-style: preserve-3d;
       cursor: pointer;
-      /* Transitions only for non-drag visual polish */
-      transition: box-shadow 0.3s ease;
     }
-
-    /* Media fill */
     .ring-item img,
     .ring-item video {
       width: 100%; height: 100%;
@@ -223,36 +216,35 @@
     }
     .ring-item video { background: #111; }
 
-    /* Fog overlay — JS sets --fog-alpha per item based on depth */
+    /* Depth fog overlay — JS sets --fa (fog-alpha) per frame */
     .ring-fog {
       position: absolute; inset: 0; z-index: 2; pointer-events: none;
       background: var(--ivory);
-      opacity: var(--fog-alpha, 0);
-      transition: opacity 0.1s linear;
+      opacity: var(--fa, 0);
     }
 
-    /* Description overlay — slides up on front item */
+    /* Description overlay — visible on front item + hover */
     .ring-overlay {
       position: absolute; inset: 0; z-index: 3;
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 1.3rem 1.1rem;
-      background: linear-gradient(to top, rgba(38,10,10,0.88) 0%, rgba(38,10,10,0.08) 55%, transparent 100%);
+      padding: 1.4rem 1.2rem;
+      background: linear-gradient(to top, rgba(35,8,8,0.88) 0%, rgba(35,8,8,0.06) 55%, transparent 100%);
       opacity: 0; transform: translateY(8px);
       transition: opacity 0.35s ease, transform 0.35s ease;
     }
     .ring-item.is-front .ring-overlay,
-    .ring-item:hover    .ring-overlay { opacity: 1; transform: translateY(0); }
+    .ring-item:hover    .ring-overlay { opacity:1; transform:translateY(0); }
 
     .ring-overlay-desc {
       font-family: 'Cormorant Garamond', serif; font-style: italic;
-      font-size: 0.88rem; color: rgba(255,255,255,0.92);
-      font-weight: 300; line-height: 1.6; text-align: center;
+      font-size: 0.9rem; color: rgba(255,255,255,0.92);
+      font-weight: 300; line-height: 1.65; text-align: center;
     }
 
     /* Progress dots */
     .ring-dots {
       display: flex; align-items: center; justify-content: center;
-      gap: 6px; max-width: 480px; padding: 0 1.5rem; margin: 1.6rem auto 0;
+      gap: 6px; max-width: 480px; padding: 0 1.5rem; margin: 1.8rem auto 0;
     }
     .ring-dot {
       flex: 1; height: 4px; border-radius: 3px;
@@ -261,14 +253,12 @@
     }
     .ring-dot.active { background: var(--burgundy); transform: scaleY(1.7); }
 
-    /* Drag hint */
     .ring-hint {
       text-align: center; margin-top: 1.2rem;
       font-family: 'Cormorant Garamond', serif; font-style: italic;
       font-size: 0.9rem; color: var(--text-light); letter-spacing: 0.03em;
     }
 
-    /* Nav buttons */
     .ring-nav { display: flex; justify-content: center; gap: 1rem; margin-top: 1.8rem; }
     .ring-btn {
       height: 44px; padding: 0 1.4rem; border-radius: 50px; border: none;
@@ -281,21 +271,19 @@
     }
     .ring-btn:hover { background: var(--wine); transform: scale(1.05); }
 
-    /* ── Scrollbar ─────────────────────────────────────────── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--cream); }
     ::-webkit-scrollbar-thumb { background: var(--dusty-pink); border-radius: 3px; }
 
-    /* ── Responsive ────────────────────────────────────────── */
-    @media (max-width: 768px)  { .ring-scene { height: 360px; } }
-    @media (max-width: 480px)  { .ring-scene { height: 280px; } .hero-title { letter-spacing: -0.02em; } }
+    @media (max-width: 768px) { .ring-scene { height: 380px; } }
+    @media (max-width: 480px) { .ring-scene { height: 300px; } .hero-title { letter-spacing: -0.02em; } }
   </style>
 </head>
 <body>
 
 <canvas id="particles-canvas"></canvas>
 
-<!-- ── HERO ─────────────────────────────────────────────────── -->
+<!-- HERO -->
 <section id="hero">
   <span class="hero-ornament top-left">❝</span>
   <span class="hero-ornament bot-right">❞</span>
@@ -311,7 +299,7 @@
   </div>
 </section>
 
-<!-- ── MEMORIES ──────────────────────────────────────────────── -->
+<!-- MEMORIES -->
 <section id="memories">
   <div class="memories-header fade-in">
     <span class="section-number">Chapter One</span>
@@ -331,8 +319,8 @@
     <div class="ring-fog-floor"></div>
   </div>
 
-  <p class="ring-hint">Drag to spin &nbsp;·&nbsp; click any memory to focus</p>
-  <div class="ring-dots"  id="ringDots"></div>
+  <p class="ring-hint">Drag to spin &nbsp;·&nbsp; hover any memory for details</p>
+  <div class="ring-dots" id="ringDots"></div>
   <div class="ring-nav">
     <button class="ring-btn" id="prevBtn">&#8592;&nbsp; Prev</button>
     <button class="ring-btn" id="nextBtn">Next &nbsp;&#8594;</button>
@@ -342,23 +330,22 @@
 <script>
 /* ================================================================
    MEMORY DATA  ✏️
-   image: path to photo OR video (.mp4 / .mov)
-   description: the only text shown on hover
+   src: path to image (.jpg/.png/.webp) or video (.mp4/.mov/.webm)
+   description: text shown on hover / when front-facing
    ================================================================ */
 const MEMORIES = [
-  { src: "photos/memory-01.jpg", description: "I didn't know it then, but that was the day everything changed." },
-  { src: "photos/memory-02.jpg", description: "The first time someone took a photo of us together. I've looked at it a thousand times since." },
-  { src: "photos/memory-03.jpg", description: "Nervous and happy at the same time. I don't think I stopped smiling once." },
-  { src: "photos/memory-04.jpg", description: "I still laugh every time I think about this. Only we would find that funny." },
-  { src: "photos/memory-05.jpg", description: "It's not really about the place. It's about who I'm with." },
-  { src: "photos/memory-06.jpg", description: "Just an ordinary day that somehow became one of my favorites." },
-  { src: "photos/memory-07.jpg", description: "Every mile with you is worth it. I'd go anywhere as long as you're beside me." },
-  { src: "photos/memory-08.jpg", description: "This one is still fresh. And I already know I'll treasure it forever." },
-  { src: "photos/memory-09.jpg", description: "Every moment with you is one I'd choose again." },
-  { src: "photos/memory-10.jpg", description: "I keep thinking: I want a thousand more days just like this." }
+  { src:"photos/memory-01.jpg", description:"I didn't know it then, but that was the day everything changed." },
+  { src:"photos/memory-02.jpg", description:"The first time someone took a photo of us together. I've looked at it a thousand times since." },
+  { src:"photos/memory-03.jpg", description:"Nervous and happy at the same time. I don't think I stopped smiling once." },
+  { src:"photos/memory-04.jpg", description:"I still laugh every time I think about this. Only we would find that funny." },
+  { src:"photos/memory-05.jpg", description:"It's not really about the place. It's about who I'm with." },
+  { src:"photos/memory-06.jpg", description:"Just an ordinary day that somehow became one of my favorites." },
+  { src:"photos/memory-07.jpg", description:"Every mile with you is worth it. I'd go anywhere as long as you're beside me." },
+  { src:"photos/memory-08.jpg", description:"This one is still fresh. And I already know I'll treasure it forever." },
+  { src:"photos/memory-09.jpg", description:"Every moment with you is one I'd choose again." },
+  { src:"photos/memory-10.jpg", description:"I keep thinking: I want a thousand more days just like this." }
 ];
 
-/* ── Gradient fallbacks (used when src fails to load) ── */
 const GRADIENTS = [
   ['#f2d5d5','#e8b4b8'],['#d5e4f2','#b4cce8'],['#d5f2e4','#b4e8cc'],['#f2ecd5','#e8d8b4'],
   ['#ead5f2','#d4b4e8'],['#f2d5ea','#e8b4d8'],['#d5f2f2','#b4e4e8'],['#f2e4d5','#e8ccb4'],
@@ -366,20 +353,17 @@ const GRADIENTS = [
 ];
 
 /* ================================================================
-   ── 3D RING CAROUSEL ENGINE ──────────────────────────────────────
-
-   PARAMETRIC CONFIGURATION — tweak these values:
+   CAROUSEL PARAMETERS  — tweak here
    ================================================================ */
-const CONFIG = {
-  itemW:        220,    // px — item width
-  itemH:        300,    // px — item height (portrait)
-  radiusFactor: 1.05,   // multiplier on the minimum flush radius
-  FOV:          900,    // px — perspective (lower = more dramatic curve)
-  autoSpeed:    0.018,  // deg/frame — auto-rotation speed
-  damping:      0.935,  // inertia decay per frame (0.90 = snappier, 0.98 = floatier)
-  snapStrength: 0.12,   // how aggressively snap pulls to nearest item (0–1)
-  fogMax:       0.78,   // max fog opacity for back-facing items
-  dragSensitivity: 0.30 // px-to-deg ratio
+const CFG = {
+  itemW:    220,    // card width  (px)
+  itemH:    300,    // card height (px)
+  radius:   null,   // set to a number (px) to override auto, or null for auto
+  fov:      750,    // perspective px — lower = more dramatic curve
+  speed:    0.020,  // deg/frame continuous auto-rotation (never stops)
+  damping:  0.925,  // inertia friction after drag release
+  fogMax:   0.80,   // max opacity of depth-fog on back items
+  dragPx2Deg: 0.30  // how many degrees per dragged pixel
 };
 
 /* ================================================================
@@ -391,339 +375,273 @@ const CONFIG = {
   let W, H, pts;
   const SYM = ['❤','✦','·','✿','°'];
   const resize = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; };
-  const init   = () => {
+  const init = () => {
     pts = Array.from({ length: Math.floor(W * H / 22000) }, () => ({
-      x: Math.random()*W, y: Math.random()*H,
-      sz: Math.random()*10+5, op: Math.random()*0.28+0.04,
-      sy: Math.random()*0.35+0.08, sx: (Math.random()-.5)*.18,
-      sym: SYM[Math.floor(Math.random()*SYM.length)],
-      d: Math.random()*Math.PI*2
+      x:Math.random()*W, y:Math.random()*H,
+      sz:Math.random()*10+5, op:Math.random()*0.28+0.04,
+      sy:Math.random()*0.35+0.08, sx:(Math.random()-.5)*.18,
+      sym:SYM[Math.floor(Math.random()*SYM.length)], d:Math.random()*Math.PI*2
     }));
   };
   const draw = () => {
     cx.clearRect(0,0,W,H);
     pts.forEach(p => {
       p.d+=.008; p.x+=p.sx+Math.sin(p.d)*.14; p.y-=p.sy;
-      if (p.y < -20) { p.y = H+10; p.x = Math.random()*W; }
-      cx.globalAlpha=p.op; cx.font=p.sz+'px serif'; cx.fillStyle='#c9a96e'; cx.fillText(p.sym,p.x,p.y);
+      if (p.y<-20) { p.y=H+10; p.x=Math.random()*W; }
+      cx.globalAlpha=p.op; cx.font=p.sz+'px serif';
+      cx.fillStyle='#c9a96e'; cx.fillText(p.sym,p.x,p.y);
     });
     cx.globalAlpha=1; requestAnimationFrame(draw);
   };
-  addEventListener('resize', () => { resize(); init(); });
+  addEventListener('resize',()=>{resize();init()});
   resize(); init(); draw();
 })();
 
-/* ── Fade-in observer ── */
+/* Fade-in observer */
 new IntersectionObserver(es => {
   es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.15 }).observe(document.querySelector('.memories-header'));
 
 /* ================================================================
-   3D CYLINDRICAL RING CAROUSEL
+   3D RING CAROUSEL ENGINE
    ================================================================ */
 (function () {
-  /* ── DOM refs ── */
   const scene   = document.getElementById('ringScene');
   const world   = document.getElementById('ringWorld');
   const dotsEl  = document.getElementById('ringDots');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
 
-  const N = MEMORIES.length;
-  const STEP = 360 / N;   // degrees between items
+  const N    = MEMORIES.length;
+  const STEP = 360 / N;          // degrees between adjacent items
 
-  /* ── Compute ring radius so items are flush/slightly spaced ── */
-  const minRadius = (CONFIG.itemW / 2) / Math.sin(Math.PI / N);
-  const radius    = Math.round(minRadius * CONFIG.radiusFactor);
+  /* ── Radius ──────────────────────────────────────────────────
+     Auto: pack items so they just touch at the front.
+     The arc curve depth is visible because items behind the front
+     are rotated away — their visible width in perspective shrinks,
+     exactly like the reference image.                           */
+  const minR  = (CFG.itemW / 2) / Math.sin(Math.PI / N);
+  const R     = CFG.radius ?? Math.round(minR * 1.08);  // slight gap between items
 
-  /* ── Apply perspective (FOV) to scene ── */
-  scene.style.perspective = CONFIG.FOV + 'px';
+  /* Apply FOV */
+  scene.style.perspective = CFG.fov + 'px';
 
   /* ── State ── */
-  let yaw      = 0;       // current world rotation, degrees
-  let velocity = 0;       // deg/frame — physics velocity
-  let frontIdx = 0;       // which item is closest to front
+  let yaw      = 0;    // world rotation in degrees (increases every frame → loops naturally)
+  let velocity = 0;    // deg/frame residual after drag
+  let frontIdx = 0;
 
-  /* Autoplay */
-  let autoOn    = true;
-  let idleTimer = null;
-
-  /* Drag */
-  let isDragging    = false;
-  let dragStartX    = 0;
-  let dragStartYaw  = 0;
-  let lastDragDx    = 0;
-  let lastDragT     = performance.now();
-  let didDrag       = false;   // distinguish click vs drag
-
-  /* IntersectionObserver — pause rAF when off-screen */
-  let isVisible = true;
+  /* ── Intersection Observer: pause rendering off-screen ── */
+  let visible = true;
   new IntersectionObserver(es => {
-    es.forEach(e => { isVisible = e.isIntersecting; });
+    es.forEach(e => { visible = e.isIntersecting; });
   }, { threshold: 0.05 }).observe(scene);
 
+  /* ── Drag state ── */
+  let dragging     = false;
+  let dragX0       = 0;
+  let dragYaw0     = 0;
+  let dragLastDx   = 0;
+  let dragLastT    = 0;
+  let wasDrag      = false;
+
   /* ── Helpers ── */
-  function normalise(a) {
+  const isVideo = s => /\.(mp4|mov|webm|ogg)$/i.test(s);
+  function normAngle(a) {
     a = a % 360;
     if (a >  180) a -= 360;
     if (a < -180) a += 360;
     return a;
   }
-  function isVideo(src) { return /\.(mp4|mov|webm|ogg)$/i.test(src); }
 
-  /* ── Build items ── */
-  const items = [];
+  /* ── Build cards ── */
+  const cards = [];
 
   MEMORIES.forEach((mem, i) => {
     const g    = GRADIENTS[i % GRADIENTS.length];
-    const item = document.createElement('div');
-    item.className = 'ring-item';
-    item.style.setProperty('--item-w', CONFIG.itemW + 'px');
-    item.style.setProperty('--item-h', CONFIG.itemH + 'px');
+    const card = document.createElement('div');
+    card.className = 'ring-item';
+    card.style.setProperty('--iw', CFG.itemW + 'px');
+    card.style.setProperty('--ih', CFG.itemH + 'px');
 
-    /* Media element — image or video */
     if (isVideo(mem.src)) {
-      const vid = document.createElement('video');
-      vid.src = mem.src; vid.loop = true; vid.muted = true;
-      vid.playsInline = true; vid.autoplay = false;
-      vid.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;';
-      item.appendChild(vid);
+      const v = document.createElement('video');
+      Object.assign(v, { src:mem.src, loop:true, muted:true, playsInline:true, autoplay:false });
+      v.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;';
+      card.appendChild(v);
     } else {
       const img = document.createElement('img');
       img.src = mem.src; img.alt = ''; img.loading = 'lazy';
       img.onerror = () => {
-        item.style.background = `linear-gradient(155deg,${g[0]},${g[1]})`;
+        card.style.background = `linear-gradient(155deg,${g[0]},${g[1]})`;
         img.style.display = 'none';
       };
-      item.appendChild(img);
+      card.appendChild(img);
     }
 
-    /* Fog overlay — opacity driven by JS per frame */
     const fog = document.createElement('div');
     fog.className = 'ring-fog';
-    item.appendChild(fog);
+    card.appendChild(fog);
 
-    /* Description overlay */
     const ov = document.createElement('div');
     ov.className = 'ring-overlay';
     ov.innerHTML = `<p class="ring-overlay-desc">${mem.description}</p>`;
-    item.appendChild(ov);
+    card.appendChild(ov);
 
-    /* Click to snap */
-    item.addEventListener('click', () => { if (!didDrag) snapTo(i); });
-
-    world.appendChild(item);
-    items.push({ el: item, fogEl: fog });
+    card.addEventListener('click', () => { if (!wasDrag) nudgeTo(i); });
+    world.appendChild(card);
+    cards.push({ el: card, fog });
   });
 
-  /* ── Build dots ── */
+  /* ── Dots ── */
   const dots = [];
   for (let i = 0; i < N; i++) {
     const d = document.createElement('div');
     d.className = 'ring-dot' + (i === 0 ? ' active' : '');
-    d.setAttribute('role', 'button'); d.setAttribute('tabindex', '0');
-    d.setAttribute('aria-label', `Memory ${i + 1}`);
-    d.addEventListener('click', () => snapTo(i));
-    d.addEventListener('keydown', e => { if (e.key === 'Enter') snapTo(i); });
-    dotsEl.appendChild(d);
-    dots.push(d);
+    d.setAttribute('role','button'); d.setAttribute('tabindex','0');
+    d.setAttribute('aria-label', `Memory ${i+1}`);
+    d.addEventListener('click', () => nudgeTo(i));
+    d.addEventListener('keydown', e => { if (e.key==='Enter') nudgeTo(i); });
+    dotsEl.appendChild(d); dots.push(d);
   }
   function updateDots(i) {
-    dots.forEach((d, j) => d.classList.toggle('active', j === i));
+    dots.forEach((d,j) => d.classList.toggle('active', j===i));
   }
 
-  /* ── Render one frame ── */
+  /* ── nudgeTo: adds a velocity kick instead of hard-stopping ──
+     This keeps the loop continuous — instead of snapping, we
+     calculate the shortest-path delta and apply it as a velocity
+     burst so the ring smoothly sweeps to the target then
+     seamlessly continues its autoplay rotation.                 */
+  function nudgeTo(targetIdx) {
+    const targetYaw = -targetIdx * STEP;
+    const delta     = normAngle(targetYaw - yaw);
+    /* Convert delta to a velocity burst that decays to ~zero
+       in ~35 frames (at damping 0.925 that's ~35 frames) */
+    velocity = delta * 0.065;
+  }
+
+  /* ── render: called every rAF tick ── */
   function render() {
-    /* Apply world rotation */
-    world.style.transform = `translateZ(${-radius}px) rotateY(${yaw}deg)`;
+    /* translateZ(-R) centres the ring so the front card aligns
+       with the camera; rotateY spins it */
+    world.style.transform = `translateZ(${-R}px) rotateY(${yaw}deg)`;
 
     let bestDist = Infinity, bestIdx = 0;
 
-    items.forEach(({ el, fogEl }, i) => {
-      /* Each item's own angle on the ring */
-      const itemAngle = i * STEP;
+    cards.forEach(({ el, fog }, i) => {
+      const ownAngle = i * STEP;
+      /* Angular offset from camera centre */
+      const ang  = normAngle(ownAngle + yaw);
+      const abs  = Math.abs(ang);   // 0 = front, 180 = back
 
-      /* Position item on ring */
-      el.style.transform = `rotateY(${itemAngle}deg) translateZ(${radius}px)`;
-
-      /* Angular distance from front (0° = directly facing camera) */
-      let ang = normalise(itemAngle + yaw);    // how far off-front
-      const abs = Math.abs(ang);               // 0 = front, 180 = back
-
-      /* Depth: 0 at front, 1 at back */
+      /* depth: 0 at front, 1 at back */
       const depth = (1 - Math.cos(abs * Math.PI / 180)) / 2;
 
-      /* ── Atmospheric fog fade ──
-         Items behind the midpoint fog toward the bg colour */
-      const fogAlpha = Math.pow(depth, 1.4) * CONFIG.fogMax;
-      fogEl.style.setProperty('--fog-alpha', fogAlpha.toFixed(3));
+      /* Scale: front item is largest */
+      const scale = 1 - depth * 0.20;
 
-      /* Z-index so front items render on top */
-      el.style.zIndex = Math.round((1 - depth) * 1000);
+      el.style.transform  = `rotateY(${ownAngle}deg) translateZ(${R}px) scale(${scale.toFixed(3)})`;
+      el.style.zIndex     = Math.round((1 - depth) * 1000);
 
-      /* Scale — front item slightly larger */
-      const scale = 1 - depth * 0.22;
-      el.style.transform = `rotateY(${itemAngle}deg) translateZ(${radius}px) scale(${scale.toFixed(3)})`;
+      /* Atmospheric fog — smooth exponential falloff */
+      fog.style.setProperty('--fa', (Math.pow(depth, 1.2) * CFG.fogMax).toFixed(3));
 
-      /* Shadow depth */
-      const sh = Math.round((1 - depth) * 32);
-      el.style.boxShadow = `0 ${sh}px ${sh * 2}px rgba(0,0,0,${(0.15 + depth * 0.15).toFixed(2)})`;
+      /* Box shadow depth cue */
+      const s = Math.round((1-depth)*30);
+      el.style.boxShadow = `0 ${s}px ${s*2}px rgba(0,0,0,${(0.12+depth*0.18).toFixed(2)})`;
 
-      /* Front item flag */
-      el.classList.toggle('is-front', abs < STEP * 0.55);
+      /* Front flag */
+      const isFront = abs < STEP * 0.6;
+      el.classList.toggle('is-front', isFront);
 
-      /* Video: play when front, pause when behind */
+      /* Video: play when front, pause otherwise */
       const vid = el.querySelector('video');
-      if (vid) {
-        if (abs < STEP * 0.55) { if (vid.paused) vid.play().catch(() => {}); }
-        else                   { if (!vid.paused) vid.pause(); }
-      }
+      if (vid) { isFront ? vid.play().catch(()=>{}) : vid.pause(); }
 
       if (abs < bestDist) { bestDist = abs; bestIdx = i; }
     });
 
-    if (bestIdx !== frontIdx) {
-      frontIdx = bestIdx;
-      updateDots(frontIdx);
-    }
+    if (bestIdx !== frontIdx) { frontIdx = bestIdx; updateDots(frontIdx); }
   }
 
-  /* ── Snap animate to index ── */
-  let snapAnimId = null;
-
-  function snapTo(targetIdx, instant) {
-    pauseAuto();
-    const targetYaw = -targetIdx * STEP;
-    const delta     = normalise(targetYaw - yaw);
-
-    if (instant) {
-      yaw = targetYaw;
-      velocity = 0;
-      render();
-      return;
-    }
-
-    velocity = 0;
-    cancelAnimationFrame(snapAnimId);
-    const startYaw = yaw;
-    const dur      = 600;
-    const t0       = performance.now();
-
-    function step(now) {
-      const t      = Math.min(1, (now - t0) / dur);
-      const eased  = 1 - Math.pow(1 - t, 3);
-      yaw = startYaw + delta * eased;
-      render();
-      if (t < 1) snapAnimId = requestAnimationFrame(step);
-      else       resumeAuto();
-    }
-    snapAnimId = requestAnimationFrame(step);
-  }
-
-  /* ── Auto-play control ── */
-  function pauseAuto() {
-    autoOn = false;
-    clearTimeout(idleTimer);
-  }
-  function resumeAuto() {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => { autoOn = true; }, 2800);
-  }
-
-  /* ── Physics tick ──
-     Called every frame. Handles:
-     a) Auto-rotate when idle
-     b) Inertia decay after drag release
-     c) Snap pull toward nearest item when velocity is low
+  /* ── Main loop ────────────────────────────────────────────────
+     ALWAYS rotates. Priority:
+       1. Dragging   → directly track pointer (no auto)
+       2. Velocity   → inertia decay (residual from drag or nudge)
+       3. Default    → constant autoplay — NEVER stops
   ── */
   function tick() {
-    if (isVisible && !isDragging) {
-      if (Math.abs(velocity) > 0.02) {
-        /* Inertia decay */
-        yaw      += velocity;
-        velocity *= CONFIG.damping;
-        render();
-      } else if (autoOn) {
-        /* Smooth auto-rotate */
-        yaw -= CONFIG.autoSpeed;
-        render();
-      } else {
-        /* Low-velocity snap: gently pull toward nearest item */
-        const nearestYaw = -frontIdx * STEP;
-        const diff       = normalise(nearestYaw - yaw);
-        if (Math.abs(diff) > 0.05) {
-          yaw += diff * CONFIG.snapStrength;
-          render();
+    if (visible) {
+      if (!dragging) {
+        if (Math.abs(velocity) > 0.005) {
+          /* Inertia — decays smoothly, then hands off to autoplay */
+          yaw      += velocity;
+          velocity *= CFG.damping;
+        } else {
+          /* Continuous autoplay — constant, never stops */
+          velocity  = 0;
+          yaw      -= CFG.speed;
         }
+        render();
       }
     }
     requestAnimationFrame(tick);
   }
 
-  /* ── Pointer drag (mouse + touch via Pointer Events API) ── */
-  function onPointerDown(e) {
-    if (snapAnimId) { cancelAnimationFrame(snapAnimId); snapAnimId = null; }
-    isDragging   = true;
-    didDrag      = false;
-    velocity     = 0;
-    dragStartX   = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
-    dragStartYaw = yaw;
-    lastDragDx   = 0;
-    lastDragT    = performance.now();
-    pauseAuto();
+  /* ── Pointer drag ── */
+  function onDown(e) {
+    dragging   = true;
+    wasDrag    = false;
+    velocity   = 0;
+    dragX0     = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    dragYaw0   = yaw;
+    dragLastDx = 0;
+    dragLastT  = performance.now();
     scene.classList.add('grabbing');
     if (scene.setPointerCapture && e.pointerId != null) scene.setPointerCapture(e.pointerId);
   }
 
-  function onPointerMove(e) {
-    if (!isDragging) return;
-    const x   = e.clientX ?? e.touches?.[0]?.clientX ?? dragStartX;
-    const dx  = x - dragStartX;
+  function onMove(e) {
+    if (!dragging) return;
+    const x  = e.clientX ?? e.touches?.[0]?.clientX ?? dragX0;
+    const dx = x - dragX0;
     const now = performance.now();
-    const dt  = Math.max(1, now - lastDragT);
-
-    if (Math.abs(dx) > 3) didDrag = true;
-
-    /* Rotate proportional to drag distance */
-    yaw = dragStartYaw - dx * CONFIG.dragSensitivity;
-
-    /* Sample velocity (normalised to ~60fps frame) */
-    velocity = -(dx - lastDragDx) * CONFIG.dragSensitivity * (16 / dt);
-    lastDragDx = dx;
-    lastDragT  = now;
+    const dt  = Math.max(1, now - dragLastT);
+    if (Math.abs(dx) > 3) wasDrag = true;
+    yaw = dragYaw0 - dx * CFG.dragPx2Deg;
+    /* Sample velocity for post-release inertia */
+    velocity   = -(dx - dragLastDx) * CFG.dragPx2Deg * (16 / dt);
+    dragLastDx = dx;
+    dragLastT  = now;
     render();
   }
 
-  function onPointerUp() {
-    if (!isDragging) return;
-    isDragging = false;
+  function onUp() {
+    if (!dragging) return;
+    dragging = false;
     scene.classList.remove('grabbing');
-    /* Velocity carries on in tick() via inertia decay, then snaps */
-    resumeAuto();
+    /* velocity carries momentum; tick() decays it then resumes autoplay */
   }
 
-  scene.addEventListener('pointerdown', onPointerDown);
-  window.addEventListener('pointermove', onPointerMove);
-  window.addEventListener('pointerup',   onPointerUp);
+  scene.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup',   onUp);
+  scene.addEventListener('touchstart',   onDown, { passive:true });
+  window.addEventListener('touchmove',   onMove, { passive:true });
+  window.addEventListener('touchend',    onUp);
 
-  /* Touch fallback for older iOS */
-  scene.addEventListener('touchstart',  onPointerDown, { passive: true });
-  window.addEventListener('touchmove',  onPointerMove, { passive: true });
-  window.addEventListener('touchend',   onPointerUp);
-
-  /* ── Keyboard navigation ── */
+  /* Keyboard */
   document.addEventListener('keydown', e => {
     const r = scene.getBoundingClientRect();
     if (r.top > innerHeight || r.bottom < 0) return;
-    if (e.key === 'ArrowLeft')  { snapTo(((frontIdx - 1) % N + N) % N); }
-    if (e.key === 'ArrowRight') { snapTo((frontIdx + 1) % N); }
+    if (e.key === 'ArrowLeft')  nudgeTo(((frontIdx-1)%N+N)%N);
+    if (e.key === 'ArrowRight') nudgeTo((frontIdx+1)%N);
   });
+  prevBtn.addEventListener('click', () => nudgeTo(((frontIdx-1)%N+N)%N));
+  nextBtn.addEventListener('click', () => nudgeTo((frontIdx+1)%N));
 
-  prevBtn.addEventListener('click', () => snapTo(((frontIdx - 1) % N + N) % N));
-  nextBtn.addEventListener('click', () => snapTo((frontIdx + 1) % N));
-
-  /* ── Resize: recalculate and re-render ── */
-  window.addEventListener('resize', () => render());
+  window.addEventListener('resize', render);
 
   /* ── Init ── */
   render();
