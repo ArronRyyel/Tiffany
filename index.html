@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Story — A Collection of Memories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --cream:        #fdf6ee;
+      --ivory:        #faf3e8;
+      --warm-white:   #fff8f2;
+      --dusty-pink:   #e8c4c4;
+      --rose:         #d4a0a0;
+      --deep-rose:    #b07070;
+      --burgundy:     #7a3e3e;
+      --deep-burg:    #5c2a2a;
+      --gold:         #c9a96e;
+      --gold-light:   #e8d5a8;
+      --text-dark:    #3a2020;
+      --text-mid:     #6b4040;
+      --text-light:   #9a7070;
+      --shadow-warm:  rgba(122, 62, 62, 0.15);
+      --shadow-deep:  rgba(92, 42, 42, 0.25);
+      --glass-bg:     rgba(253, 246, 238, 0.7);
+      --glass-border: rgba(201, 169, 110, 0.3);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ============================================================
+       UTILITIES
+    ============================================================ */
+    .section-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.1rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      color: var(--burgundy);
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--text-mid);
+      font-weight: 300;
+      max-width: 540px;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       CANVAS PARTICLES
+    ============================================================ */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
+    }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%,
+        rgba(212, 160, 160, 0.35) 0%,
+        rgba(253, 246, 238, 0) 70%),
+        linear-gradient(160deg, #fdf6ee 0%, #f5e6d8 50%, #ede0d4 100%);
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-ornament {
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14rem;
+      font-weight: 300;
+      color: rgba(212, 160, 160, 0.08);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+    .hero-ornament.top-left  { top: -2rem; left: -2rem; }
+    .hero-ornament.bot-right { bottom: -4rem; right: -2rem; }
+
+    .hero-tag {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.2rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeSlideUp 1s ease 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      font-weight: 300;
+      color: var(--burgundy);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      opacity: 0;
+      animation: fadeSlideUp 1s ease 0.5s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--deep-rose);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text-mid);
+      font-weight: 300;
+      max-width: 500px;
+      margin: 1.4rem auto 0;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeSlideUp 1s ease 0.7s forwards;
+    }
+
+    .hero-anniversary {
+      margin-top: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.6rem;
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.25rem;
+      color: var(--burgundy);
+      opacity: 0;
+      animation: fadeSlideUp 1s ease 0.9s forwards;
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: fadeSlideUp 1s ease 1.2s forwards;
+    }
+    .hero-scroll-hint span {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.15); }
+    }
+
+    /* ============================================================
+       MEMORY CAROUSEL SECTION
+    ============================================================ */
+    #memories {
+      position: relative;
+      padding: 6rem 0 4rem;
+      background: linear-gradient(180deg, var(--cream) 0%, var(--ivory) 100%);
+      z-index: 1;
+    }
+
+    .memories-header {
+      text-align: center;
+      padding: 0 1.5rem 3.5rem;
+    }
+    .memories-header .section-subtitle {
+      margin: 0.8rem auto 0;
+    }
+
+    /* Timeline line behind carousel */
+    .timeline-track {
+      position: relative;
+      margin: 0 0 2.5rem;
+    }
+    .timeline-line {
+      position: absolute;
+      top: 50%;
+      left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--dusty-pink) 10%,
+        var(--rose) 50%,
+        var(--dusty-pink) 90%,
+        transparent 100%);
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+
+    /* Carousel wrapper */
+    .carousel-outer {
+      position: relative;
+      overflow: hidden;
+      padding: 1.5rem 0 2rem;
+    }
+    .carousel-outer::before,
+    .carousel-outer::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 100px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .carousel-outer::before {
+      left: 0;
+      background: linear-gradient(to right, var(--ivory), transparent);
+    }
+    .carousel-outer::after {
+      right: 0;
+      background: linear-gradient(to left, var(--ivory), transparent);
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 1.8rem;
+      cursor: grab;
+      user-select: none;
+      will-change: transform;
+      padding: 1rem 2rem;
+    }
+    .carousel-track:active { cursor: grabbing; }
+
+    /* Individual memory card */
+    .memory-card {
+      flex: 0 0 auto;
+      width: 280px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background: #e8d5c8;
+      box-shadow:
+        0 4px 20px var(--shadow-warm),
+        0 1px 3px rgba(0,0,0,0.06);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.4s ease;
+      /* Polaroid-ish padding at bottom */
+      padding-bottom: 0;
+    }
+
+    .memory-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.6);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .memory-card:hover {
+      transform: scale(1.04) translateY(-6px);
+      box-shadow:
+        0 16px 48px var(--shadow-deep),
+        0 0 0 1px var(--glass-border),
+        0 0 40px rgba(201, 169, 110, 0.18);
+      z-index: 10;
+    }
+
+    .memory-card-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+    }
+
+    .memory-card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease, filter 0.4s ease;
+      display: block;
+    }
+
+    .memory-card:hover .memory-card-img-wrap img {
+      transform: scale(1.06);
+      filter: brightness(0.65) saturate(0.85);
+    }
+
+    /* Overlay */
+    .memory-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.4rem 1.2rem;
+      background: linear-gradient(
+        to top,
+        rgba(60, 20, 20, 0.82) 0%,
+        rgba(60, 20, 20, 0.3) 55%,
+        transparent 100%
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 2;
+    }
+
+    .memory-card:hover .memory-overlay { opacity: 1; }
+
+    .memory-overlay-date {
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.3rem;
+      transform: translateY(8px);
+      transition: transform 0.35s ease 0.05s;
+    }
+    .memory-overlay-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 0.45rem;
+      transform: translateY(8px);
+      transition: transform 0.35s ease 0.08s;
+    }
+    .memory-overlay-desc {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.82);
+      font-weight: 300;
+      line-height: 1.6;
+      transform: translateY(8px);
+      transition: transform 0.35s ease 0.11s;
+    }
+    .memory-card:hover .memory-overlay-date,
+    .memory-card:hover .memory-overlay-title,
+    .memory-card:hover .memory-overlay-desc {
+      transform: translateY(0);
+    }
+
+    /* Polaroid label bar */
+    .memory-card-label {
+      padding: 0.65rem 1rem 0.75rem;
+      background: #fefaf5;
+      text-align: center;
+    }
+    .memory-card-label-num {
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    /* Timeline dots below carousel */
+    .timeline-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 0 1.5rem;
+      margin-top: 2rem;
+      overflow: hidden;
+    }
+    .timeline-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--dusty-pink);
+      border: 2px solid var(--rose);
+      flex-shrink: 0;
+      transition: background 0.3s, transform 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+    .timeline-dot.active {
+      background: var(--burgundy);
+      border-color: var(--burgundy);
+      transform: scale(1.35);
+    }
+    .timeline-dot-line {
+      flex: 1;
+      min-width: 12px;
+      height: 1px;
+      background: var(--dusty-pink);
+    }
+
+    /* Carousel nav buttons */
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .carousel-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--burgundy);
+      font-size: 1.1rem;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+    }
+    .carousel-btn:hover {
+      background: var(--burgundy);
+      color: #fff;
+      box-shadow: 0 4px 16px var(--shadow-warm);
+      transform: scale(1.08);
+    }
+
+    /* ============================================================
+       LETTER SECTION
+    ============================================================ */
+    #letter {
+      position: relative;
+      padding: 7rem 1.5rem;
+      background: linear-gradient(180deg, var(--ivory) 0%, var(--warm-white) 100%);
+      z-index: 1;
+    }
+
+    .letter-wrapper {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .letter-card {
+      position: relative;
+      background: #fffdf9;
+      border-radius: 4px;
+      padding: 3.5rem 3rem 3rem;
+      box-shadow:
+        0 2px 8px rgba(0,0,0,0.04),
+        0 12px 40px var(--shadow-warm),
+        0 0 0 1px rgba(201, 169, 110, 0.15);
+      margin-top: 2.5rem;
+      text-align: left;
+    }
+
+    /* Paper texture top fold */
+    .letter-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--gold-light) 0px, var(--gold-light) 1px,
+        transparent 1px, transparent 30px
+      );
+      border-radius: 4px 4px 0 0;
+      opacity: 0.6;
+    }
+
+    /* Ruled lines */
+    .letter-card::after {
+      content: '';
+      position: absolute;
+      inset: 50px 3rem 3rem;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 31px,
+        rgba(212, 160, 160, 0.12) 31px,
+        rgba(212, 160, 160, 0.12) 32px
+      );
+      pointer-events: none;
+    }
+
+    .letter-salutation {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6rem;
+      color: var(--burgundy);
+      margin-bottom: 1.4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .letter-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.12rem;
+      font-style: italic;
+      color: var(--text-dark);
+      line-height: 2;
+      position: relative;
+      z-index: 1;
+    }
+
+    .letter-body p + p { margin-top: 1.2em; }
+
+    .letter-signature {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4rem;
+      color: var(--deep-rose);
+      margin-top: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .letter-wax-seal {
+      position: absolute;
+      bottom: -22px;
+      right: 2.5rem;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, var(--deep-rose), var(--burgundy));
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.85);
+      font-size: 1.3rem;
+      box-shadow: 0 4px 12px var(--shadow-deep);
+    }
+
+    /* ============================================================
+       LITTLE THINGS SECTION
+    ============================================================ */
+    #little-things {
+      position: relative;
+      padding: 7rem 1.5rem;
+      background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
+      z-index: 1;
+    }
+
+    .little-things-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.4rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .thing-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2rem 1.6rem;
+      backdrop-filter: blur(8px);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s ease,
+                  background 0.3s ease;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thing-card::before {
+      content: '';
+      position: absolute;
+      top: -60%; left: -60%;
+      width: 220%; height: 220%;
+      background: radial-gradient(circle, rgba(212,160,160,0.12) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .thing-card:hover {
+      transform: translateY(-7px) scale(1.02);
+      box-shadow: 0 16px 40px var(--shadow-deep);
+      background: rgba(255, 252, 248, 0.9);
+    }
+    .thing-card:hover::before { opacity: 1; }
+
+    .thing-card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.9rem;
+      display: block;
+    }
+
+    .thing-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--burgundy);
+      margin-bottom: 0.5rem;
+    }
+
+    .thing-card-desc {
+      font-size: 0.88rem;
+      color: var(--text-mid);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       CLOSING SECTION
+    ============================================================ */
+    #closing {
+      position: relative;
+      padding: 8rem 1.5rem 7rem;
+      background: linear-gradient(160deg, #2d0f0f 0%, #4a1c1c 40%, #6b3030 100%);
+      text-align: center;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .closing-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,160,160,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .closing-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.1rem;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      display: block;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .closing-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 300;
+      color: #fdf6ee;
+      line-height: 1.2;
+      position: relative;
+      margin-bottom: 1.8rem;
+    }
+
+    .closing-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: rgba(253, 246, 238, 0.75);
+      max-width: 480px;
+      margin: 0 auto 1.4rem;
+      font-weight: 300;
+      line-height: 1.8;
+      position: relative;
+    }
+
+    .closing-anniversary {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6rem;
+      color: var(--gold-light);
+      position: relative;
+      margin-bottom: 3rem;
+    }
+
+    .replay-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      border: 1px solid rgba(201, 169, 110, 0.45);
+      background: rgba(201, 169, 110, 0.12);
+      color: var(--gold-light);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      position: relative;
+    }
+    .replay-btn:hover {
+      background: rgba(201, 169, 110, 0.25);
+      box-shadow: 0 0 24px rgba(201, 169, 110, 0.25);
+      transform: scale(1.04);
+    }
+
+    .closing-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 2rem auto;
+      position: relative;
+    }
+
+    /* ============================================================
+       SCROLLBAR
+    ============================================================ */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb {
+      background: var(--dusty-pink);
+      border-radius: 3px;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 768px) {
+      .memory-card { width: 220px; }
+
+      .letter-card {
+        padding: 2.5rem 1.5rem 2rem;
+      }
+      .letter-card::after {
+        inset: 45px 1.5rem 2rem;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .carousel-outer::before,
+      .carousel-outer::after { width: 40px; }
+    }
+
+    @media (max-width: 480px) {
+      .memory-card { width: 200px; }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+        max-width: 340px;
+      }
+
+      .hero-title { letter-spacing: -0.02em; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     ANIMATED BACKGROUND CANVAS
+============================================================ -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- ============================================================
+     HERO SECTION
+============================================================ -->
+<section id="hero">
+  <span class="hero-ornament top-left">❝</span>
+  <span class="hero-ornament bot-right">❞</span>
+
+  <p class="hero-tag">✦ a love story, in pictures ✦</p>
+
+  <h1 class="hero-title">Our <em>Story</em></h1>
+
+  <p class="hero-subtitle">
+    A collection of the little moments that became my favorite memories.
+  </p>
+
+  <div class="hero-anniversary">
+    <span>❤️</span>
+    <span>Happy Anniversary, My Love</span>
+    <span>❤️</span>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MEMORY CAROUSEL SECTION
+============================================================ -->
+<section id="memories">
+  <div class="memories-header fade-in">
+    <span class="section-label">✦ our memory line ✦</span>
+    <h2 class="section-title">These Are Our Moments</h2>
+    <p class="section-subtitle">
+      Not just pictures — pieces of our story, collected with love.
+    </p>
+  </div>
+
+  <div class="carousel-outer" id="carouselOuter">
+    <div class="carousel-track" id="carouselTrack">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+
+  <div class="timeline-dots" id="timelineDots"></div>
+
+  <div class="carousel-nav">
+    <button class="carousel-btn" id="prevBtn" aria-label="Previous memory">&#8592;</button>
+    <button class="carousel-btn" id="nextBtn" aria-label="Next memory">&#8594;</button>
+  </div>
+</section>
+
+<!-- ============================================================
+     PERSONAL LETTER SECTION
+============================================================ -->
+<section id="letter">
+  <div class="letter-wrapper fade-in">
+    <span class="section-label">✦ for your eyes only ✦</span>
+    <h2 class="section-title">Something I Want<br>You To Know</h2>
+
+    <div class="letter-card">
+      <p class="letter-salutation">My dearest,</p>
+
+      <div class="letter-body">
+        <p>
+          I don't think I can put everything I feel into words, but every memory
+          we've created together means more to me than you probably realize…
+        </p>
+
+        <!-- ✏️  EDIT YOUR LETTER BELOW — replace these paragraphs with your own words -->
+
+        <p>
+          There are moments I keep coming back to — small, ordinary ones that somehow
+          became the most important parts of my life. The way you laugh. The way
+          you make even the most ordinary afternoon feel like something worth
+          remembering.
+        </p>
+
+        <p>
+          I'm grateful every single day that our paths crossed. You make me a better
+          person just by being you, and I hope you know that I notice every little
+          thing you do.
+        </p>
+
+        <p>
+          I don't know what the future holds, but I know that I want every chapter
+          of it to have you in it. Every adventure, every quiet evening, every
+          random moment that turns into a memory — I want all of it with you.
+        </p>
+
+        <!-- ✏️  END OF EDITABLE LETTER CONTENT -->
+      </div>
+
+      <p class="letter-signature">Forever yours ♡</p>
+
+      <div class="letter-wax-seal">♡</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     LITTLE THINGS SECTION
+============================================================ -->
+<section id="little-things">
+  <div class="little-things-header fade-in">
+    <span class="section-label">✦ always & forever ✦</span>
+    <h2 class="section-title">Little Things I Love About Us</h2>
+  </div>
+
+  <div class="cards-grid fade-in">
+    <div class="thing-card">
+      <span class="thing-card-icon">❤️</span>
+      <h3 class="thing-card-title">Our Laughs</h3>
+      <p class="thing-card-desc">The ones that go on way too long and end with us both in tears. Those are my favorite sounds in the world.</p>
+    </div>
+    <div class="thing-card">
+      <span class="thing-card-icon">📸</span>
+      <h3 class="thing-card-title">Our Pictures</h3>
+      <p class="thing-card-desc">Every photo is proof that we were there, together, making something worth remembering.</p>
+    </div>
+    <div class="thing-card">
+      <span class="thing-card-icon">🌙</span>
+      <h3 class="thing-card-title">Late-Night Conversations</h3>
+      <p class="thing-card-desc">When the whole world goes quiet and it's just us talking about everything and nothing at all.</p>
+    </div>
+    <div class="thing-card">
+      <span class="thing-card-icon">😂</span>
+      <h3 class="thing-card-title">Our Random Moments</h3>
+      <p class="thing-card-desc">The unplanned ones that somehow become the stories we tell the most.</p>
+    </div>
+    <div class="thing-card">
+      <span class="thing-card-icon">🫶</span>
+      <h3 class="thing-card-title">How We Support Each Other</h3>
+      <p class="thing-card-desc">Quietly, steadily — just being there. That's one of the best things about us.</p>
+    </div>
+    <div class="thing-card">
+      <span class="thing-card-icon">✨</span>
+      <h3 class="thing-card-title">Memories We Haven't Made Yet</h3>
+      <p class="thing-card-desc">All the adventures still ahead of us. I can't wait for every single one.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CLOSING SECTION
+============================================================ -->
+<section id="closing">
+  <div class="closing-glow"></div>
+
+  <span class="closing-label fade-in">✦ always ✦</span>
+
+  <h2 class="closing-title fade-in">
+    And this is only<br>the beginning…
+  </h2>
+
+  <p class="closing-subtitle fade-in">
+    I can't wait to create a thousand more memories with you.
+  </p>
+
+  <div class="closing-divider"></div>
+
+  <p class="closing-anniversary fade-in">Happy Anniversary, My Love ❤️</p>
+
+  <button class="replay-btn fade-in" id="replayBtn">
+    <span>↻</span>
+    <span>Replay Our Memories</span>
+  </button>
+</section>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* ================================================================
+   MEMORY DATA
+   ✏️  EDIT THIS SECTION to add your own photos, dates, and stories.
+   Replace the `image` values with your photo file paths or URLs.
+   Add or remove objects to change the number of memories.
+   ================================================================ */
+const MEMORIES = [
+  {
+    image: "photos/memory-01.jpg",
+    date: "The Very Beginning",
+    title: "The Day We Met",
+    description: "I didn't know it then, but that was the day everything changed."
+  },
+  {
+    image: "photos/memory-02.jpg",
+    date: "Our First Picture",
+    title: "Captured",
+    description: "The first time someone took a photo of us together. I've looked at it a thousand times since."
+  },
+  {
+    image: "photos/memory-03.jpg",
+    date: "Our First Date",
+    title: "Just Us",
+    description: "Nervous and happy at the same time. I don't think I stopped smiling once."
+  },
+  {
+    image: "photos/memory-04.jpg",
+    date: "A Funny Day",
+    title: "Our Funniest Moment",
+    description: "I still laugh every time I think about this. Only we would find that funny."
+  },
+  {
+    image: "photos/memory-05.jpg",
+    date: "Our Favorite Place",
+    title: "Here, With You",
+    description: "It's not really about the place. It's about who I'm with."
+  },
+  {
+    image: "photos/memory-06.jpg",
+    date: "A Random Tuesday",
+    title: "Nothing Special (Except It Was)",
+    description: "Just an ordinary day that somehow became one of my favorites."
+  },
+  {
+    image: "photos/memory-07.jpg",
+    date: "The Big Trip",
+    title: "Adventure Awaits",
+    description: "Every mile with you is worth it. I'd go anywhere, as long as you're beside me."
+  },
+  {
+    image: "photos/memory-08.jpg",
+    date: "Most Recently",
+    title: "Our Latest Memory",
+    description: "This one is still fresh. And I already know I'll treasure it forever."
+  }
+];
+/* ================================================================
+   END OF MEMORY DATA
+   ================================================================ */
+
+
+/* ================================================================
+   PARTICLES / FLOATING HEARTS
+   ================================================================ */
+(function initParticles() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, particles;
+
+  const SYMBOLS = ['❤', '✦', '·', '✿', '°'];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function createParticles() {
+    particles = [];
+    const count = Math.floor((W * H) / 22000);
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x:     Math.random() * W,
+        y:     Math.random() * H,
+        size:  Math.random() * 10 + 5,
+        opacity: Math.random() * 0.3 + 0.05,
+        speedY: Math.random() * 0.35 + 0.1,
+        speedX: (Math.random() - 0.5) * 0.2,
+        symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+        drift:  Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.drift += 0.008;
+      p.x += p.speedX + Math.sin(p.drift) * 0.15;
+      p.y -= p.speedY;
+      if (p.y < -20) { p.y = H + 10; p.x = Math.random() * W; }
+
+      ctx.globalAlpha = p.opacity;
+      ctx.font = `${p.size}px serif`;
+      ctx.fillStyle = '#c9a96e';
+      ctx.fillText(p.symbol, p.x, p.y);
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); createParticles(); });
+  resize();
+  createParticles();
+  draw();
+})();
+
+
+/* ================================================================
+   FADE-IN ON SCROLL (Intersection Observer)
+   ================================================================ */
+(function initFadeIn() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+})();
+
+
+/* ================================================================
+   CAROUSEL
+   ================================================================ */
+(function initCarousel() {
+  const track       = document.getElementById('carouselTrack');
+  const dotsWrap    = document.getElementById('timelineDots');
+  const prevBtn     = document.getElementById('prevBtn');
+  const nextBtn     = document.getElementById('nextBtn');
+  const outer       = document.getElementById('carouselOuter');
+
+  let autoScrollId  = null;
+  let isHovering    = false;
+  let isDragging    = false;
+  let startX        = 0;
+  let scrollLeft    = 0;
+  let currentIndex  = 0;
+
+  /* --- Placeholder gradient colors for demo images --- */
+  const GRADIENTS = [
+    ['#f2d5d5','#e8b4b8'],
+    ['#d5e4f2','#b4cce8'],
+    ['#d5f2e4','#b4e8cc'],
+    ['#f2ecd5','#e8d8b4'],
+    ['#ead5f2','#d4b4e8'],
+    ['#f2d5ea','#e8b4d8'],
+    ['#d5f2f2','#b4e4e8'],
+    ['#f2e4d5','#e8ccb4'],
+  ];
+
+  /* ---- Build cards ---- */
+  function buildCards(data) {
+    // We duplicate cards for seamless infinite looping
+    const allData = [...data, ...data];
+    allData.forEach((mem, i) => {
+      const idx = i % data.length;
+      const g   = GRADIENTS[idx % GRADIENTS.length];
+
+      const card = document.createElement('div');
+      card.className = 'memory-card';
+      card.innerHTML = `
+        <div class="memory-card-img-wrap">
+          <img
+            src="${mem.image}"
+            alt="${mem.title}"
+            loading="lazy"
+            onerror="this.parentNode.style.background='linear-gradient(135deg, ${g[0]}, ${g[1]})'; this.style.display='none';"
+          />
+          <div class="memory-overlay">
+            <div class="memory-overlay-date">📅 ${mem.date}</div>
+            <div class="memory-overlay-title">"${mem.title}"</div>
+            <div class="memory-overlay-desc">${mem.description}</div>
+          </div>
+        </div>
+        <div class="memory-card-label">
+          <span class="memory-card-label-num">Memory ${idx + 1}</span>
+        </div>
+      `;
+
+      card.addEventListener('mouseenter', () => { isHovering = true; stopAuto(); });
+      card.addEventListener('mouseleave', () => { isHovering = false; startAuto(); });
+
+      track.appendChild(card);
+    });
+  }
+
+  /* ---- Timeline dots ---- */
+  function buildDots(count) {
+    dotsWrap.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      if (i > 0) {
+        const line = document.createElement('div');
+        line.className = 'timeline-dot-line';
+        dotsWrap.appendChild(line);
+      }
+      const dot = document.createElement('div');
+      dot.className = 'timeline-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', `Go to memory ${i + 1}`);
+      dot.setAttribute('role', 'button');
+      dot.setAttribute('tabindex', '0');
+      dot.addEventListener('click', () => scrollToIndex(i));
+      dot.addEventListener('keydown', e => { if (e.key === 'Enter') scrollToIndex(i); });
+      dotsWrap.appendChild(dot);
+    }
+  }
+
+  function updateDots(index) {
+    const dots = dotsWrap.querySelectorAll('.timeline-dot');
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  }
+
+  /* ---- Card width helper ---- */
+  function cardWidth() {
+    const card = track.children[0];
+    if (!card) return 300;
+    return card.offsetWidth + parseInt(getComputedStyle(track).gap || 0);
+  }
+
+  /* ---- Scroll to index ---- */
+  function scrollToIndex(index) {
+    currentIndex = ((index % MEMORIES.length) + MEMORIES.length) % MEMORIES.length;
+    const cw = cardWidth();
+    outer.scrollTo({ left: currentIndex * cw, behavior: 'smooth' });
+    updateDots(currentIndex);
+  }
+
+  /* ---- Auto-scroll (pixel-based smooth drift) ---- */
+  let autoOffset = 0;
+
+  function startAuto() {
+    if (autoScrollId) return;
+    autoScrollId = setInterval(() => {
+      if (isHovering || isDragging) return;
+      autoOffset += 0.6;
+      const totalW = cardWidth() * MEMORIES.length;
+      if (outer.scrollLeft >= totalW) {
+        outer.scrollLeft -= totalW;
+        autoOffset = outer.scrollLeft;
+      }
+      outer.scrollLeft = autoOffset;
+
+      // Sync dot
+      const idx = Math.round(outer.scrollLeft / cardWidth()) % MEMORIES.length;
+      if (idx !== currentIndex) {
+        currentIndex = idx;
+        updateDots(currentIndex);
+      }
+    }, 16);
+  }
+
+  function stopAuto() {
+    clearInterval(autoScrollId);
+    autoScrollId = null;
+    autoOffset = outer.scrollLeft;
+  }
+
+  /* ---- Nav buttons ---- */
+  prevBtn.addEventListener('click', () => {
+    stopAuto();
+    scrollToIndex(currentIndex - 1);
+    setTimeout(startAuto, 2000);
+  });
+  nextBtn.addEventListener('click', () => {
+    stopAuto();
+    scrollToIndex(currentIndex + 1);
+    setTimeout(startAuto, 2000);
+  });
+
+  /* ---- Mouse drag ---- */
+  outer.addEventListener('mousedown', e => {
+    isDragging = true;
+    stopAuto();
+    startX     = e.pageX - outer.offsetLeft;
+    scrollLeft = outer.scrollLeft;
+    outer.style.cursor = 'grabbing';
+  });
+  outer.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const x    = e.pageX - outer.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    outer.scrollLeft = scrollLeft - walk;
+  });
+  ['mouseup', 'mouseleave'].forEach(evt => {
+    outer.addEventListener(evt, () => {
+      if (!isDragging) return;
+      isDragging = false;
+      outer.style.cursor = '';
+      autoOffset = outer.scrollLeft;
+      startAuto();
+    });
+  });
+
+  /* ---- Touch swipe ---- */
+  let touchStartX = 0;
+  outer.addEventListener('touchstart', e => {
+    isDragging  = true;
+    touchStartX = e.touches[0].clientX;
+    scrollLeft  = outer.scrollLeft;
+    stopAuto();
+  }, { passive: true });
+  outer.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const dx = touchStartX - e.touches[0].clientX;
+    outer.scrollLeft = scrollLeft + dx;
+  }, { passive: true });
+  outer.addEventListener('touchend', () => {
+    isDragging = false;
+    autoOffset = outer.scrollLeft;
+    setTimeout(startAuto, 800);
+  });
+
+  /* ---- Init ---- */
+  buildCards(MEMORIES);
+  buildDots(MEMORIES.length);
+  startAuto();
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  { stopAuto(); scrollToIndex(currentIndex - 1); setTimeout(startAuto, 2000); }
+    if (e.key === 'ArrowRight') { stopAuto(); scrollToIndex(currentIndex + 1); setTimeout(startAuto, 2000); }
+  });
+})();
+
+
+/* ================================================================
+   REPLAY BUTTON
+   ================================================================ */
+document.getElementById('replayBtn').addEventListener('click', () => {
+  document.getElementById('memories').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+
+/* ================================================================
+   STAGGERED CARD ANIMATIONS
+   ================================================================ */
+(function staggerCards() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const cards = entry.target.querySelectorAll('.thing-card');
+        cards.forEach((c, i) => {
+          setTimeout(() => {
+            c.style.opacity    = '0';
+            c.style.transform  = 'translateY(24px)';
+            c.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                c.style.opacity   = '1';
+                c.style.transform = 'translateY(0)';
+              }, i * 100);
+            });
+          }, 0);
+        });
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  const grid = document.querySelector('.cards-grid');
+  if (grid) {
+    // Set initial hidden state
+    grid.querySelectorAll('.thing-card').forEach(c => {
+      c.style.opacity   = '0';
+      c.style.transform = 'translateY(24px)';
+    });
+    obs.observe(grid);
+  }
+})();
+</script>
+
+</body>
+</html>
