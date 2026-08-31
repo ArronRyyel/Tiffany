@@ -12,23 +12,26 @@
        DESIGN TOKENS
     ============================================================ */
     :root {
-      --cream:        #fdf6ee;
-      --ivory:        #faf3e8;
-      --warm-white:   #fff8f2;
-      --dusty-pink:   #e8c4c4;
-      --rose:         #d4a0a0;
-      --deep-rose:    #b07070;
-      --burgundy:     #7a3e3e;
-      --deep-burg:    #5c2a2a;
-      --gold:         #c9a96e;
-      --gold-light:   #e8d5a8;
-      --text-dark:    #3a2020;
-      --text-mid:     #6b4040;
-      --text-light:   #9a7070;
-      --shadow-warm:  rgba(122, 62, 62, 0.15);
-      --shadow-deep:  rgba(92, 42, 42, 0.25);
+      --cream:        #fbf3e6;
+      --ivory:        #f6ebd9;
+      --warm-white:   #fffaf1;
+      --dusty-pink:   #e3bcb4;
+      --rose:         #cd9993;
+      --deep-rose:    #a8635f;
+      --burgundy:     #7c3540;
+      --deep-burg:    #551f28;
+      --wine:         #3d141c;
+      --gold:         #bb9256;
+      --gold-light:   #e3c98c;
+      --text-dark:    #33191a;
+      --text-mid:     #6d4441;
+      --text-light:   #9c7a70;
+      --shadow-warm:  rgba(124, 53, 64, 0.16);
+      --shadow-deep:  rgba(85, 31, 40, 0.28);
       --glass-bg:     rgba(253, 246, 238, 0.7);
-      --glass-border: rgba(201, 169, 110, 0.3);
+      --glass-border: rgba(187, 146, 86, 0.32);
+      --paper:        #fffaf2;
+      --paper-line:   rgba(124, 53, 64, 0.14);
     }
 
     /* ============================================================
@@ -44,6 +47,18 @@
       color: var(--text-dark);
       overflow-x: hidden;
       line-height: 1.7;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      pointer-events: none;
+      opacity: 0.5;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.2 0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
     img { display: block; max-width: 100%; }
@@ -52,21 +67,22 @@
     /* ============================================================
        UTILITIES
     ============================================================ */
-    .section-label {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.1rem;
-      color: var(--gold);
-      letter-spacing: 0.05em;
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-
     .section-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(2rem, 4vw, 3rem);
       font-weight: 600;
       color: var(--burgundy);
       line-height: 1.2;
+    }
+
+    .section-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1rem;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.6rem;
     }
 
     .section-subtitle {
@@ -176,8 +192,8 @@
       padding: 0.6rem 1.6rem;
       border: 1px solid var(--glass-border);
       border-radius: 50px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(12px);
+      background: var(--paper);
+      box-shadow: 0 6px 20px var(--shadow-warm);
       font-family: 'Dancing Script', cursive;
       font-size: 1.25rem;
       color: var(--burgundy);
@@ -220,7 +236,7 @@
     }
 
     /* ============================================================
-       MEMORY CAROUSEL SECTION
+       MEMORY 3D CAROUSEL SECTION
     ============================================================ */
     #memories {
       position: relative;
@@ -237,241 +253,245 @@
       margin: 0.8rem auto 0;
     }
 
-    /* Timeline line behind carousel */
-    .timeline-track {
-      position: relative;
-      margin: 0 0 2.5rem;
+    /* Marquee ticker */
+    .memories-ticker {
+      overflow: hidden;
+      background: linear-gradient(100deg, var(--wine) 0%, var(--burgundy) 55%, var(--deep-burg) 100%);
+      padding: 0.85rem 0;
+      margin-bottom: 3.5rem;
+      transform: rotate(-1deg) scale(1.02);
+      box-shadow: 0 10px 30px var(--shadow-deep);
     }
-    .timeline-line {
-      position: absolute;
-      top: 50%;
-      left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg,
-        transparent 0%,
-        var(--dusty-pink) 10%,
-        var(--rose) 50%,
-        var(--dusty-pink) 90%,
-        transparent 100%);
-      transform: translateY(-50%);
-      z-index: 0;
+    .memories-ticker-track {
+      display: flex;
+      width: max-content;
+      animation: tickerScroll 22s linear infinite;
+    }
+    .memories-ticker-track span {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.15rem;
+      color: var(--gold-light);
+      white-space: nowrap;
+      padding: 0 1.4rem;
+      letter-spacing: 0.01em;
+    }
+    .memories-ticker-track span::after {
+      content: '♥';
+      margin-left: 1.4rem;
+      color: var(--rose);
+      font-style: normal;
+      font-size: 0.9rem;
+    }
+    @keyframes tickerScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .memories-ticker-track { animation: none; }
     }
 
-    /* Carousel wrapper */
-    .carousel-outer {
+    /* -------- 3D stage -------- */
+    .carousel-3d-stage {
       position: relative;
-      overflow: hidden;
-      padding: 1.5rem 0 2rem;
+      height: 480px;
+      margin: 0 auto;
+      max-width: 1100px;
+      perspective: 1400px;
+      perspective-origin: 50% 45%;
+      cursor: grab;
+      touch-action: pan-y;
     }
-    .carousel-outer::before,
-    .carousel-outer::after {
+    .carousel-3d-stage.grabbing { cursor: grabbing; }
+
+    .carousel-3d-stage::before,
+    .carousel-3d-stage::after {
       content: '';
       position: absolute;
       top: 0; bottom: 0;
-      width: 100px;
-      z-index: 3;
+      width: 18%;
+      z-index: 5;
       pointer-events: none;
     }
-    .carousel-outer::before {
+    .carousel-3d-stage::before {
       left: 0;
-      background: linear-gradient(to right, var(--ivory), transparent);
+      background: linear-gradient(to right, var(--ivory) 0%, rgba(246,235,217,0) 100%);
     }
-    .carousel-outer::after {
+    .carousel-3d-stage::after {
       right: 0;
-      background: linear-gradient(to left, var(--ivory), transparent);
+      background: linear-gradient(to left, var(--ivory) 0%, rgba(246,235,217,0) 100%);
     }
 
-    .carousel-track {
-      display: flex;
-      gap: 1.8rem;
-      cursor: grab;
-      user-select: none;
-      will-change: transform;
-      padding: 1rem 2rem;
-    }
-    .carousel-track:active { cursor: grabbing; }
-
-    /* Individual memory card */
-    .memory-card {
-      flex: 0 0 auto;
-      width: 280px;
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
-      background: #e8d5c8;
-      box-shadow:
-        0 4px 20px var(--shadow-warm),
-        0 1px 3px rgba(0,0,0,0.06);
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  box-shadow 0.4s ease;
-      /* Polaroid-ish padding at bottom */
-      padding-bottom: 0;
-    }
-
-    .memory-card::before {
-      content: '';
+    .carousel-fog-floor {
       position: absolute;
-      inset: 0;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.6);
-      z-index: 2;
+      left: 0; right: 0; bottom: -2px;
+      height: 40%;
+      z-index: 4;
       pointer-events: none;
+      background: linear-gradient(to top, var(--ivory) 0%, rgba(246,235,217,0) 100%);
     }
 
-    .memory-card:hover {
-      transform: scale(1.04) translateY(-6px);
-      box-shadow:
-        0 16px 48px var(--shadow-deep),
-        0 0 0 1px var(--glass-border),
-        0 0 40px rgba(201, 169, 110, 0.18);
-      z-index: 10;
+    .carousel-3d-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
-    .memory-card-img-wrap {
+    .carousel-3d-card {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 240px;
+      height: 320px;
+      margin: -160px 0 0 -120px;
+      border-radius: 3px;
+      background: var(--paper);
+      padding: 9px 9px 0;
+      box-shadow: 0 10px 30px var(--shadow-deep);
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .carousel-3d-card-img-wrap {
       position: relative;
       width: 100%;
       aspect-ratio: 3 / 4;
       overflow: hidden;
+      border-radius: 1px;
     }
-
-    .memory-card-img-wrap img {
-      width: 100%;
-      height: 100%;
+    .carousel-3d-card-img-wrap img {
+      width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 0.5s ease, filter 0.4s ease;
       display: block;
     }
 
-    .memory-card:hover .memory-card-img-wrap img {
-      transform: scale(1.06);
-      filter: brightness(0.65) saturate(0.85);
+    .carousel-3d-badge {
+      position: absolute;
+      top: 8px; left: 8px;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--burgundy);
+      border: 2px solid var(--gold-light);
+      color: var(--gold-light);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      box-shadow: 0 6px 14px var(--shadow-deep);
     }
 
-    /* Overlay */
-    .memory-overlay {
+    .carousel-3d-overlay {
       position: absolute;
       inset: 0;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 1.4rem 1.2rem;
-      background: linear-gradient(
-        to top,
-        rgba(60, 20, 20, 0.82) 0%,
-        rgba(60, 20, 20, 0.3) 55%,
-        transparent 100%
-      );
+      padding: 1.2rem 1rem;
+      background: linear-gradient(to top, rgba(60,20,20,0.85) 0%, rgba(60,20,20,0.15) 55%, transparent 100%);
       opacity: 0;
       transition: opacity 0.35s ease;
-      z-index: 2;
     }
+    .carousel-3d-card.is-front .carousel-3d-overlay { opacity: 1; }
 
-
-
-    
-    .memory-card:hover .memory-overlay { opacity: 1; }
-
-    .memory-overlay-date {
+    .carousel-3d-overlay-date {
       font-family: 'Dancing Script', cursive;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--gold-light);
-      letter-spacing: 0.04em;
-      margin-bottom: 0.3rem;
-      transform: translateY(8px);
-      transition: transform 0.35s ease 0.05s;
+      margin-bottom: 0.25rem;
     }
-    .memory-overlay-title {
+    .carousel-3d-overlay-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
+      font-size: 1.08rem;
       font-weight: 600;
       color: #fff;
       line-height: 1.3;
-      margin-bottom: 0.45rem;
-      transform: translateY(8px);
-      transition: transform 0.35s ease 0.08s;
+      margin-bottom: 0.35rem;
     }
-    .memory-overlay-desc {
-      font-size: 0.78rem;
+    .carousel-3d-overlay-desc {
+      font-size: 0.74rem;
       color: rgba(255,255,255,0.82);
       font-weight: 300;
-      line-height: 1.6;
-      transform: translateY(8px);
-      transition: transform 0.35s ease 0.11s;
-    }
-    .memory-card:hover .memory-overlay-date,
-    .memory-card:hover .memory-overlay-title,
-    .memory-card:hover .memory-overlay-desc {
-      transform: translateY(0);
+      line-height: 1.55;
     }
 
-    /* Polaroid label bar */
-    .memory-card-label {
-      padding: 0.65rem 1rem 0.75rem;
-      background: #fefaf5;
+    .carousel-3d-label {
+      padding: 0.65rem 0 0.9rem;
       text-align: center;
-    }
-    .memory-card-label-num {
       font-family: 'Dancing Script', cursive;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-light);
     }
 
-    /* Timeline dots below carousel */
+    .carousel-hint {
+      text-align: center;
+      margin-top: 1.6rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-light);
+      letter-spacing: 0.02em;
+    }
+
+    /* Timeline progress bar */
     .timeline-dots {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0;
+      gap: 6px;
+      max-width: 480px;
       padding: 0 1.5rem;
-      margin-top: 2rem;
-      overflow: hidden;
+      margin: 1.6rem auto 0;
     }
     .timeline-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
+      flex: 1;
+      height: 5px;
+      border-radius: 3px;
       background: var(--dusty-pink);
-      border: 2px solid var(--rose);
-      flex-shrink: 0;
+      border: none;
       transition: background 0.3s, transform 0.3s;
       cursor: pointer;
-      position: relative;
     }
     .timeline-dot.active {
       background: var(--burgundy);
-      border-color: var(--burgundy);
-      transform: scale(1.35);
-    }
-    .timeline-dot-line {
-      flex: 1;
-      min-width: 12px;
-      height: 1px;
-      background: var(--dusty-pink);
+      transform: scaleY(1.4);
     }
 
-    /* Carousel nav buttons */
     .carousel-nav {
       display: flex;
       justify-content: center;
       gap: 1rem;
-      margin-top: 2rem;
+      margin-top: 2.2rem;
     }
     .carousel-btn {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--glass-border);
-      background: var(--glass-bg);
-      backdrop-filter: blur(10px);
+      height: 46px;
+      padding: 0 1.5rem;
+      border-radius: 50px;
+      border: none;
+      background: var(--burgundy);
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      color: var(--burgundy);
-      font-size: 1.1rem;
+      gap: 0.5rem;
+      color: var(--warm-white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      box-shadow: 0 8px 22px var(--shadow-warm);
       transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
     }
     .carousel-btn:hover {
-      background: var(--burgundy);
-      color: #fff;
-      box-shadow: 0 4px 16px var(--shadow-warm);
-      transform: scale(1.08);
+      background: var(--wine);
+      box-shadow: 0 10px 28px var(--shadow-deep);
+      transform: scale(1.05);
     }
 
     /* ============================================================
@@ -503,7 +523,6 @@
       text-align: left;
     }
 
-    /* Paper texture top fold */
     .letter-card::before {
       content: '';
       position: absolute;
@@ -518,7 +537,6 @@
       opacity: 0.6;
     }
 
-    /* Ruled lines */
     .letter-card::after {
       content: '';
       position: absolute;
@@ -576,6 +594,23 @@
       box-shadow: 0 4px 12px var(--shadow-deep);
     }
 
+    .letter-closing-note {
+      text-align: center;
+      margin-top: 3.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--text-mid);
+    }
+    .letter-closing-note span {
+      display: block;
+      font-family: 'Dancing Script', cursive;
+      font-style: normal;
+      font-size: 1.6rem;
+      color: var(--deep-rose);
+      margin-top: 0.6rem;
+    }
+
     /* ============================================================
        LITTLE THINGS SECTION
     ============================================================ */
@@ -612,7 +647,6 @@
       position: relative;
       overflow: hidden;
     }
-
     .thing-card::before {
       content: '';
       position: absolute;
@@ -622,7 +656,6 @@
       opacity: 0;
       transition: opacity 0.4s ease;
     }
-
     .thing-card:hover {
       transform: translateY(-7px) scale(1.02);
       box-shadow: 0 16px 40px var(--shadow-deep);
@@ -635,7 +668,6 @@
       margin-bottom: 0.9rem;
       display: block;
     }
-
     .thing-card-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem;
@@ -643,7 +675,6 @@
       color: var(--burgundy);
       margin-bottom: 0.5rem;
     }
-
     .thing-card-desc {
       font-size: 0.88rem;
       color: var(--text-mid);
@@ -749,65 +780,43 @@
     ============================================================ */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--cream); }
-    ::-webkit-scrollbar-thumb {
-      background: var(--dusty-pink);
-      border-radius: 3px;
-    }
+    ::-webkit-scrollbar-thumb { background: var(--dusty-pink); border-radius: 3px; }
 
     /* ============================================================
        RESPONSIVE
     ============================================================ */
     @media (max-width: 768px) {
-      .memory-card { width: 220px; }
-
-      .letter-card {
-        padding: 2.5rem 1.5rem 2rem;
-      }
-      .letter-card::after {
-        inset: 45px 1.5rem 2rem;
-      }
-
-      .cards-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .carousel-outer::before,
-      .carousel-outer::after { width: 40px; }
+      .carousel-3d-stage { height: 380px; }
+      .carousel-3d-card  { width: 190px; height: 254px; margin: -127px 0 0 -95px; }
+      .letter-card { padding: 2.5rem 1.5rem 2rem; }
+      .letter-card::after { inset: 45px 1.5rem 2rem; }
+      .carousel-3d-stage::before,
+      .carousel-3d-stage::after { width: 10%; }
+      .cards-grid { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 480px) {
-      .memory-card { width: 200px; }
-
-      .cards-grid {
-        grid-template-columns: 1fr;
-        max-width: 340px;
-      }
-
+      .carousel-3d-stage { height: 320px; }
+      .carousel-3d-card  { width: 155px; height: 207px; margin: -103px 0 0 -77px; }
       .hero-title { letter-spacing: -0.02em; }
+      .cards-grid { grid-template-columns: 1fr; max-width: 340px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ============================================================
-     ANIMATED BACKGROUND CANVAS
-============================================================ -->
 <canvas id="particles-canvas"></canvas>
 
 <!-- ============================================================
-     HERO SECTION
+     HERO
 ============================================================ -->
 <section id="hero">
   <span class="hero-ornament top-left">❝</span>
   <span class="hero-ornament bot-right">❞</span>
 
   <p class="hero-tag">✦ a love story, in pictures ✦</p>
-
   <h1 class="hero-title">Our <em>Story</em></h1>
-
-  <p class="hero-subtitle">
-    A collection of the little moments that became my favorite memories.
-  </p>
+  <p class="hero-subtitle">A collection of the little moments that became my favorite memories.</p>
 
   <div class="hero-anniversary">
     <span>❤️</span>
@@ -822,37 +831,43 @@
 </section>
 
 <!-- ============================================================
-     MEMORY CAROUSEL SECTION
+     MEMORY 3D CAROUSEL
 ============================================================ -->
 <section id="memories">
   <div class="memories-header fade-in">
-    <span class="section-label">✦ our memory line ✦</span>
+    <span class="section-number">Chapter One</span>
     <h2 class="section-title">These Are Our Moments</h2>
-    <p class="section-subtitle">
-      Not just pictures — pieces of our story, collected with love.
-    </p>
+    <p class="section-subtitle">Not just pictures — pieces of our story, collected with love.</p>
   </div>
 
-  <div class="carousel-outer" id="carouselOuter">
-    <div class="carousel-track" id="carouselTrack">
-      <!-- Cards injected by JS -->
+  <div class="memories-ticker" aria-hidden="true">
+    <div class="memories-ticker-track">
+      <span>Eight Moments</span><span>One Story</span><span>Made With Love</span><span>Our Timeline</span>
+      <span>Eight Moments</span><span>One Story</span><span>Made With Love</span><span>Our Timeline</span>
     </div>
   </div>
+
+  <div class="carousel-3d-stage" id="stage3d">
+    <div class="carousel-3d-ring" id="ring3d"></div>
+    <div class="carousel-fog-floor"></div>
+  </div>
+
+  <p class="carousel-hint">Drag to look around</p>
 
   <div class="timeline-dots" id="timelineDots"></div>
 
   <div class="carousel-nav">
-    <button class="carousel-btn" id="prevBtn" aria-label="Previous memory">&#8592;</button>
-    <button class="carousel-btn" id="nextBtn" aria-label="Next memory">&#8594;</button>
+    <button class="carousel-btn" id="prevBtn" aria-label="Previous memory"><span>&#8592;</span><span>Prev</span></button>
+    <button class="carousel-btn" id="nextBtn" aria-label="Next memory"><span>Next</span><span>&#8594;</span></button>
   </div>
 </section>
 
 <!-- ============================================================
-     PERSONAL LETTER SECTION
+     LETTER
 ============================================================ -->
 <section id="letter">
   <div class="letter-wrapper fade-in">
-    <span class="section-label">✦ for your eyes only ✦</span>
+    <span class="section-number">Chapter Two</span>
     <h2 class="section-title">Something I Want<br>You To Know</h2>
 
     <div class="letter-card">
@@ -889,18 +904,22 @@
       </div>
 
       <p class="letter-signature">Forever yours ♡</p>
-
       <div class="letter-wax-seal">♡</div>
     </div>
+
+    <p class="letter-closing-note">
+      Happy Anniversary, my love.
+      <span>Here's to a thousand more. ♡</span>
+    </p>
   </div>
 </section>
 
 <!-- ============================================================
-     LITTLE THINGS SECTION
+     LITTLE THINGS
 ============================================================ -->
 <section id="little-things">
   <div class="little-things-header fade-in">
-    <span class="section-label">✦ always & forever ✦</span>
+    <span class="section-number">Chapter Three</span>
     <h2 class="section-title">Little Things I Love About Us</h2>
   </div>
 
@@ -939,20 +958,14 @@
 </section>
 
 <!-- ============================================================
-     CLOSING SECTION
+     CLOSING
 ============================================================ -->
 <section id="closing">
   <div class="closing-glow"></div>
 
   <span class="closing-label fade-in">✦ always ✦</span>
-
-  <h2 class="closing-title fade-in">
-    And this is only<br>the beginning…
-  </h2>
-
-  <p class="closing-subtitle fade-in">
-    I can't wait to create a thousand more memories with you.
-  </p>
+  <h2 class="closing-title fade-in">And this is only<br>the beginning…</h2>
+  <p class="closing-subtitle fade-in">I can't wait to create a thousand more memories with you.</p>
 
   <div class="closing-divider"></div>
 
@@ -970,93 +983,48 @@
 <script>
 /* ================================================================
    MEMORY DATA
-   ✏️  EDIT THIS SECTION to add your own photos, dates, and stories.
-   Replace the `image` values with your photo file paths or URLs.
-   Add or remove objects to change the number of memories.
+   ✏️  Edit image paths, dates, titles, and descriptions here.
+   Add or remove objects freely — the carousel adapts automatically.
    ================================================================ */
 const MEMORIES = [
-  {
-    image: "photos/memory-01.jpg",
-    date: "The Very Beginning",
-    title: "The Day We Met",
-    description: "I didn't know it then, but that was the day everything changed."
-  },
-  {
-    image: "photos/memory-02.jpg",
-    date: "Our First Picture",
-    title: "Captured",
-    description: "The first time someone took a photo of us together. I've looked at it a thousand times since."
-  },
-  {
-    image: "photos/memory-03.jpg",
-    date: "Our First Date",
-    title: "Just Us",
-    description: "Nervous and happy at the same time. I don't think I stopped smiling once."
-  },
-  {
-    image: "photos/memory-04.jpg",
-    date: "A Funny Day",
-    title: "Our Funniest Moment",
-    description: "I still laugh every time I think about this. Only we would find that funny."
-  },
-  {
-    image: "photos/memory-05.jpg",
-    date: "Our Favorite Place",
-    title: "Here, With You",
-    description: "It's not really about the place. It's about who I'm with."
-  },
-  {
-    image: "photos/memory-06.jpg",
-    date: "A Random Tuesday",
-    title: "Nothing Special (Except It Was)",
-    description: "Just an ordinary day that somehow became one of my favorites."
-  },
-  {
-    image: "photos/memory-07.jpg",
-    date: "The Big Trip",
-    title: "Adventure Awaits",
-    description: "Every mile with you is worth it. I'd go anywhere, as long as you're beside me."
-  },
-  {
-    image: "photos/memory-08.jpg",
-    date: "Most Recently",
-    title: "Our Latest Memory",
-    description: "This one is still fresh. And I already know I'll treasure it forever."
-  }
+  { image: "photos/memory-01.jpg", date: "The Very Beginning",  title: "The Day We Met",                description: "I didn't know it then, but that was the day everything changed." },
+  { image: "photos/memory-02.jpg", date: "Our First Picture",   title: "Captured",                     description: "The first time someone took a photo of us together. I've looked at it a thousand times since." },
+  { image: "photos/memory-03.jpg", date: "Our First Date",      title: "Just Us",                      description: "Nervous and happy at the same time. I don't think I stopped smiling once." },
+  { image: "photos/memory-04.jpg", date: "A Funny Day",         title: "Our Funniest Moment",          description: "I still laugh every time I think about this. Only we would find that funny." },
+  { image: "photos/memory-05.jpg", date: "Our Favorite Place",  title: "Here, With You",               description: "It's not really about the place. It's about who I'm with." },
+  { image: "photos/memory-06.jpg", date: "A Random Tuesday",    title: "Nothing Special (Except It Was)", description: "Just an ordinary day that somehow became one of my favorites." },
+  { image: "photos/memory-07.jpg", date: "The Big Trip",        title: "Adventure Awaits",             description: "Every mile with you is worth it. I'd go anywhere, as long as you're beside me." },
+  { image: "photos/memory-08.jpg", date: "Most Recently",       title: "Our Latest Memory",            description: "This one is still fresh. And I already know I'll treasure it forever." }
 ];
-/* ================================================================
-   END OF MEMORY DATA
-   ================================================================ */
 
+const GRADIENTS = [
+  ['#f2d5d5','#e8b4b8'], ['#d5e4f2','#b4cce8'], ['#d5f2e4','#b4e8cc'], ['#f2ecd5','#e8d8b4'],
+  ['#ead5f2','#d4b4e8'], ['#f2d5ea','#e8b4d8'], ['#d5f2f2','#b4e4e8'], ['#f2e4d5','#e8ccb4']
+];
 
 /* ================================================================
-   PARTICLES / FLOATING HEARTS
+   PARTICLES
    ================================================================ */
 (function initParticles() {
   const canvas = document.getElementById('particles-canvas');
   const ctx    = canvas.getContext('2d');
   let W, H, particles;
-
   const SYMBOLS = ['❤', '✦', '·', '✿', '°'];
 
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 
   function createParticles() {
     particles = [];
     const count = Math.floor((W * H) / 22000);
     for (let i = 0; i < count; i++) {
       particles.push({
-        x:     Math.random() * W,
-        y:     Math.random() * H,
-        size:  Math.random() * 10 + 5,
+        x: Math.random() * W, y: Math.random() * H,
+        size: Math.random() * 10 + 5,
         opacity: Math.random() * 0.3 + 0.05,
         speedY: Math.random() * 0.35 + 0.1,
         speedX: (Math.random() - 0.5) * 0.2,
         symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
-        drift:  Math.random() * Math.PI * 2
+        drift: Math.random() * Math.PI * 2
       });
     }
   }
@@ -1068,7 +1036,6 @@ const MEMORIES = [
       p.x += p.speedX + Math.sin(p.drift) * 0.15;
       p.y -= p.speedY;
       if (p.y < -20) { p.y = H + 10; p.x = Math.random() * W; }
-
       ctx.globalAlpha = p.opacity;
       ctx.font = `${p.size}px serif`;
       ctx.fillStyle = '#c9a96e';
@@ -1079,231 +1046,268 @@ const MEMORIES = [
   }
 
   window.addEventListener('resize', () => { resize(); createParticles(); });
-  resize();
-  createParticles();
-  draw();
+  resize(); createParticles(); draw();
 })();
 
-
 /* ================================================================
-   FADE-IN ON SCROLL (Intersection Observer)
+   FADE-IN ON SCROLL
    ================================================================ */
 (function initFadeIn() {
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        obs.unobserve(e.target);
-      }
-    });
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.15 });
-
   document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 })();
 
+/* ================================================================
+   STAGGERED CARDS
+   ================================================================ */
+(function staggerCards() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const cards = entry.target.querySelectorAll('.thing-card');
+      cards.forEach((c, i) => {
+        c.style.opacity   = '0';
+        c.style.transform = 'translateY(24px)';
+        c.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        setTimeout(() => { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }, i * 100);
+      });
+      obs.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+
+  const grid = document.querySelector('.cards-grid');
+  if (grid) {
+    grid.querySelectorAll('.thing-card').forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(24px)'; });
+    obs.observe(grid);
+  }
+})();
 
 /* ================================================================
-   CAROUSEL
+   ENDLESS 3D CAROUSEL
    ================================================================ */
-(function initCarousel() {
-  const track       = document.getElementById('carouselTrack');
-  const dotsWrap    = document.getElementById('timelineDots');
-  const prevBtn     = document.getElementById('prevBtn');
-  const nextBtn     = document.getElementById('nextBtn');
-  const outer       = document.getElementById('carouselOuter');
+(function initCarousel3D() {
+  const stage    = document.getElementById('stage3d');
+  const ring     = document.getElementById('ring3d');
+  const dotsWrap = document.getElementById('timelineDots');
+  const prevBtn  = document.getElementById('prevBtn');
+  const nextBtn  = document.getElementById('nextBtn');
 
-  let autoScrollId  = null;
-  let isHovering    = false;
-  let isDragging    = false;
-  let startX        = 0;
-  let scrollLeft    = 0;
-  let currentIndex  = 0;
+  const N         = MEMORIES.length;
+  const angleStep = 360 / N;
 
-  /* --- Placeholder gradient colors for demo images --- */
-  const GRADIENTS = [
-    ['#f2d5d5','#e8b4b8'],
-    ['#d5e4f2','#b4cce8'],
-    ['#d5f2e4','#b4e8cc'],
-    ['#f2ecd5','#e8d8b4'],
-    ['#ead5f2','#d4b4e8'],
-    ['#f2d5ea','#e8b4d8'],
-    ['#d5f2f2','#b4e4e8'],
-    ['#f2e4d5','#e8ccb4'],
-  ];
+  let radius   = 460;
+  let rotation = 0;
+  let velocity = 0;
+
+  let isDragging         = false;
+  let lastX              = 0;
+  let lastMoveTime       = 0;
+  let dragVelocitySample = 0;
+
+  let autoplay  = true;
+  let idleTimer = null;
+  let isVisible = true;
+  let currentIndex = 0;
+
+  const AUTO_SPEED       = 0.045;
+  const DAMPING          = 0.945;
+  const DRAG_SENSITIVITY = 0.32;
+
+  const cardEls = [];
 
   /* ---- Build cards ---- */
-  function buildCards(data) {
-    // We duplicate cards for seamless infinite looping
-    const allData = [...data, ...data];
-    allData.forEach((mem, i) => {
-      const idx = i % data.length;
-      const g   = GRADIENTS[idx % GRADIENTS.length];
-
+  function buildCards() {
+    MEMORIES.forEach((mem, i) => {
+      const g    = GRADIENTS[i % GRADIENTS.length];
       const card = document.createElement('div');
-      card.className = 'memory-card';
+      card.className  = 'carousel-3d-card';
+      card.dataset.index = i;
       card.innerHTML = `
-        <div class="memory-card-img-wrap">
-          <img
-            src="${mem.image}"
-            alt="${mem.title}"
-            loading="lazy"
-            onerror="this.parentNode.style.background='linear-gradient(135deg, ${g[0]}, ${g[1]})'; this.style.display='none';"
-          />
-          <div class="memory-overlay">
-            <div class="memory-overlay-date">📅 ${mem.date}</div>
-            <div class="memory-overlay-title">"${mem.title}"</div>
-            <div class="memory-overlay-desc">${mem.description}</div>
+        <div class="carousel-3d-card-img-wrap">
+          <img src="${mem.image}" alt="${mem.title}" loading="lazy"
+               onerror="this.parentNode.style.background='linear-gradient(135deg,${g[0]},${g[1]})'; this.style.display='none';" />
+          <div class="carousel-3d-badge">${String(i + 1).padStart(2, '0')}</div>
+          <div class="carousel-3d-overlay">
+            <div class="carousel-3d-overlay-date">📅 ${mem.date}</div>
+            <div class="carousel-3d-overlay-title">"${mem.title}"</div>
+            <div class="carousel-3d-overlay-desc">${mem.description}</div>
           </div>
         </div>
-        <div class="memory-card-label">
-          <span class="memory-card-label-num">Memory ${idx + 1}</span>
-        </div>
-      `;
-
-      card.addEventListener('mouseenter', () => { isHovering = true; stopAuto(); });
-      card.addEventListener('mouseleave', () => { isHovering = false; startAuto(); });
-
-      track.appendChild(card);
+        <div class="carousel-3d-label">Memory ${i + 1}</div>`;
+      card.addEventListener('click', () => {
+        if (Math.abs(dragVelocitySample) > 2) return;
+        goToIndex(i);
+      });
+      ring.appendChild(card);
+      cardEls.push(card);
     });
   }
 
-  /* ---- Timeline dots ---- */
-  function buildDots(count) {
+  /* ---- Dots ---- */
+  function buildDots() {
     dotsWrap.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      if (i > 0) {
-        const line = document.createElement('div');
-        line.className = 'timeline-dot-line';
-        dotsWrap.appendChild(line);
-      }
+    for (let i = 0; i < N; i++) {
       const dot = document.createElement('div');
       dot.className = 'timeline-dot' + (i === 0 ? ' active' : '');
       dot.setAttribute('aria-label', `Go to memory ${i + 1}`);
       dot.setAttribute('role', 'button');
       dot.setAttribute('tabindex', '0');
-      dot.addEventListener('click', () => scrollToIndex(i));
-      dot.addEventListener('keydown', e => { if (e.key === 'Enter') scrollToIndex(i); });
+      dot.addEventListener('click', () => goToIndex(i));
+      dot.addEventListener('keydown', e => { if (e.key === 'Enter') goToIndex(i); });
       dotsWrap.appendChild(dot);
     }
   }
 
-  function updateDots(index) {
-    const dots = dotsWrap.querySelectorAll('.timeline-dot');
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  function updateDots() {
+    dotsWrap.querySelectorAll('.timeline-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
   }
 
-  /* ---- Card width helper ---- */
-  function cardWidth() {
-    const card = track.children[0];
-    if (!card) return 300;
-    return card.offsetWidth + parseInt(getComputedStyle(track).gap || 0);
+  /* ---- Radius ---- */
+  function calcRadius() {
+    const cardW = stage.clientWidth < 500 ? (stage.clientWidth < 400 ? 155 : 190) : 240;
+    radius = Math.round((cardW / 2) / Math.tan(Math.PI / N)) + 40;
   }
 
-  /* ---- Scroll to index ---- */
-  function scrollToIndex(index) {
-    currentIndex = ((index % MEMORIES.length) + MEMORIES.length) % MEMORIES.length;
-    const cw = cardWidth();
-    outer.scrollTo({ left: currentIndex * cw, behavior: 'smooth' });
-    updateDots(currentIndex);
+  function normalize(angle) {
+    let a = angle % 360;
+    if (a > 180)  a -= 360;
+    if (a < -180) a += 360;
+    return a;
   }
 
-  /* ---- Auto-scroll (pixel-based smooth drift) ---- */
-  let autoOffset = 0;
+  /* ---- Render frame ---- */
+  function render() {
+    ring.style.transform = `translateZ(${-radius}px) rotateY(${rotation}deg)`;
 
-  function startAuto() {
-    if (autoScrollId) return;
-    autoScrollId = setInterval(() => {
-      if (isHovering || isDragging) return;
-      autoOffset += 0.6;
-      const totalW = cardWidth() * MEMORIES.length;
-      if (outer.scrollLeft >= totalW) {
-        outer.scrollLeft -= totalW;
-        autoOffset = outer.scrollLeft;
-      }
-      outer.scrollLeft = autoOffset;
+    let frontIdx = 0, frontDist = 999;
+    cardEls.forEach((card, i) => {
+      const itemAngle  = i * angleStep;
+      const totalAngle = normalize(itemAngle + rotation);
+      const abs        = Math.abs(totalAngle);
+      const depth      = (1 - Math.cos(abs * Math.PI / 180)) / 2;
 
-      // Sync dot
-      const idx = Math.round(outer.scrollLeft / cardWidth()) % MEMORIES.length;
-      if (idx !== currentIndex) {
-        currentIndex = idx;
-        updateDots(currentIndex);
-      }
-    }, 16);
-  }
+      card.style.transform  = `rotateY(${itemAngle}deg) translateZ(${radius}px) scale(${1 - depth * 0.28})`;
+      card.style.opacity    = (1 - depth * 0.82).toFixed(3);
+      card.style.filter     = `blur(${(depth * 5.5).toFixed(2)}px) brightness(${(1 - depth * 0.55).toFixed(2)})`;
+      card.style.zIndex     = Math.round((1 - depth) * 1000);
+      card.classList.toggle('is-front', abs < angleStep / 2);
 
-  function stopAuto() {
-    clearInterval(autoScrollId);
-    autoScrollId = null;
-    autoOffset = outer.scrollLeft;
-  }
-
-  /* ---- Nav buttons ---- */
-  prevBtn.addEventListener('click', () => {
-    stopAuto();
-    scrollToIndex(currentIndex - 1);
-    setTimeout(startAuto, 2000);
-  });
-  nextBtn.addEventListener('click', () => {
-    stopAuto();
-    scrollToIndex(currentIndex + 1);
-    setTimeout(startAuto, 2000);
-  });
-
-  /* ---- Mouse drag ---- */
-  outer.addEventListener('mousedown', e => {
-    isDragging = true;
-    stopAuto();
-    startX     = e.pageX - outer.offsetLeft;
-    scrollLeft = outer.scrollLeft;
-    outer.style.cursor = 'grabbing';
-  });
-  outer.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    const x    = e.pageX - outer.offsetLeft;
-    const walk = (x - startX) * 1.2;
-    outer.scrollLeft = scrollLeft - walk;
-  });
-  ['mouseup', 'mouseleave'].forEach(evt => {
-    outer.addEventListener(evt, () => {
-      if (!isDragging) return;
-      isDragging = false;
-      outer.style.cursor = '';
-      autoOffset = outer.scrollLeft;
-      startAuto();
+      if (abs < frontDist) { frontDist = abs; frontIdx = i; }
     });
-  });
 
-  /* ---- Touch swipe ---- */
-  let touchStartX = 0;
-  outer.addEventListener('touchstart', e => {
-    isDragging  = true;
-    touchStartX = e.touches[0].clientX;
-    scrollLeft  = outer.scrollLeft;
-    stopAuto();
-  }, { passive: true });
-  outer.addEventListener('touchmove', e => {
+    if (frontIdx !== currentIndex) { currentIndex = frontIdx; updateDots(); }
+  }
+
+  /* ---- Navigation ---- */
+  function goToIndex(i) {
+    resetIdle();
+    const target = -i * angleStep;
+    const delta  = normalize(target - normalize(rotation));
+    animateTo(rotation + delta);
+  }
+
+  function animateTo(targetRotation) {
+    velocity = 0;
+    const start = rotation;
+    const diff  = targetRotation - start;
+    const dur   = 650;
+    const t0    = performance.now();
+
+    function step(now) {
+      const t      = Math.min(1, (now - t0) / dur);
+      const eased  = 1 - Math.pow(1 - t, 3);
+      rotation     = start + diff * eased;
+      render();
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function resetIdle() {
+    autoplay = false;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { autoplay = true; }, 2600);
+  }
+
+  /* ---- Pointer / touch drag ---- */
+  function onPointerDown(e) {
+    isDragging = true; autoplay = false;
+    clearTimeout(idleTimer);
+    velocity = 0; dragVelocitySample = 0;
+    lastX = e.clientX ?? e.touches[0].clientX;
+    lastMoveTime = performance.now();
+    stage.classList.add('grabbing');
+    if (stage.setPointerCapture && e.pointerId != null) stage.setPointerCapture(e.pointerId);
+  }
+
+  function onPointerMove(e) {
     if (!isDragging) return;
-    const dx = touchStartX - e.touches[0].clientX;
-    outer.scrollLeft = scrollLeft + dx;
-  }, { passive: true });
-  outer.addEventListener('touchend', () => {
+    const x  = e.clientX ?? e.touches[0].clientX;
+    const now = performance.now();
+    const dx  = x - lastX;
+    const dt  = Math.max(1, now - lastMoveTime);
+    rotation += dx * DRAG_SENSITIVITY;
+    velocity  = (dx * DRAG_SENSITIVITY) * (16 / dt);
+    dragVelocitySample = dx;
+    lastX = x; lastMoveTime = now;
+    render();
+  }
+
+  function onPointerUp() {
+    if (!isDragging) return;
     isDragging = false;
-    autoOffset = outer.scrollLeft;
-    setTimeout(startAuto, 800);
-  });
+    stage.classList.remove('grabbing');
+    resetIdle();
+  }
 
-  /* ---- Init ---- */
-  buildCards(MEMORIES);
-  buildDots(MEMORIES.length);
-  startAuto();
+  stage.addEventListener('pointerdown', onPointerDown);
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
+  stage.addEventListener('touchstart', onPointerDown, { passive: true });
+  window.addEventListener('touchmove',  onPointerMove,  { passive: true });
+  window.addEventListener('touchend',   onPointerUp);
 
-  // Keyboard navigation
+  prevBtn.addEventListener('click', () => goToIndex(((currentIndex - 1) % N + N) % N));
+  nextBtn.addEventListener('click', () => goToIndex((currentIndex + 1) % N));
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowLeft')  { stopAuto(); scrollToIndex(currentIndex - 1); setTimeout(startAuto, 2000); }
-    if (e.key === 'ArrowRight') { stopAuto(); scrollToIndex(currentIndex + 1); setTimeout(startAuto, 2000); }
+    if (!isElementInViewport(stage)) return;
+    if (e.key === 'ArrowLeft')  goToIndex(((currentIndex - 1) % N + N) % N);
+    if (e.key === 'ArrowRight') goToIndex((currentIndex + 1) % N);
   });
-})();
 
+  function isElementInViewport(el) {
+    const r = el.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  }
+
+  /* ---- Pause when off-screen ---- */
+  new IntersectionObserver((entries) => {
+    entries.forEach(en => { isVisible = en.isIntersecting; });
+  }, { threshold: 0.05 }).observe(stage);
+
+  /* ---- Main loop ---- */
+  function tick() {
+    if (isVisible && !isDragging) {
+      if (Math.abs(velocity) > 0.01) {
+        rotation += velocity;
+        velocity *= DAMPING;
+        render();
+      } else if (autoplay) {
+        rotation -= AUTO_SPEED;
+        render();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', () => { calcRadius(); render(); });
+
+  buildCards(); buildDots(); calcRadius(); render();
+  requestAnimationFrame(tick);
+})();
 
 /* ================================================================
    REPLAY BUTTON
@@ -1311,44 +1315,6 @@ const MEMORIES = [
 document.getElementById('replayBtn').addEventListener('click', () => {
   document.getElementById('memories').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
-
-
-/* ================================================================
-   STAGGERED CARD ANIMATIONS
-   ================================================================ */
-(function staggerCards() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const cards = entry.target.querySelectorAll('.thing-card');
-        cards.forEach((c, i) => {
-          setTimeout(() => {
-            c.style.opacity    = '0';
-            c.style.transform  = 'translateY(24px)';
-            c.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            requestAnimationFrame(() => {
-              setTimeout(() => {
-                c.style.opacity   = '1';
-                c.style.transform = 'translateY(0)';
-              }, i * 100);
-            });
-          }, 0);
-        });
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  const grid = document.querySelector('.cards-grid');
-  if (grid) {
-    // Set initial hidden state
-    grid.querySelectorAll('.thing-card').forEach(c => {
-      c.style.opacity   = '0';
-      c.style.transform = 'translateY(24px)';
-    });
-    obs.observe(grid);
-  }
-})();
 </script>
 
 </body>
