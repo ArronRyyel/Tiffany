@@ -8,9 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    /* ============================================================
-       DESIGN TOKENS
-    ============================================================ */
     :root {
       --cream:        #fbf3e6;
       --ivory:        #f6ebd9;
@@ -26,187 +23,121 @@
       --text-dark:    #33191a;
       --text-mid:     #6d4441;
       --text-light:   #9c7a70;
-      --shadow-warm:  rgba(124, 53, 64, 0.16);
-      --shadow-deep:  rgba(85, 31, 40, 0.28);
-      --glass-bg:     rgba(253, 246, 238, 0.7);
-      --glass-border: rgba(187, 146, 86, 0.32);
+      --shadow-warm:  rgba(124,53,64,0.16);
+      --shadow-deep:  rgba(85,31,40,0.28);
+      --glass-border: rgba(187,146,86,0.32);
       --paper:        #fffaf2;
     }
 
-    /* ============================================================
-       RESET & BASE
-    ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', sans-serif;
-      background-color: var(--cream);
+      background: var(--cream);
       color: var(--text-dark);
       overflow-x: hidden;
       line-height: 1.7;
-      position: relative;
     }
 
-    /* Subtle paper grain overlay */
+    /* Paper grain */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      pointer-events: none;
-      opacity: 0.45;
-      mix-blend-mode: multiply;
+      position: fixed; inset: 0;
+      z-index: 500; pointer-events: none;
+      opacity: 0.45; mix-blend-mode: multiply;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.2 0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
     img { display: block; max-width: 100%; }
-    a   { color: inherit; text-decoration: none; }
 
-    /* ============================================================
-       UTILITIES
-    ============================================================ */
     .section-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 600;
-      color: var(--burgundy);
-      line-height: 1.2;
+      font-weight: 600; color: var(--burgundy); line-height: 1.2;
     }
     .section-number {
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 400;
-      font-size: 1rem;
-      color: var(--gold);
-      display: block;
-      margin-bottom: 0.6rem;
+      font-style: italic; font-weight: 400; font-size: 1rem;
+      color: var(--gold); display: block; margin-bottom: 0.6rem;
     }
     .section-subtitle {
-      font-size: 1rem;
-      color: var(--text-mid);
-      font-weight: 300;
-      max-width: 540px;
+      font-size: 1rem; color: var(--text-mid);
+      font-weight: 300; max-width: 540px;
     }
     .fade-in {
-      opacity: 0;
-      transform: translateY(28px);
+      opacity: 0; transform: translateY(28px);
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ============================================================
-       PARTICLES CANVAS
-    ============================================================ */
+    /* ── Particles ─────────────────────────────────────────── */
     #particles-canvas {
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.5;
+      pointer-events: none; z-index: 0; opacity: 0.5;
     }
 
-    /* ============================================================
-       HERO
-    ============================================================ */
+    /* ── Hero ──────────────────────────────────────────────── */
     #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem 1.5rem;
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem 1.5rem;
       background:
         radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212,160,160,0.35) 0%, transparent 70%),
         linear-gradient(160deg, #fdf6ee 0%, #f5e6d8 50%, #ede0d4 100%);
-      z-index: 1;
-      overflow: hidden;
+      z-index: 1; overflow: hidden;
     }
     .hero-ornament {
       position: absolute;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 14rem;
-      font-weight: 300;
+      font-size: 14rem; font-weight: 300;
       color: rgba(212,160,160,0.08);
-      pointer-events: none;
-      user-select: none;
-      line-height: 1;
+      pointer-events: none; user-select: none; line-height: 1;
     }
     .hero-ornament.top-left  { top: -2rem; left: -2rem; }
     .hero-ornament.bot-right { bottom: -4rem; right: -2rem; }
+
     .hero-tag {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.2rem;
-      color: var(--gold);
-      letter-spacing: 0.08em;
-      margin-bottom: 1.2rem;
-      opacity: 0;
-      animation: fadeSlideUp 1s ease 0.3s forwards;
+      font-family: 'Dancing Script', cursive; font-size: 1.2rem;
+      color: var(--gold); letter-spacing: 0.08em; margin-bottom: 1.2rem;
+      opacity: 0; animation: fadeSlideUp 1s ease 0.3s forwards;
     }
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 9vw, 7.5rem);
-      font-weight: 300;
-      color: var(--burgundy);
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      opacity: 0;
-      animation: fadeSlideUp 1s ease 0.5s forwards;
+      font-size: clamp(3.5rem, 9vw, 7.5rem); font-weight: 300;
+      color: var(--burgundy); line-height: 1.05; letter-spacing: -0.01em;
+      opacity: 0; animation: fadeSlideUp 1s ease 0.5s forwards;
     }
     .hero-title em { font-style: italic; color: var(--deep-rose); }
     .hero-subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      color: var(--text-mid);
-      font-weight: 300;
-      max-width: 500px;
-      margin: 1.4rem auto 0;
-      line-height: 1.8;
-      opacity: 0;
-      animation: fadeSlideUp 1s ease 0.7s forwards;
+      font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--text-mid);
+      font-weight: 300; max-width: 500px; margin: 1.4rem auto 0; line-height: 1.8;
+      opacity: 0; animation: fadeSlideUp 1s ease 0.7s forwards;
     }
     .hero-anniversary {
       margin-top: 2.5rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
+      display: inline-flex; align-items: center; gap: 0.6rem;
       padding: 0.6rem 1.6rem;
-      border: 1px solid var(--glass-border);
-      border-radius: 50px;
-      background: var(--paper);
-      box-shadow: 0 6px 20px var(--shadow-warm);
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.25rem;
+      border: 1px solid var(--glass-border); border-radius: 50px;
+      background: var(--paper); box-shadow: 0 6px 20px var(--shadow-warm);
+      font-family: 'Dancing Script', cursive; font-size: 1.25rem;
       color: var(--burgundy);
-      opacity: 0;
-      animation: fadeSlideUp 1s ease 0.9s forwards;
+      opacity: 0; animation: fadeSlideUp 1s ease 0.9s forwards;
     }
     .hero-scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
+      position: absolute; bottom: 2.5rem; left: 50%;
       transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      opacity: 0;
-      animation: fadeSlideUp 1s ease 1.2s forwards;
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      opacity: 0; animation: fadeSlideUp 1s ease 1.2s forwards;
     }
     .hero-scroll-hint span {
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-light);
+      font-size: 0.75rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-light);
     }
     .scroll-line {
-      width: 1px;
-      height: 40px;
+      width: 1px; height: 40px;
       background: linear-gradient(to bottom, var(--gold), transparent);
       animation: scrollPulse 2s ease-in-out infinite;
     }
@@ -215,13 +146,10 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes scrollPulse {
-      0%, 100% { opacity: 0.4; transform: scaleY(1); }
-      50%       { opacity: 1;   transform: scaleY(1.15); }
+      0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
     }
 
-    /* ============================================================
-       MEMORIES SECTION
-    ============================================================ */
+    /* ── Memories section ──────────────────────────────────── */
     #memories {
       position: relative;
       padding: 6rem 0 5rem;
@@ -229,293 +157,222 @@
       z-index: 1;
     }
     .memories-header {
-      text-align: center;
-      padding: 0 1.5rem 3.5rem;
+      text-align: center; padding: 0 1.5rem 3.5rem;
     }
     .memories-header .section-subtitle { margin: 0.8rem auto 0; }
 
-    /* Marquee ticker */
+    /* Ticker */
     .memories-ticker {
       overflow: hidden;
       background: linear-gradient(100deg, var(--wine) 0%, var(--burgundy) 55%, var(--deep-burg) 100%);
-      padding: 0.85rem 0;
-      margin-bottom: 4rem;
+      padding: 0.85rem 0; margin-bottom: 3.5rem;
       transform: rotate(-1deg) scale(1.02);
       box-shadow: 0 10px 30px var(--shadow-deep);
     }
     .memories-ticker-track {
-      display: flex;
-      width: max-content;
+      display: flex; width: max-content;
       animation: tickerScroll 22s linear infinite;
     }
     .memories-ticker-track span {
-      display: inline-flex;
-      align-items: center;
+      display: inline-flex; align-items: center;
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 600;
-      font-size: 1.15rem;
-      color: var(--gold-light);
-      white-space: nowrap;
-      padding: 0 1.4rem;
-      letter-spacing: 0.01em;
+      font-style: italic; font-weight: 600; font-size: 1.15rem;
+      color: var(--gold-light); white-space: nowrap;
+      padding: 0 1.4rem; letter-spacing: 0.01em;
     }
     .memories-ticker-track span::after {
-      content: '♥';
-      margin-left: 1.4rem;
-      color: var(--rose);
-      font-style: normal;
-      font-size: 0.9rem;
+      content: '♥'; margin-left: 1.4rem;
+      color: var(--rose); font-style: normal; font-size: 0.9rem;
     }
     @keyframes tickerScroll {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
     }
-    @media (prefers-reduced-motion: reduce) {
-      .memories-ticker-track { animation: none; }
-    }
 
-    /* ============================================================
-       CURVED STRIP CAROUSEL
-       ─ Panels sit on a CSS 3-D arc, each rotated around Y,
-         forming a concave panoramic strip (matches reference).
-       ─ The viewport clips the strip; perspective gives depth.
-    ============================================================ */
+    /* ── FLAT PANORAMIC STRIP CAROUSEL ─────────────────────────
+       All panels in one horizontal flex row.
+       The container gets a subtle perspective + rotateX tilt
+       so the row curves away at the edges like the reference.
+       JS drives a translateX on the inner track to scroll it.
+    ──────────────────────────────────────────────────────────── */
 
-    /* Outer clip — hides the off-arc panels */
-    .carousel-strip-viewport {
+    /* Outer wrapper: clips overflow + applies perspective */
+    .carousel-wrap {
       position: relative;
       width: 100%;
       overflow: hidden;
-      padding: 0 0 2.5rem;
+      /* perspective here makes the rotateX look 3-D */
+      perspective: 1000px;
+      perspective-origin: 50% 100%;
+      padding: 1rem 0 2rem;
     }
 
-    /* Left & right fog to blend edge panels into background */
-    .carousel-strip-viewport::before,
-    .carousel-strip-viewport::after {
+    /* Soft fade on left + right edges */
+    .carousel-wrap::before,
+    .carousel-wrap::after {
       content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      width: 12%;
-      z-index: 8;
-      pointer-events: none;
+      position: absolute; top: 0; bottom: 0;
+      width: 8%; z-index: 4; pointer-events: none;
     }
-    .carousel-strip-viewport::before {
+    .carousel-wrap::before {
       left: 0;
-      background: linear-gradient(to right, var(--ivory) 20%, transparent 100%);
+      background: linear-gradient(to right, var(--ivory), transparent);
     }
-    .carousel-strip-viewport::after {
+    .carousel-wrap::after {
       right: 0;
-      background: linear-gradient(to left, var(--ivory) 20%, transparent 100%);
+      background: linear-gradient(to left, var(--ivory), transparent);
     }
 
-    /* The 3-D perspective stage */
-    .carousel-strip-stage {
-      position: relative;
-      height: 340px;
-      width: 100%;
-      /* Higher value = less zoom, more natural arc depth */
-      perspective: 2200px;
-      perspective-origin: 50% 50%;
+    /* The tilted container — rotateX gives the curved-floor look */
+    .carousel-tilt {
+      transform: rotateX(8deg);
+      transform-style: preserve-3d;
       cursor: grab;
       touch-action: pan-y;
       user-select: none;
     }
-    .carousel-strip-stage.grabbing { cursor: grabbing; }
+    .carousel-tilt.grabbing { cursor: grabbing; }
 
-    /* Pivot — rotating this spins the arc */
-    .carousel-strip-pivot {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 0;
-      height: 100%;
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-
-    /* Each panel */
-    .strip-panel {
-      position: absolute;
-      top: 0;
-      /* centred on the pivot axis */
-      left: calc(var(--pw) / -2);
-      width: var(--pw);
-      height: 100%;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-      overflow: hidden;
-      /* Thin white gap between panels, like reference */
-      outline: 2px solid rgba(255,255,255,0.25);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
-    }
-
-    .strip-panel img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
-    }
-
-    /* Dimming for off-centre panels */
-    .strip-panel::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(30, 8, 8, 0.42);
-      transition: background 0.5s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .strip-panel.is-center::after {
-      background: rgba(30, 8, 8, 0.0);
-    }
-
-    /* Info overlay — always visible on centre, hover on others */
-    .strip-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
+    /* Scrolling track — all panels in a row */
+    .carousel-track {
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.5rem 1.2rem;
+      align-items: flex-end;   /* bottom-aligned like reference */
+      gap: 4px;
+      will-change: transform;
+      /* Centre the track: pad so first/last panels sit at screen centre */
+      padding: 2rem 0 1.5rem;
+      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    /* Disable CSS transition during JS drag (JS adds .no-transition) */
+    .carousel-track.no-transition { transition: none; }
+
+    /* Individual panel */
+    .c-panel {
+      flex: 0 0 auto;
+      width: 200px;
+      height: 280px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 3px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.20);
+      cursor: pointer;
+      transition: transform 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+      /* Slightly dim by default */
+      filter: brightness(0.72) saturate(0.85);
+    }
+
+    .c-panel img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      pointer-events: none;
+      transition: transform 0.5s ease;
+    }
+
+    /* Active / centre panel — full brightness, slightly taller */
+    .c-panel.active {
+      transform: scaleY(1.07) translateY(-4px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+      filter: brightness(1) saturate(1);
+      z-index: 2;
+    }
+    .c-panel.active img { transform: scale(1.04); }
+
+    /* Dim overlay for non-active panels */
+    .c-panel::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(20,5,5,0.36);
+      transition: opacity 0.4s ease;
+      z-index: 1; pointer-events: none;
+    }
+    .c-panel.active::before { opacity: 0; }
+
+    /* Info overlay — always on active, hover on others */
+    .c-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.1rem 0.9rem;
       background: linear-gradient(
         to top,
-        rgba(45,12,12,0.9)  0%,
-        rgba(45,12,12,0.15) 50%,
-        transparent         100%
+        rgba(40,10,10,0.90) 0%,
+        rgba(40,10,10,0.08) 55%,
+        transparent 100%
       );
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    .strip-panel.is-center .strip-overlay,
-    .strip-panel:hover      .strip-overlay {
-      opacity: 1;
-      transform: translateY(0);
+    .c-panel.active .c-overlay,
+    .c-panel:hover  .c-overlay {
+      opacity: 1; transform: translateY(0);
     }
-
-    .strip-overlay-date {
+    .c-overlay-date {
       font-family: 'Dancing Script', cursive;
-      font-size: 0.8rem;
-      color: var(--gold-light);
-      margin-bottom: 0.2rem;
-      letter-spacing: 0.03em;
+      font-size: 0.74rem; color: var(--gold-light); margin-bottom: 0.18rem;
     }
-    .strip-overlay-title {
+    .c-overlay-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.25;
-      margin-bottom: 0.3rem;
+      font-size: 0.95rem; font-weight: 600; color: #fff;
+      line-height: 1.2; margin-bottom: 0.22rem;
     }
-    .strip-overlay-desc {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.82);
-      font-weight: 300;
-      line-height: 1.55;
+    .c-overlay-desc {
+      font-size: 0.67rem; color: rgba(255,255,255,0.8);
+      font-weight: 300; line-height: 1.5;
     }
-
-    /* Numbered badge */
-    .strip-badge {
-      position: absolute;
-      top: 10px; left: 10px;
-      width: 30px; height: 30px;
-      border-radius: 50%;
-      background: var(--burgundy);
-      border: 1.5px solid var(--gold-light);
+    .c-badge {
+      position: absolute; top: 7px; left: 7px;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--burgundy); border: 1.5px solid var(--gold-light);
       color: var(--gold-light);
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 600;
-      font-size: 0.82rem;
+      font-style: italic; font-weight: 600; font-size: 0.75rem;
       display: flex; align-items: center; justify-content: center;
-      z-index: 3;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+      z-index: 3; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
 
-    /* Drag hint */
+    /* Hint + dots + nav */
     .carousel-hint {
-      text-align: center;
-      margin-top: 1.2rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 0.9rem;
-      color: var(--text-light);
-      letter-spacing: 0.03em;
+      text-align: center; margin-top: 0.8rem;
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 0.9rem; color: var(--text-light); letter-spacing: 0.03em;
     }
-
-    /* Progress dots */
     .timeline-dots {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      max-width: 480px;
-      padding: 0 1.5rem;
-      margin: 1.4rem auto 0;
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; max-width: 480px; padding: 0 1.5rem; margin: 1.2rem auto 0;
     }
     .timeline-dot {
-      flex: 1;
-      height: 4px;
-      border-radius: 3px;
-      background: var(--dusty-pink);
-      border: none;
-      transition: background 0.3s, transform 0.3s;
-      cursor: pointer;
+      flex: 1; height: 4px; border-radius: 3px;
+      background: var(--dusty-pink); border: none;
+      transition: background 0.3s, transform 0.3s; cursor: pointer;
     }
     .timeline-dot.active {
-      background: var(--burgundy);
-      transform: scaleY(1.6);
+      background: var(--burgundy); transform: scaleY(1.6);
     }
-
-    /* Nav buttons */
     .carousel-nav {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
+      display: flex; justify-content: center; gap: 1rem; margin-top: 1.8rem;
     }
     .carousel-btn {
-      height: 46px;
-      padding: 0 1.5rem;
-      border-radius: 50px;
-      border: none;
-      background: var(--burgundy);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      gap: 0.5rem;
+      height: 44px; padding: 0 1.4rem; border-radius: 50px; border: none;
+      background: var(--burgundy); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       color: var(--warm-white);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
+      font-family: 'Inter', sans-serif; font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 0.02em;
       box-shadow: 0 8px 22px var(--shadow-warm);
-      transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+      transition: background 0.25s, transform 0.2s;
     }
-    .carousel-btn:hover {
-      background: var(--wine);
-      box-shadow: 0 10px 28px var(--shadow-deep);
-      transform: scale(1.05);
-    }
+    .carousel-btn:hover { background: var(--wine); transform: scale(1.05); }
 
-    /* ============================================================
-       SCROLLBAR
-    ============================================================ */
+    /* ── Scrollbar ─────────────────────────────────────────── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--cream); }
     ::-webkit-scrollbar-thumb { background: var(--dusty-pink); border-radius: 3px; }
 
-    /* ============================================================
-       RESPONSIVE
-    ============================================================ */
+    /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 768px) {
-      .carousel-strip-stage { height: 260px; }
+      .c-panel { width: 150px; height: 220px; }
     }
     @media (max-width: 480px) {
-      .carousel-strip-stage { height: 200px; }
+      .c-panel { width: 120px; height: 175px; }
       .hero-title { letter-spacing: -0.02em; }
     }
   </style>
@@ -524,9 +381,7 @@
 
 <canvas id="particles-canvas"></canvas>
 
-<!-- ============================================================
-     HERO
-============================================================ -->
+<!-- HERO -->
 <section id="hero">
   <span class="hero-ornament top-left">❝</span>
   <span class="hero-ornament bot-right">❞</span>
@@ -534,9 +389,7 @@
   <h1 class="hero-title">Our <em>Story</em></h1>
   <p class="hero-subtitle">A collection of the little moments that became my favorite memories.</p>
   <div class="hero-anniversary">
-    <span>❤️</span>
-    <span>Happy Anniversary, My Love</span>
-    <span>❤️</span>
+    <span>❤️</span><span>Happy Anniversary, My Love</span><span>❤️</span>
   </div>
   <div class="hero-scroll-hint">
     <span>Scroll</span>
@@ -544,9 +397,7 @@
   </div>
 </section>
 
-<!-- ============================================================
-     MEMORIES — CURVED STRIP CAROUSEL
-============================================================ -->
+<!-- MEMORIES -->
 <section id="memories">
   <div class="memories-header fade-in">
     <span class="section-number">Chapter One</span>
@@ -556,388 +407,244 @@
 
   <div class="memories-ticker" aria-hidden="true">
     <div class="memories-ticker-track">
-      <span>Eight Moments</span><span>One Story</span><span>Made With Love</span><span>Our Timeline</span>
-      <span>Eight Moments</span><span>One Story</span><span>Made With Love</span><span>Our Timeline</span>
+      <span>Our Moments</span><span>One Story</span><span>Made With Love</span><span>Our Timeline</span>
+      <span>Our Moments</span><span>One Story</span><span>Made With Love</span><span>Our Timeline</span>
     </div>
   </div>
 
-  <div class="carousel-strip-viewport">
-    <div class="carousel-strip-stage" id="stripStage">
-      <div class="carousel-strip-pivot" id="stripPivot"></div>
+  <!-- Carousel -->
+  <div class="carousel-wrap">
+    <div class="carousel-tilt" id="carouselTilt">
+      <div class="carousel-track" id="carouselTrack"></div>
     </div>
   </div>
 
-  <p class="carousel-hint">Drag to look around &nbsp;·&nbsp; click a memory to focus</p>
-
+  <p class="carousel-hint">Drag · swipe · or use the buttons</p>
   <div class="timeline-dots" id="timelineDots"></div>
-
   <div class="carousel-nav">
-    <button class="carousel-btn" id="prevBtn" aria-label="Previous memory">&#8592;&nbsp; Prev</button>
-    <button class="carousel-btn" id="nextBtn" aria-label="Next memory">Next &nbsp;&#8594;</button>
+    <button class="carousel-btn" id="prevBtn">&#8592;&nbsp; Prev</button>
+    <button class="carousel-btn" id="nextBtn">Next &nbsp;&#8594;</button>
   </div>
 </section>
 
-
-
-<!-- ============================================================
-     JAVASCRIPT
-============================================================ -->
 <script>
 /* ================================================================
-   MEMORY DATA  ✏️  Edit here — add as many entries as you like.
+   MEMORY DATA  ✏️  Edit here
    ================================================================ */
 const MEMORIES = [
-  { image: "photos/memory-01.jpg", date: "The Very Beginning",   title: "The Day We Met",                   description: "I didn't know it then, but that was the day everything changed." },
-  { image: "photos/memory-02.jpg", date: "Our First Picture",    title: "Captured",                         description: "The first time someone took a photo of us together. I've looked at it a thousand times since." },
-  { image: "photos/memory-03.jpg", date: "Our First Date",       title: "Just Us",                          description: "Nervous and happy at the same time. I don't think I stopped smiling once." },
-  { image: "photos/memory-04.jpg", date: "A Funny Day",          title: "Our Funniest Moment",              description: "I still laugh every time I think about this. Only we would find that funny." },
-  { image: "photos/memory-05.jpg", date: "Our Favorite Place",   title: "Here, With You",                   description: "It's not really about the place. It's about who I'm with." },
-  { image: "photos/memory-06.jpg", date: "A Random Tuesday",     title: "Nothing Special (Except It Was)",  description: "Just an ordinary day that somehow became one of my favorites." },
-  { image: "photos/memory-07.jpg", date: "The Big Trip",         title: "Adventure Awaits",                 description: "Every mile with you is worth it. I'd go anywhere as long as you're beside me." },
-  { image: "photos/memory-08.jpg", date: "Most Recently",        title: "Our Latest Memory",                description: "This one is still fresh. And I already know I'll treasure it forever." }
+  { image:"photos/memory-01.jpg", date:"The Very Beginning",  title:"The Day We Met",                   description:"I didn't know it then, but that was the day everything changed." },
+  { image:"photos/memory-02.jpg", date:"Our First Picture",   title:"Captured",                         description:"The first time someone took a photo of us together. I've looked at it a thousand times since." },
+  { image:"photos/memory-03.jpg", date:"Our First Date",      title:"Just Us",                          description:"Nervous and happy at the same time. I don't think I stopped smiling once." },
+  { image:"photos/memory-04.jpg", date:"A Funny Day",         title:"Our Funniest Moment",              description:"I still laugh every time I think about this. Only we would find that funny." },
+  { image:"photos/memory-05.jpg", date:"Our Favorite Place",  title:"Here, With You",                   description:"It's not really about the place. It's about who I'm with." },
+  { image:"photos/memory-06.jpg", date:"A Random Tuesday",    title:"Nothing Special (Except It Was)",  description:"Just an ordinary day that somehow became one of my favorites." },
+  { image:"photos/memory-07.jpg", date:"The Big Trip",        title:"Adventure Awaits",                 description:"Every mile with you is worth it. I'd go anywhere as long as you're beside me." },
+  { image:"photos/memory-08.jpg", date:"Most Recently",       title:"Our Latest Memory",                description:"This one is still fresh. And I already know I'll treasure it forever." },
+  { image:"photos/memory-09.jpg", date:"Another Memory",      title:"Still Us",                         description:"Every moment with you is one I'd choose again." },
+  { image:"photos/memory-10.jpg", date:"And More",            title:"Never Enough",                     description:"I keep thinking: I want a thousand more days just like this." }
 ];
 
-/* Gradient fallbacks when a photo hasn't been added yet */
 const GRADIENTS = [
-  ['#f2d5d5','#e8b4b8'], ['#d5e4f2','#b4cce8'], ['#d5f2e4','#b4e8cc'], ['#f2ecd5','#e8d8b4'],
-  ['#ead5f2','#d4b4e8'], ['#f2d5ea','#e8b4d8'], ['#d5f2f2','#b4e4e8'], ['#f2e4d5','#e8ccb4']
+  ['#f2d5d5','#e8b4b8'],['#d5e4f2','#b4cce8'],['#d5f2e4','#b4e8cc'],['#f2ecd5','#e8d8b4'],
+  ['#ead5f2','#d4b4e8'],['#f2d5ea','#e8b4d8'],['#d5f2f2','#b4e4e8'],['#f2e4d5','#e8ccb4'],
+  ['#f5d5e8','#e8b4d0'],['#d5f0f2','#b4dce8']
 ];
 
-/* ================================================================
-   PARTICLES
-   ================================================================ */
-(function initParticles() {
+/* ── Particles ─────────────────────────────────────────────── */
+(function() {
   const canvas = document.getElementById('particles-canvas');
-  const ctx    = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
   let W, H, particles;
-  const SYMBOLS = ['❤', '✦', '·', '✿', '°'];
-
-  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-
-  function createParticles() {
+  const SYM = ['❤','✦','·','✿','°'];
+  function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  function init() {
     particles = [];
-    const count = Math.floor((W * H) / 22000);
-    for (let i = 0; i < count; i++) {
-      particles.push({
-        x: Math.random() * W, y: Math.random() * H,
-        size: Math.random() * 10 + 5,
-        opacity: Math.random() * 0.28 + 0.04,
-        speedY: Math.random() * 0.35 + 0.08,
-        speedX: (Math.random() - 0.5) * 0.18,
-        symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
-        drift: Math.random() * Math.PI * 2
-      });
-    }
+    for (let i = 0; i < Math.floor(W*H/22000); i++)
+      particles.push({ x:Math.random()*W, y:Math.random()*H,
+        sz:Math.random()*10+5, op:Math.random()*0.28+0.04,
+        sy:Math.random()*0.35+0.08, sx:(Math.random()-0.5)*0.18,
+        sym:SYM[Math.floor(Math.random()*SYM.length)], d:Math.random()*Math.PI*2 });
   }
-
   function draw() {
-    ctx.clearRect(0, 0, W, H);
+    ctx.clearRect(0,0,W,H);
     particles.forEach(p => {
-      p.drift += 0.008;
-      p.x += p.speedX + Math.sin(p.drift) * 0.14;
-      p.y -= p.speedY;
-      if (p.y < -20) { p.y = H + 10; p.x = Math.random() * W; }
-      ctx.globalAlpha = p.opacity;
-      ctx.font = `${p.size}px serif`;
-      ctx.fillStyle = '#c9a96e';
-      ctx.fillText(p.symbol, p.x, p.y);
+      p.d+=0.008; p.x+=p.sx+Math.sin(p.d)*0.14; p.y-=p.sy;
+      if (p.y<-20) { p.y=H+10; p.x=Math.random()*W; }
+      ctx.globalAlpha=p.op; ctx.font=p.sz+'px serif';
+      ctx.fillStyle='#c9a96e'; ctx.fillText(p.sym,p.x,p.y);
     });
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(draw);
+    ctx.globalAlpha=1; requestAnimationFrame(draw);
   }
-
-  window.addEventListener('resize', () => { resize(); createParticles(); });
-  resize(); createParticles(); draw();
+  addEventListener('resize',()=>{resize();init()});
+  resize(); init(); draw();
 })();
 
-/* ================================================================
-   SCROLL FADE-IN
-   ================================================================ */
-(function initFadeIn() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
-})();
+/* ── Fade-in observer ──────────────────────────────────────── */
+new IntersectionObserver((es)=>{
+  es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('visible'); } });
+},{threshold:0.15}).observe(document.querySelector('.memories-header'));
 
-
-
-/* ================================================================
-   CURVED STRIP CAROUSEL
-   ─ N panels placed on a CSS 3-D arc (rotate-Y per panel).
-   ─ "currentIndex" controls which panel faces front.
-   ─ Physics: drag gives inertia; auto-spins slowly when idle.
-   ─ Panel width is responsive; arc tightness driven by perspective.
-   ================================================================ */
-(function initStripCarousel() {
-  const stage    = document.getElementById('stripStage');
-  const pivot    = document.getElementById('stripPivot');
+/* ── Flat panoramic strip carousel ────────────────────────────
+   translateX scrolls the track so the active panel is centred.
+   Drag / touch supported with inertia + snap.
+──────────────────────────────────────────────────────────────── */
+(function() {
+  const track    = document.getElementById('carouselTrack');
+  const tilt     = document.getElementById('carouselTilt');
   const dotsWrap = document.getElementById('timelineDots');
   const prevBtn  = document.getElementById('prevBtn');
   const nextBtn  = document.getElementById('nextBtn');
+  const N        = MEMORIES.length;
 
-  const N = MEMORIES.length;
+  let panels     = [];
+  let activeIdx  = 0;
+  let currentX   = 0;   // current translateX of track (px)
+  let targetX    = 0;
 
-  /* ── Arc geometry ──────────────────────────────────────────
-     Each panel is rotated by `angleBetween` degrees around Y,
-     and pushed out by `radius` px along Z.
-     We keep panels touching (no gap between them in 3-D space)
-     by matching: panel_width = 2 * radius * sin(halfAngle)
-     i.e.  radius = panelW / (2 * sin(π/N))
-  ─────────────────────────────────────────────────────────── */
-  let panelW  = 0;
-  let radius  = 0;
-  const angleBetween = 360 / N;   // degrees per step
-
-  function calcGeometry() {
-    const vw = stage.clientWidth;
-    /* Narrower panels so more are visible at once — like the reference */
-    panelW = vw < 480 ? Math.round(vw * 0.28)
-           : vw < 768 ? Math.round(vw * 0.18)
-           :             Math.round(vw * 0.14);
-    /* radius so adjacent panels are flush */
-    radius = Math.round(panelW / (2 * Math.sin(Math.PI / N)));
-    /* Write CSS custom property on every panel */
-    panelEls.forEach(p => p.style.setProperty('--pw', panelW + 'px'));
-  }
-
-  /* ── Build panels ────────────────────────────────────────── */
-  const panelEls = [];
-
-  function buildPanels() {
-    MEMORIES.forEach((mem, i) => {
+  /* ── Build panels ── */
+  function build() {
+    MEMORIES.forEach((m, i) => {
       const g = GRADIENTS[i % GRADIENTS.length];
-      const panel = document.createElement('div');
-      panel.className = 'strip-panel';
-      panel.style.setProperty('--pw', '200px'); // placeholder, updated in calcGeometry
-
-      panel.innerHTML = `
-        <img src="${mem.image}" alt="${mem.title}" loading="lazy"
-             onerror="this.style.display='none'; this.parentNode.style.background='linear-gradient(160deg,${g[0]},${g[1]})';" />
-        <div class="strip-badge">${String(i + 1).padStart(2, '0')}</div>
-        <div class="strip-overlay">
-          <div class="strip-overlay-date">📅 ${mem.date}</div>
-          <div class="strip-overlay-title">"${mem.title}"</div>
-          <div class="strip-overlay-desc">${mem.description}</div>
+      const p = document.createElement('div');
+      p.className = 'c-panel' + (i === 0 ? ' active' : '');
+      p.innerHTML = `
+        <img src="${m.image}" alt="${m.title}" loading="lazy"
+             onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(155deg,${g[0]},${g[1]})';" />
+        <div class="c-badge">${String(i+1).padStart(2,'0')}</div>
+        <div class="c-overlay">
+          <div class="c-overlay-date">📅 ${m.date}</div>
+          <div class="c-overlay-title">"${m.title}"</div>
+          <div class="c-overlay-desc">${m.description}</div>
         </div>`;
-
-      /* Click to snap to this panel */
-      panel.addEventListener('click', () => {
-        if (Math.abs(lastDragDx) > 3) return;
-        snapTo(i);
-      });
-
-      pivot.appendChild(panel);
-      panelEls.push(panel);
+      p.addEventListener('click', () => { if (!wasDrag) goTo(i); });
+      track.appendChild(p);
+      panels.push(p);
     });
   }
 
-  /* ── Dots ──────────────────────────────────────────────────  */
+  /* ── Dots ── */
   function buildDots() {
-    dotsWrap.innerHTML = '';
     for (let i = 0; i < N; i++) {
       const d = document.createElement('div');
-      d.className = 'timeline-dot' + (i === 0 ? ' active' : '');
-      d.setAttribute('role', 'button');
-      d.setAttribute('tabindex', '0');
-      d.setAttribute('aria-label', `Go to memory ${i + 1}`);
-      d.addEventListener('click', () => snapTo(i));
-      d.addEventListener('keydown', e => { if (e.key === 'Enter') snapTo(i); });
+      d.className = 'timeline-dot' + (i===0?' active':'');
+      d.setAttribute('role','button'); d.setAttribute('tabindex','0');
+      d.addEventListener('click', () => goTo(i));
+      d.addEventListener('keydown', e => { if(e.key==='Enter') goTo(i); });
       dotsWrap.appendChild(d);
     }
   }
 
-  function updateDots(idx) {
-    dotsWrap.querySelectorAll('.timeline-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  function updateDots(i) {
+    dotsWrap.querySelectorAll('.timeline-dot').forEach((d,j)=>d.classList.toggle('active',j===i));
   }
 
-  /* ── Render ────────────────────────────────────────────────
-     `rotation` is in degrees.  We rotate the pivot and also
-     compute each panel's individual transform so they sit on
-     the arc with proper depth sorting.
-  ─────────────────────────────────────────────────────────── */
-  let rotation    = 0;   // current pivot rotation, degrees
-  let currentIdx  = 0;
+  /* ── Compute centred translateX for a given index ── */
+  function xForIndex(i) {
+    const panel  = panels[i];
+    const stageW = track.parentElement.parentElement.clientWidth; // carousel-wrap width
+    const panelW = panel.offsetWidth;
+    const panelL = panel.offsetLeft;
+    /* We want panel centre == stage centre */
+    return -(panelL - stageW / 2 + panelW / 2);
+  }
 
-  function render() {
-    /* Pivot spins the whole arc */
-    pivot.style.transform = `rotateY(${rotation}deg)`;
-
-    let bestDist = Infinity, bestIdx = 0;
-    panelEls.forEach((panel, i) => {
-      /* Each panel sits on the arc at its own Y-rotation */
-      const ownAngle = i * angleBetween;
-      panel.style.transform =
-        `rotateY(${ownAngle}deg) translateZ(${radius}px)`;
-
-      /* How far is this panel from front (rotation=0 means panel 0 is front) */
-      let diff = ((ownAngle + rotation) % 360 + 360) % 360;
-      if (diff > 180) diff = 360 - diff;   // 0..180
-
-      /* Depth-based dimming — handled via .is-center class */
-      panel.classList.toggle('is-center', diff < angleBetween * 0.6);
-
-      if (diff < bestDist) { bestDist = diff; bestIdx = i; }
-    });
-
-    if (bestIdx !== currentIdx) {
-      currentIdx = bestIdx;
-      updateDots(currentIdx);
+  /* ── Go to index ── */
+  function goTo(i, instant) {
+    activeIdx = ((i % N) + N) % N;
+    panels.forEach((p,j) => p.classList.toggle('active', j === activeIdx));
+    updateDots(activeIdx);
+    targetX = xForIndex(activeIdx);
+    if (instant) {
+      currentX = targetX;
+      track.classList.add('no-transition');
+      track.style.transform = `translateX(${currentX}px)`;
+      requestAnimationFrame(() => track.classList.remove('no-transition'));
+    } else {
+      track.classList.remove('no-transition');
+      track.style.transform = `translateX(${targetX}px)`;
+      currentX = targetX;
     }
   }
 
-  /* ── Snap / animate to index ────────────────────────────── */
-  let animId = null;
+  /* ── Autoplay ── */
+  let autoTimer = null;
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => goTo(activeIdx + 1), 3200);
+  }
+  function stopAuto() { clearInterval(autoTimer); }
 
-  function snapTo(targetIdx) {
-    pauseAutoplay();
-    /* Shortest angular path */
-    const targetRot = -targetIdx * angleBetween;
-    let   delta     = ((targetRot - rotation) % 360 + 360) % 360;
-    if (delta > 180) delta -= 360;   // go the short way
+  /* ── Drag / touch ── */
+  let isDragging = false, wasDrag = false;
+  let dragStartX = 0, dragStartTX = 0, lastDx = 0, lastDt = 1;
+  let dragT = 0;
 
-    const startRot = rotation;
-    const endRot   = rotation + delta;
-    const dur      = 580;
-    const t0       = performance.now();
-
-    cancelAnimationFrame(animId);
-    function step(now) {
-      const t     = Math.min(1, (now - t0) / dur);
-      const ease  = 1 - Math.pow(1 - t, 3);
-      rotation    = startRot + delta * ease;
-      velocity    = 0;
-      render();
-      if (t < 1) animId = requestAnimationFrame(step);
-      else resumeAutoplay();
-    }
-    animId = requestAnimationFrame(step);
+  function onDown(e) {
+    isDragging = true; wasDrag = false;
+    dragStartX  = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+    dragStartTX = currentX;
+    lastDx = 0; lastDt = 1; dragT = performance.now();
+    stopAuto();
+    tilt.classList.add('grabbing');
+    track.classList.add('no-transition');
   }
 
-  /* ── Autoplay ───────────────────────────────────────────── */
-  let autoOn    = true;
-  let idleTimer = null;
-  const AUTO_SPEED = 0.03;  // deg per frame (slow drift)
-
-  function pauseAutoplay() {
-    autoOn = false;
-    clearTimeout(idleTimer);
-  }
-  function resumeAutoplay() {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => { autoOn = true; }, 2800);
-  }
-
-  /* ── Drag / pointer / touch ─────────────────────────────── */
-  let isDragging  = false;
-  let dragStartX  = 0;
-  let dragStartRot= 0;
-  let lastDragDx  = 0;
-  let velocity    = 0;
-  let lastDragT   = 0;
-
-  function pointerDown(e) {
-    isDragging   = true;
-    lastDragDx   = 0;
-    velocity     = 0;
-    dragStartX   = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
-    dragStartRot = rotation;
-    lastDragT    = performance.now();
-    pauseAutoplay();
-    stage.classList.add('grabbing');
-    if (stage.setPointerCapture && e.pointerId != null) stage.setPointerCapture(e.pointerId);
-  }
-
-  function pointerMove(e) {
+  function onMove(e) {
     if (!isDragging) return;
-    const x   = e.clientX ?? e.touches?.[0]?.clientX ?? dragStartX;
-    const dx  = x - dragStartX;
+    const x  = e.clientX ?? e.touches?.[0]?.clientX ?? dragStartX;
+    const dx = x - dragStartX;
+    if (Math.abs(dx) > 4) wasDrag = true;
     const now = performance.now();
-    const dt  = Math.max(1, now - lastDragT);
-    /* Map horizontal drag pixels → degrees.
-       Sensitivity: moving one panel-width drags one step. */
-    const sensitivity = angleBetween / panelW;
-    rotation = dragStartRot - dx * sensitivity;
-    velocity = -(dx - lastDragDx) * sensitivity * (16 / dt);
-    lastDragDx = dx;
-    lastDragT  = now;
-    render();
+    lastDx = dx - (currentX - dragStartTX);
+    lastDt = Math.max(1, now - dragT);
+    dragT  = now;
+    currentX = dragStartTX + dx;
+    track.style.transform = `translateX(${currentX}px)`;
   }
 
-  function pointerUp() {
+  function onUp() {
     if (!isDragging) return;
     isDragging = false;
-    stage.classList.remove('grabbing');
-    resumeAutoplay();
-    /* Inertia: let velocity decay, then snap to nearest */
-    kickInertia();
+    tilt.classList.remove('grabbing');
+    track.classList.remove('no-transition');
+    /* Find nearest panel centre and snap */
+    const velocity = lastDx / lastDt * 16; // px per frame
+    const projectedX = currentX + velocity * 8; // look-ahead
+    let best = 0, bestDist = Infinity;
+    panels.forEach((p, i) => {
+      const tx = xForIndex(i);
+      const d  = Math.abs(tx - projectedX);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    goTo(best);
+    setTimeout(startAuto, 3000);
   }
 
-  /* Inertia decay → snap */
-  const DAMPING = 0.90;
-  function kickInertia() {
-    cancelAnimationFrame(animId);
-    function decay() {
-      if (Math.abs(velocity) < 0.06) {
-        /* Snap to nearest panel */
-        const nearest = Math.round(-rotation / angleBetween);
-        snapTo(((nearest % N) + N) % N);
-        return;
-      }
-      rotation += velocity;
-      velocity *= DAMPING;
-      render();
-      animId = requestAnimationFrame(decay);
-    }
-    animId = requestAnimationFrame(decay);
-  }
+  tilt.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  tilt.addEventListener('touchstart', onDown, { passive:true });
+  window.addEventListener('touchmove', onMove, { passive:true });
+  window.addEventListener('touchend', onUp);
 
-  stage.addEventListener('pointerdown', pointerDown);
-  window.addEventListener('pointermove', pointerMove);
-  window.addEventListener('pointerup',   pointerUp);
-  stage.addEventListener('touchstart', pointerDown, { passive: true });
-  window.addEventListener('touchmove',  pointerMove,  { passive: true });
-  window.addEventListener('touchend',   pointerUp);
+  prevBtn.addEventListener('click', () => { goTo(activeIdx-1); stopAuto(); setTimeout(startAuto,3000); });
+  nextBtn.addEventListener('click', () => { goTo(activeIdx+1); stopAuto(); setTimeout(startAuto,3000); });
 
-  /* ── Keyboard ────────────────────────────────────────────── */
   document.addEventListener('keydown', e => {
-    const r = stage.getBoundingClientRect();
-    if (r.top > window.innerHeight || r.bottom < 0) return;
-    if (e.key === 'ArrowLeft')  snapTo(((currentIdx - 1) % N + N) % N);
-    if (e.key === 'ArrowRight') snapTo((currentIdx + 1) % N);
+    const r = track.getBoundingClientRect();
+    if (r.top > innerHeight || r.bottom < 0) return;
+    if (e.key==='ArrowLeft')  { goTo(activeIdx-1); stopAuto(); setTimeout(startAuto,3000); }
+    if (e.key==='ArrowRight') { goTo(activeIdx+1); stopAuto(); setTimeout(startAuto,3000); }
   });
 
-  prevBtn.addEventListener('click', () => snapTo(((currentIdx - 1) % N + N) % N));
-  nextBtn.addEventListener('click', () => snapTo((currentIdx + 1) % N));
+  window.addEventListener('resize', () => goTo(activeIdx, true));
 
-  /* ── Visibility pause ───────────────────────────────────── */
-  let isVisible = true;
-  new IntersectionObserver(entries => {
-    entries.forEach(en => { isVisible = en.isIntersecting; });
-  }, { threshold: 0.05 }).observe(stage);
-
-  /* ── Main loop ──────────────────────────────────────────── */
-  function tick() {
-    if (isVisible && !isDragging && autoOn) {
-      rotation -= AUTO_SPEED;
-      render();
-    }
-    requestAnimationFrame(tick);
-  }
-
-  /* ── Resize ─────────────────────────────────────────────── */
-  window.addEventListener('resize', () => { calcGeometry(); render(); });
-
-  /* ── Init ───────────────────────────────────────────────── */
-  buildPanels();
+  /* ── Init ── */
+  build();
   buildDots();
-  calcGeometry();
-  render();
-  requestAnimationFrame(tick);
+  /* Wait one frame so offsetLeft is calculated */
+  requestAnimationFrame(() => { goTo(0, true); startAuto(); });
 })();
-
-
 </script>
-
 </body>
 </html>
