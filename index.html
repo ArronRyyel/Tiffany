@@ -305,28 +305,9 @@
     .c-panel:hover  .c-overlay {
       opacity: 1; transform: translateY(0);
     }
-    .c-overlay-date {
-      font-family: 'Dancing Script', cursive;
-      font-size: 0.74rem; color: var(--gold-light); margin-bottom: 0.18rem;
-    }
-    .c-overlay-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.95rem; font-weight: 600; color: #fff;
-      line-height: 1.2; margin-bottom: 0.22rem;
-    }
     .c-overlay-desc {
-      font-size: 0.67rem; color: rgba(255,255,255,0.8);
-      font-weight: 300; line-height: 1.5;
-    }
-    .c-badge {
-      position: absolute; top: 7px; left: 7px;
-      width: 26px; height: 26px; border-radius: 50%;
-      background: var(--burgundy); border: 1.5px solid var(--gold-light);
-      color: var(--gold-light);
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-weight: 600; font-size: 0.75rem;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 3; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      font-size: 0.72rem; color: rgba(255,255,255,0.85);
+      font-weight: 300; line-height: 1.55; text-align: center;
     }
 
     /* Hint + dots + nav */
@@ -389,7 +370,7 @@
   <h1 class="hero-title">Our <em>Story</em></h1>
   <p class="hero-subtitle">A collection of the little moments that became my favorite memories.</p>
   <div class="hero-anniversary">
-    <span>❤️</span><span>Happy Anniversary, My Love</span><span>❤️</span>
+    <span>❤️</span><span>Happy anniv and mont, My Love</span><span>❤️</span>
   </div>
   <div class="hero-scroll-hint">
     <span>Scroll</span>
@@ -432,16 +413,16 @@
    MEMORY DATA  ✏️  Edit here
    ================================================================ */
 const MEMORIES = [
-  { image:"photos/memory-01.jpg", date:"The Very Beginning",  title:"The Day We Met",                   description:"I didn't know it then, but that was the day everything changed." },
-  { image:"photos/memory-02.jpg", date:"Our First Picture",   title:"Captured",                         description:"The first time someone took a photo of us together. I've looked at it a thousand times since." },
-  { image:"photos/memory-03.jpg", date:"Our First Date",      title:"Just Us",                          description:"Nervous and happy at the same time. I don't think I stopped smiling once." },
-  { image:"photos/memory-04.jpg", date:"A Funny Day",         title:"Our Funniest Moment",              description:"I still laugh every time I think about this. Only we would find that funny." },
-  { image:"photos/memory-05.jpg", date:"Our Favorite Place",  title:"Here, With You",                   description:"It's not really about the place. It's about who I'm with." },
-  { image:"photos/memory-06.jpg", date:"A Random Tuesday",    title:"Nothing Special (Except It Was)",  description:"Just an ordinary day that somehow became one of my favorites." },
-  { image:"photos/memory-07.jpg", date:"The Big Trip",        title:"Adventure Awaits",                 description:"Every mile with you is worth it. I'd go anywhere as long as you're beside me." },
-  { image:"photos/memory-08.jpg", date:"Most Recently",       title:"Our Latest Memory",                description:"This one is still fresh. And I already know I'll treasure it forever." },
-  { image:"photos/memory-09.jpg", date:"Another Memory",      title:"Still Us",                         description:"Every moment with you is one I'd choose again." },
-  { image:"photos/memory-10.jpg", date:"And More",            title:"Never Enough",                     description:"I keep thinking: I want a thousand more days just like this." }
+  { image:"photos/memory-01.jpg", description:"I didn't know it then, but that was the day everything changed." },
+  { image:"photos/memory-02.jpg", description:"The first time someone took a photo of us together. I've looked at it a thousand times since." },
+  { image:"photos/memory-03.jpg", description:"Nervous and happy at the same time. I don't think I stopped smiling once." },
+  { image:"photos/memory-04.jpg", description:"I still laugh every time I think about this. Only we would find that funny." },
+  { image:"photos/memory-05.jpg", description:"It's not really about the place. It's about who I'm with." },
+  { image:"photos/memory-06.jpg", description:"Just an ordinary day that somehow became one of my favorites." },
+  { image:"photos/memory-07.jpg", description:"Every mile with you is worth it. I'd go anywhere as long as you're beside me." },
+  { image:"photos/memory-08.jpg", description:"This one is still fresh. And I already know I'll treasure it forever." },
+  { image:"photos/memory-09.jpg", description:"Every moment with you is one I'd choose again." },
+  { image:"photos/memory-10.jpg", description:"I keep thinking: I want a thousand more days just like this." }
 ];
 
 const GRADIENTS = [
@@ -508,12 +489,9 @@ new IntersectionObserver((es)=>{
       const p = document.createElement('div');
       p.className = 'c-panel' + (i === 0 ? ' active' : '');
       p.innerHTML = `
-        <img src="${m.image}" alt="${m.title}" loading="lazy"
+        <img src="${m.image}" alt="${m.description}" loading="lazy"
              onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(155deg,${g[0]},${g[1]})';" />
-        <div class="c-badge">${String(i+1).padStart(2,'0')}</div>
         <div class="c-overlay">
-          <div class="c-overlay-date">📅 ${m.date}</div>
-          <div class="c-overlay-title">"${m.title}"</div>
           <div class="c-overlay-desc">${m.description}</div>
         </div>`;
       p.addEventListener('click', () => { if (!wasDrag) goTo(i); });
@@ -539,12 +517,12 @@ new IntersectionObserver((es)=>{
   }
 
   /* ── Compute centred translateX for a given index ── */
+  const wrap = document.querySelector('.carousel-wrap');
   function xForIndex(i) {
     const panel  = panels[i];
-    const stageW = track.parentElement.parentElement.clientWidth; // carousel-wrap width
+    const stageW = wrap.clientWidth;
     const panelW = panel.offsetWidth;
     const panelL = panel.offsetLeft;
-    /* We want panel centre == stage centre */
     return -(panelL - stageW / 2 + panelW / 2);
   }
 
